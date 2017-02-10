@@ -1,0 +1,296 @@
+---
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "Inukshuk API"
+paths:
+  /users:
+    post:
+      description: "Creates `User` a new user in the system"
+      operationId: "createUser"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "user"
+        description: "Create a user"
+        required: true
+        schema:
+          $ref: "#/definitions/user"
+      responses:
+        201:
+          description: "User created"
+          schema:
+            $ref: "#/definitions/user"
+        401:
+          description: "Bad request"
+      x-swagger-router-controller: "Default"
+    put:
+      description: "Updates an existing `User`"
+      operationId: "updateUser"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "user"
+        description: "User with updated info"
+        required: true
+        schema:
+          $ref: "#/definitions/user"
+      responses:
+        200:
+          description: "User updated"
+          schema:
+            $ref: "#/definitions/user"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "User not found"
+      x-swagger-router-controller: "Default"
+  /user/{user-id}:
+    get:
+      description: "Gets a user based on a given ID"
+      operationId: "getUser"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "user-id"
+        in: "path"
+        description: "ID of user to get"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "User with specified ID"
+          schema:
+            $ref: "#/definitions/user"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "User not found"
+      x-swagger-router-controller: "Default"
+    delete:
+      summary: "Endpoint used for deleting accounts; this is not reversible."
+      description: "Delete `User` from the system"
+      operationId: "deleteUser"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "user-id"
+        in: "path"
+        description: "The ID of the user that is going to be deleted"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "User deleted successfully"
+        403:
+          description: "Forbidden"
+        404:
+          description: "User not found"
+      x-swagger-router-controller: "Default"
+  /user/{user-id}/trips:
+    get:
+      description: "Gets all `Trips` associated with a `User`"
+      operationId: "getTrips"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "user-id"
+        in: "path"
+        description: "The User for which we want all trips"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/tripsCollection"
+        400:
+          description: "Invalid User ID"
+        404:
+          description: "User not found"
+      x-swagger-router-controller: "Default"
+  /user/{user-id}/trips/search:
+    get:
+      description: "Gets a specific `Trip` associated with a `User`"
+      operationId: "searchTrip"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "user-id"
+        in: "path"
+        description: "User ID"
+        required: true
+        type: "string"
+      - name: "trip-id"
+        in: "query"
+        description: "The ID of a trip"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/trip"
+        400:
+          description: "Invalid User ID"
+        404:
+          description: "User not found"
+      x-swagger-router-controller: "Default"
+  /trips:
+    post:
+      description: "Create `Trip` for a specific `User`"
+      operationId: "createTrip"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "Trip"
+        description: "Trip Object"
+        required: false
+        schema:
+          $ref: "#/definitions/trip"
+      responses:
+        201:
+          description: "Trip created"
+          schema:
+            $ref: "#/definitions/trip"
+        400:
+          description: "Invalid User ID"
+      x-swagger-router-controller: "Default"
+    put:
+      description: "Update `Trip` details"
+      operationId: "updateTrip"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "Trip"
+        description: "JSON object with trip details"
+        required: false
+        schema:
+          $ref: "#/definitions/trip"
+      responses:
+        200:
+          description: "Trip updated"
+        400:
+          description: "Invalid ID"
+        404:
+          description: "Resource not found"
+      x-swagger-router-controller: "Default"
+  /trips/{trip-id}:
+    get:
+      description: "Get a `Trip` with a specific id"
+      operationId: "getTrip"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "trip-id"
+        in: "path"
+        description: "ID of trip to get"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            $ref: "#/definitions/trip"
+        400:
+          description: "Invalid ID"
+        404:
+          description: "Resource not found"
+      x-swagger-router-controller: "Default"
+    delete:
+      description: "Delete `Trip`"
+      operationId: "deleteTrip"
+      parameters:
+      - name: "trip-id"
+        in: "path"
+        description: "ID of trip to delete"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Trip deleted successfully"
+        403:
+          description: "Forbidden"
+        404:
+          description: "Trip not found"
+      x-swagger-router-controller: "Default"
+definitions:
+  user:
+    type: "object"
+    required:
+    - "email"
+    - "firstName"
+    - "lastName"
+    - "phoneNumber"
+    - "userName"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      userName:
+        type: "string"
+      firstName:
+        type: "string"
+      lastName:
+        type: "string"
+      email:
+        type: "string"
+      phoneNumber:
+        type: "string"
+  trip:
+    type: "object"
+    required:
+    - "contactEmail"
+    - "contactPhone"
+    - "note"
+    - "returnTime"
+    - "startingLocation"
+    properties:
+      tripId:
+        type: "integer"
+        format: "int64"
+      userId:
+        type: "integer"
+        format: "int64"
+      returnTime:
+        type: "string"
+        format: "date-time"
+      contactEmail:
+        type: "string"
+      contactPhone:
+        type: "string"
+      startingLocation:
+        $ref: "#/definitions/geoLocation"
+      note:
+        type: "string"
+  tripsCollection:
+    type: "object"
+    properties:
+      userId:
+        type: "integer"
+        format: "base64"
+      trips:
+        type: "array"
+        items:
+          $ref: "#/definitions/trip"
+  geoLocation:
+    type: "object"
+    required:
+    - "latitude"
+    - "longitude"
+    properties:
+      latitude:
+        type: "number"
+        format: "double"
+      longitude:
+        type: "number"
+        format: "double"

@@ -11,13 +11,13 @@ var userSchema = new Schema({
   updated_at: Date
 });
 
-var User = mongoose.model('User', userSchema);
 
 //Add any user methods here!
 
 userSchema.pre('save', function(next) {
   //Get the current Date
   var currentDate = new Date();
+  console.log("I did dates")
 
   //Changed the updated_at field
   this.updated_at = currentDate;
@@ -30,5 +30,5 @@ userSchema.pre('save', function(next) {
   next();
 })
 
-
+var User = mongoose.model('User', userSchema);
 module.exports = User;

@@ -1,5 +1,7 @@
 'use strict';
 
+var User = require('../models/user')
+
 exports.createUser = function(args, res, next) {
   /**
    * Creates a user based on provided information
@@ -7,21 +9,28 @@ exports.createUser = function(args, res, next) {
    * body User The user to be created
    * returns user
    **/
-  var examples = {};
-  examples['application/json'] = {
-  "firstName" : "aeiou",
-  "lastName" : "aeiou",
-  "phoneNumber" : "aeiou",
-  "id" : 123456789,
-  "userName" : "aeiou",
-  "email" : "aeiou"
-};
-  if (Object.keys(examples).length > 0) {
+  //  var newUser = new User({
+  //    userName: args.
+  //  })
+  var params = args.body.value
+  var newUser = new User({
+    userName: params.userName,
+    firstName: params.firstName,
+    lastName: params.lastName,
+    email: params.email,
+    phoneNumber: params.phoneNumber
+  });
+
+  console.log("The new user is " + newUser );
+
+  newUser.save(function(err) {
+    if (err) {
+      console.log(err)
+    }
+    console.log("User saved successfully!")
     res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(examples[Object.keys(examples)[0]] || {}, null, 2));
-  } else {
-    res.end();
-  }
+    res.end(JSON.stringify(newUser))
+  })
 }
 
 exports.deleteUser = function(args, res, next) {
@@ -141,4 +150,3 @@ exports.updateUser = function(args, res, next) {
     res.end();
   }
 }
-

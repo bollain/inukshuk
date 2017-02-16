@@ -20,10 +20,35 @@ exports.createUser = function(args, res, next) {
   User.findOrCreate({email: params.email}, newUser,
     function(err, user, created){
     if(err){
+      console.log("I died");
       console.log(err);
-      res.statusCode = 401;
-      res.statusMessage = 'Bad request';
-      res.end();
+      if(!err.errors){
+        //duplicate user name
+        console.log("duplicate user name");
+        res.statusCode = 401;
+        res.statusMessage = 'Bad request';
+        res.end("userName already exists");
+        return;
+      }
+      if(err.errors.email){
+        console.log("The email was bad");
+        res.statusCode = 401;
+        res.statusMessage = 'Bad request';
+        res.end("Invalid email");
+        return;
+      } else if(err.errors.phoneNumber) {
+        console.log("phonenumber was bad");
+        res.statusCode = 401;
+        res.statusMessage = 'Bad request';
+        res.end("Phone number too short or too long");
+        return;
+      } else {
+        res.statusCode = 401;
+        res.statusMessage = 'Bad request';
+        res.end();
+        return;
+      }
+
     }
     if(created){
       console.log("User saved successfully!")

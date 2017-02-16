@@ -18,6 +18,7 @@
     "mongoose": "^4.8.2",
     "mongoose-auto-increment": "^5.0.1",
     "mongoose-findorcreate": "^1.0.0",
-    "swagger-tools": "0.10.1"
+    "swagger-tools": "0.10.1",
+    "validator": "^6.2.1"
   }
 }

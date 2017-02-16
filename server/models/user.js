@@ -1,5 +1,14 @@
-var mongoose = require('mongoose')
-var Schema = mongoose.Schema
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
+var autoIncrement = require('mongoose-auto-increment');
+var findOrCreate = require('mongoose-findorcreate')
+
+var connection = mongoose.createConnection('mongodb://localhost/inukshukdatabase');
+
+//This is to make IDs start at 0 and increment
+//when new user created...good for MVP but perhaps good
+//idea to revert to original IDs if we go to prod
+autoIncrement.initialize(connection);
 
 var userSchema = new Schema({
   userName: {type: String, required: true, unique: true },
@@ -30,5 +39,7 @@ userSchema.pre('save', function(next) {
   next();
 })
 
+userSchema.plugin(autoIncrement.plugin, 'User');
+userSchema.plugin(findOrCreate);
 var User = mongoose.model('User', userSchema);
 module.exports = User;

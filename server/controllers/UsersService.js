@@ -9,27 +9,32 @@ exports.createUser = function(args, res, next) {
    * body User The user to be created
    * returns user
    **/
-  //  var newUser = new User({
-  //    userName: args.
-  //  })
   var params = args.body.value
-  var newUser = new User({
+  var newUser = {
     userName: params.userName,
     firstName: params.firstName,
     lastName: params.lastName,
-    email: params.email,
     phoneNumber: params.phoneNumber
-  });
+  };
 
-  console.log("The new user is " + newUser );
-
-  newUser.save(function(err) {
-    if (err) {
-      console.log(err)
+  User.findOrCreate({email: params.email}, newUser,
+    function(err, user, created){
+    if(err){
+      console.log(err);
+      res.statusCode = 401;
+      res.statusMessage = 'Bad request';
+      res.end();
     }
-    console.log("User saved successfully!")
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(newUser))
+    if(created){
+      console.log("User saved successfully!")
+      res.setHeader('Content-Type', 'application/json');
+      res.end(JSON.stringify(user));
+    } else {
+      console.log("The user exists!")
+      res.statusCode = 422;
+      res.statusMessage = 'Bad request';
+      res.end("Email exists in database");
+    }
   })
 }
 
@@ -50,21 +55,26 @@ exports.getUser = function(args, res, next) {
    * userId Long ID of user
    * returns user
    **/
-  var examples = {};
-  examples['application/json'] = {
-  "firstName" : "aeiou",
-  "lastName" : "aeiou",
-  "phoneNumber" : "aeiou",
-  "id" : 123456789,
-  "userName" : "aeiou",
-  "email" : "aeiou"
-};
-  if (Object.keys(examples).length > 0) {
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(examples[Object.keys(examples)[0]] || {}, null, 2));
-  } else {
-    res.end();
-  }
+   var param  = args.userId.value;
+   console.log(args.userId.value);
+   User.find({_id: param}, function(err, user){
+     if(err){
+       console.log(err);
+       res.statusCode = 401;
+       res.statusMessage = 'Bad request';
+       res.end()
+     }
+
+     console.log(user);
+     if(!user.length) {
+       res.statusCode = 404;
+       res.statusMessage = 'User does not exist';
+       res.end("User does not exist");
+     } else {
+       res.setHeader('Content-Type', 'application/json');
+       res.end(JSON.stringify(user));
+     }
+   })
 }
 
 exports.getUserTrips = function(args, res, next) {
@@ -149,4 +159,20 @@ exports.updateUser = function(args, res, next) {
   } else {
     res.end();
   }
+}
+
+/* Some helper methods*/
+
+exports.findByUserName = function(userName){
+  var callback = function() {
+    return function(error, user) {
+      if(error) {
+        return false;
+      }
+      console.log("i found " + user);
+      return user;
+    }
+  };
+
+  User.find({userName: userName}, callback);
 }

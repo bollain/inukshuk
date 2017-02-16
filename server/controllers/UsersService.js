@@ -45,7 +45,41 @@ exports.deleteUser = function(args, res, next) {
    * userId Long ID of user
    * no response value expected for this operation
    **/
-  res.end();
+   //TODO: Need an authentication measure... do we even need to expose this?
+   var userId = args.userId.value;
+   User.findByIdAndRemove(userId, function(err) {
+     if(err){
+       console.log(err);
+       res.statusCode = 401;
+       res.statusMessage = 'Bad request';
+       res.end()
+     }
+     console.log("User deleted");
+     res.end("User deleted");
+   });
+}
+
+exports.updateUser = function(args, res, next) {
+  /**
+   * Updates an existing `User`
+   *
+   * user User User with updated info
+   * returns user
+   **/
+   //For now we only update phone numbers... no emails
+   var params = args.user.value;
+   var userId = params.id;
+   var phoneNumber = params.phoneNumber;
+   User.findOneAndUpdate(userId, {phoneNumber: phoneNumber}, function(err, user){
+     if(err){
+       console.log(err);
+       res.statusCode = 401;
+       res.statusMessage = 'Bad request';
+       res.end()
+     }
+     res.end("User updated");
+   });
+
 }
 
 exports.getUser = function(args, res, next) {
@@ -65,7 +99,6 @@ exports.getUser = function(args, res, next) {
        res.end()
      }
 
-     console.log(user);
      if(!user.length) {
        res.statusCode = 404;
        res.statusMessage = 'User does not exist';
@@ -135,44 +168,4 @@ exports.searchTrip = function(args, res, next) {
   } else {
     res.end();
   }
-}
-
-exports.updateUser = function(args, res, next) {
-  /**
-   * Updates an existing `User`
-   *
-   * user User User with updated info
-   * returns user
-   **/
-  var examples = {};
-  examples['application/json'] = {
-  "firstName" : "aeiou",
-  "lastName" : "aeiou",
-  "phoneNumber" : "aeiou",
-  "id" : 123456789,
-  "userName" : "aeiou",
-  "email" : "aeiou"
-};
-  if (Object.keys(examples).length > 0) {
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(examples[Object.keys(examples)[0]] || {}, null, 2));
-  } else {
-    res.end();
-  }
-}
-
-/* Some helper methods*/
-
-exports.findByUserName = function(userName){
-  var callback = function() {
-    return function(error, user) {
-      if(error) {
-        return false;
-      }
-      console.log("i found " + user);
-      return user;
-    }
-  };
-
-  User.find({userName: userName}, callback);
 }

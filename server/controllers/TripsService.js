@@ -26,7 +26,7 @@ exports.createTrip = function(args, res, next) {
   //If user does not exist, kill things off
   User.findById(userId, function(err, user){
       if(err) {
-        return handleError(err);
+        return handleError(res, err);
       }
       if(!user){
         res.statusCode = 404;
@@ -41,7 +41,7 @@ exports.createTrip = function(args, res, next) {
           user.trips.push(newTrip._id);
           user.save(function(err){
             if(err){
-              handleError(err);
+              handleError(res, err);
               return;
             }
           });
@@ -65,7 +65,7 @@ exports.deleteTrip = function(args, res, next) {
    console.log(tripId);
    Trip.findById(tripId, function(err, trip){
      if(err){
-       return handleError(err);
+       return handleError(res, err);
      }
      if(!trip){
        res.statusCode = 404;

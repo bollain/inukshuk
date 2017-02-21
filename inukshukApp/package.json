@@ -5,5 +5,9 @@
   },
   "devDependencies": {
     "flow-bin": "^0.39.0"
+  },
+  "dependencies": {
+    "react-native-google-places-autocomplete": "^1.2.7",
+    "react-native-maps": "^0.12.4"
   }
 }

@@ -1,6 +1,6 @@
 'use strict';
 
-var User = require('../models/user')
+var User = require('../models/User')
 
 exports.createUser = function(args, res, next) {
   /**
@@ -9,7 +9,7 @@ exports.createUser = function(args, res, next) {
    * body User The user to be created
    * returns user
    **/
-  var params = args.body.value
+  var params = args.User.value
   var newUser = {
     userName: params.userName,
     firstName: params.firstName,

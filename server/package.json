@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "prestart": "npm install",
-    "start": "node index.js"
+    "start": "node index.js",
+    "nodemon": "nodemon index.js"
   },
   "keywords": [
     "swagger"
@@ -20,5 +21,8 @@
     "mongoose-findorcreate": "^1.0.0",
     "swagger-tools": "0.10.1",
     "validator": "^6.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
   }
 }

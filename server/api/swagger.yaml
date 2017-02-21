@@ -15,7 +15,7 @@ paths:
       - "application/json"
       parameters:
       - in: "body"
-        name: "body"
+        name: "User"
         description: "The user to be created"
         required: true
         schema:
@@ -270,12 +270,6 @@ definitions:
         type: "string"
   trip:
     type: "object"
-    required:
-    - "contactEmail"
-    - "contactPhone"
-    - "note"
-    - "returnTime"
-    - "startingLocation"
     properties:
       tripId:
         type: "integer"

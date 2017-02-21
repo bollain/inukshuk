@@ -12,7 +12,6 @@ var connection = mongoose.createConnection('mongodb://localhost/inukshukdatabase
 autoIncrement.initialize(connection);
 
 var LOCALE = 'en-CA';
-
 //Helper to validate phones
 var validatePhone = function(phoneNumber) {
   return validator.isMobilePhone(phoneNumber, LOCALE);
@@ -23,13 +22,30 @@ var userSchema = new Schema({
   userName: {type: String, required: true, unique: true },
   firstName: {type: String, required: true},
   lastName: {type: String, required: true},
-  email: {type: String, required: true, unique: true, trim: true,
-    validate: [validator.isEmail, 'Please fill a valid email address'],},
-  phoneNumber: {type: String, required: true,
-    validate: [validatePhone, "Bad phone"],},
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
+    validate: [validator.isEmail, 'Please fill a valid email address']
+          },
+  phoneNumber: {
+          type: String,
+          required: true,
+          validate: [validatePhone, "Bad phone"]
+        },
+  trips: [{
+    type: Number,
+    ref: 'Trip'
+  }],
   created_at: Date,
   updated_at: Date
 });
+
+userSchema.methods.removeTrip = function(tripId){
+  var index = this.trips.indexOf(tripId);
+  this.trips.splice(index, 1);
+}
 
 
 //Add any user methods here!
@@ -37,7 +53,6 @@ var userSchema = new Schema({
 userSchema.pre('save', function(next) {
   //Get the current Date
   var currentDate = new Date();
-  console.log("I did dates")
 
   //Changed the updated_at field
   this.updated_at = currentDate;

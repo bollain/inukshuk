@@ -1,31 +1,56 @@
 'use strict';
 
+var Trip = require('../models/Trip');
+var User = require('../models/User');
+
+
+/**
+ * Create `Trip` for a specific `User`
+ *
+ * trip Trip Trip Object
+ * returns trip
+ **/
 exports.createTrip = function(args, res, next) {
-  /**
-   * Create `Trip` for a specific `User`
-   *
-   * trip Trip Trip Object
-   * returns trip
-   **/
-  var examples = {};
-  examples['application/json'] = {
-  "note" : "aeiou",
-  "contactEmail" : "aeiou",
-  "startingLocation" : {
-    "latitude" : 1.3579000000000001069366817318950779736042022705078125,
-    "longitude" : 1.3579000000000001069366817318950779736042022705078125
-  },
-  "tripId" : 123456789,
-  "contactPhone" : "aeiou",
-  "userId" : 123456789,
-  "returnTime" : "2000-01-23T04:56:07.000+00:00"
-};
-  if (Object.keys(examples).length > 0) {
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(examples[Object.keys(examples)[0]] || {}, null, 2));
-  } else {
-    res.end();
-  }
+  var params = args.Trip.value;
+  var userId = params.userId
+  var newTrip = Trip({
+    userId: userId,
+    returnTime: params.returnTime,
+    contactPhone: params.contactPhone,
+    contactEmail: params.contactEmail,
+    note: params.note,
+    startingLocation: {
+      coordinates: [params.startingLocation.latitude,
+                    params.startingLocation.longitude]}
+  });
+  //If user does not exist, kill things off
+  User.findById(userId, function(err, user){
+      if(err) {
+        return handleError(err);
+      }
+      if(!user){
+        res.statusCode = 404;
+        res.statusMessage = 'User does not exist';
+        res.end("User does not exist");
+      } else {
+        newTrip.save(function(err){
+          if(err){
+            handleError(res, err);
+            return;
+          }
+          user.trips.push(newTrip._id);
+          user.save(function(err){
+            if(err){
+              handleError(err);
+              return;
+            }
+          });
+          console.log("Trip created!")
+          res.setHeader('Content-Type', 'application/json');
+          res.end(JSON.stringify(newTrip));
+      });
+    }
+  });
 }
 
 exports.deleteTrip = function(args, res, next) {
@@ -35,7 +60,49 @@ exports.deleteTrip = function(args, res, next) {
    * tripId Long Id of trip
    * no response value expected for this operation
    **/
-  res.end();
+   //TODO: need permissions on who can do this....
+   var tripId = args.tripId.value;
+   console.log(tripId);
+   Trip.findById(tripId, function(err, trip){
+     if(err){
+       return handleError(err);
+     }
+     if(!trip){
+       res.statusCode = 404;
+       res.statusMessage = 'Trip does not exist';
+       res.end("Trip does not exist");
+     } else {
+       //Find user.
+       User.findById(trip.userId, function(err, user){
+         if(err){
+           return handleError(res, error);
+         }
+         user.removeTrip(tripId);
+         user.save();
+       });
+
+       trip.remove(function(err){
+         if(err){
+           return handleError(res, err);
+         }
+         res.end("Trip deleted");
+       });
+     }
+   });
+
+  //
+  //  Trip.findByIdAndRemove(tripId, function(err) {
+  //    if(err){
+  //      console.log(err);
+  //      res.statusCode = 401;
+  //      res.statusMessage = 'Bad request';
+  //      res.end()
+  //    }
+  //    //Also delete from user
+  //    User.findById
+  //    console.log("Trip deleted");
+  //    res.end("Trip deleted");
+  //  });
 }
 
 exports.getTrip = function(args, res, next) {
@@ -45,25 +112,24 @@ exports.getTrip = function(args, res, next) {
    * tripId Long ID of trip
    * returns trip
    **/
-  var examples = {};
-  examples['application/json'] = {
-  "note" : "aeiou",
-  "contactEmail" : "aeiou",
-  "startingLocation" : {
-    "latitude" : 1.3579000000000001069366817318950779736042022705078125,
-    "longitude" : 1.3579000000000001069366817318950779736042022705078125
-  },
-  "tripId" : 123456789,
-  "contactPhone" : "aeiou",
-  "userId" : 123456789,
-  "returnTime" : "2000-01-23T04:56:07.000+00:00"
-};
-  if (Object.keys(examples).length > 0) {
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(examples[Object.keys(examples)[0]] || {}, null, 2));
-  } else {
-    res.end();
-  }
+   var tripId = args.tripId.value;
+   Trip.find({_id: tripId}, function(err, trip){
+     if(err){
+       console.log(err);
+       res.statusCode = 401;
+       res.statusMessage = 'Bad request';
+       res.end()
+     }
+
+     if(!trip.length) {
+       res.statusCode = 404;
+       res.statusMessage = 'Trip does not exist';
+       res.end("Trip does not exist");
+     } else {
+       res.setHeader('Content-Type', 'application/json');
+       res.end(JSON.stringify(trip));
+     }
+   })
 }
 
 exports.updateTrip = function(args, res, next) {
@@ -73,6 +139,54 @@ exports.updateTrip = function(args, res, next) {
    * trip Trip JSON object with trip details (optional)
    * no response value expected for this operation
    **/
-  res.end();
+  var params = args.Trip.value;
+  Trip.findById(params.tripId, function(err, trip){
+    if(err) {
+      handleError(res, err);
+      return;
+    }
+    if(!trip) {
+      res.statusCode = 404;
+      res.statusMessage = 'Trip does not exist';
+      res.end("Trip does not exist");
+    } else {
+      trip.returnTime = params.returnTime || trip.returnTime;
+      trip.contactEmail = params.contactEmail || trip.contactEmail;
+      trip.contactPhone = params.contactPhone || trip.contactPhone;
+      trip.startingLocation = params.startingLocation ? updateCoordinates(params.startingLocation) : trip.startingLocation;
+      trip.note = params.note || trip.note;
+
+      trip.save(function(err){
+        if(err){
+          handleError(res, err);
+          return;
+        }
+        console.log("Trip updated!")
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify(trip));
+      })
+    }
+  });
 }
 
+var handleError = function(res, error) {
+  var message = '';
+  if(!error.errors){
+    //Yikes something is wrong and we can't save...
+    message += "Server error";
+  } else if (error.errors.contactEmail) {
+    //Email is in wrong format
+    message += "Email format incorrect";
+  } else if (error.errors.contactPhone) {
+    //Bad phoneNumber
+    message += "Bad phonenumber"
+  }
+  res.statusCode = 401;
+  res.statusMessage = 'Bad request';
+  res.end(message);
+}
+
+var updateCoordinates = function(newCoordinates) {
+  var coordinates = [newCoordinates.latitude, newCoordinates.longitude];
+  return {coordinates};
+}

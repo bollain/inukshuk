@@ -28,7 +28,8 @@ In the shell:
 ```
     brew update
 ```
-``` brew install mongodb
+```
+    brew install mongodb
 ```
 Before you start MongoDB for the first time, create the directory to which the mongod process will write data. By default, the mongod process uses the /data/db directory. If you create a directory other than this one, you must specify that directory in the dbpath option when starting the mongod process later in this procedure.
 

@@ -15,7 +15,7 @@ paths:
       - "application/json"
       parameters:
       - in: "body"
-        name: "body"
+        name: "User"
         description: "The user to be created"
         required: true
         schema:
@@ -25,6 +25,8 @@ paths:
           description: "User Created."
           schema:
             $ref: "#/definitions/user"
+        422:
+          description: "Email already registered"
         401:
           description: "Bad request"
       x-swagger-router-controller: "Users"
@@ -268,12 +270,6 @@ definitions:
         type: "string"
   trip:
     type: "object"
-    required:
-    - "contactEmail"
-    - "contactPhone"
-    - "note"
-    - "returnTime"
-    - "startingLocation"
     properties:
       tripId:
         type: "integer"

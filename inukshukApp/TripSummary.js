@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { View, Text, TouchableHighlight, ToolbarAndroid, StyleSheet } from 'react-native';
+import { View, Text, TouchableHighlight, ToolbarAndroid, StyleSheet, Alert, Button, TouchableOpacity } from 'react-native';
 
 export default class TripSummary extends Component {
   navLocation(){
@@ -54,8 +54,20 @@ export default class TripSummary extends Component {
             <Text style={styles.tripDetailText}>What more should your contact know?</Text>
           </TouchableHighlight>
         </View>
+        <View style={styles.startContainer}>
+          <TouchableOpacity
+            style={styles.start}
+            onPress={this.startTrip}
+            activeOpacity={.8}>
+          <Text style={styles.startText}>Start Trip</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
+  }
+
+  startTrip() {
+    Alert.alert('Oops! Not ready yet.')
   }
 }
 
@@ -63,22 +75,39 @@ const styles = StyleSheet.create({
    container: {
      ...StyleSheet.absoluteFillObject,
      justifyContent: 'flex-start',
-     alignItems: 'stretch',
+
    },
    toolbar: {
      backgroundColor: '#00aaf1',
      height: 60,
    },
    tripDetailsContainer: {
+     flex: 4,
      flexDirection: 'column',
      justifyContent: 'flex-start',
      alignItems: 'stretch',
    },
    tripDetail: {
-     height: 60,
      padding: 18,
+     borderBottomWidth: 2,
+     borderBottomColor: '#e6e6e6'
    },
    tripDetailText: {
      fontSize: 16,
+   },
+   startContainer: {
+     flex: 1,
+     justifyContent: 'flex-end',
+     alignItems: 'stretch'
+   },
+   start: {
+     backgroundColor: 'green',
+     padding: 18,
+   },
+   startText: {
+     fontSize: 16,
+     fontWeight: 'bold',
+     color: 'white',
+     textAlign: 'center'
    }
 });

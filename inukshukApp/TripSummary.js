@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { View, Text, TouchableHighlight, ToolbarAndroid, StyleSheet, Alert, Button, TouchableOpacity } from 'react-native';
+import { View, ScrollView, Text, TouchableHighlight, ToolbarAndroid, StyleSheet, Alert, Button, TouchableOpacity } from 'react-native';
 
 export default class TripSummary extends Component {
   navLocation(){
@@ -29,30 +29,32 @@ export default class TripSummary extends Component {
                         title={this.props.title}
                         titleColor={'#FFFFFF'}/>
         <View style={styles.tripDetailsContainer}>
-          <TouchableHighlight
-              style = {styles.tripDetail}
-              underlayColor='#e6e6e6'
-              onPress={this.navLocation.bind(this)}>
-            <Text style={styles.tripDetailText}>Where are you going?</Text>
-          </TouchableHighlight>
-          <TouchableHighlight
-              style = {styles.tripDetail}
-              underlayColor='#e6e6e6'
-              onPress={this.navContacts.bind(this)}>
-            <Text style={styles.tripDetailText}>Who should know?</Text>
-          </TouchableHighlight>
-          <TouchableHighlight
-              style = {styles.tripDetail}
-              underlayColor='#e6e6e6'
-              onPress={this.navReturn.bind(this)}>
-            <Text style={styles.tripDetailText}>When will you be back?</Text>
-          </TouchableHighlight>
-          <TouchableHighlight
-              style = {styles.tripDetail}
-              underlayColor='#e6e6e6'
-              onPress={this.navNotes.bind(this)}>
-            <Text style={styles.tripDetailText}>What more should your contact know?</Text>
-          </TouchableHighlight>
+          <ScrollView>
+            <TouchableHighlight
+                style = {styles.tripDetail}
+                underlayColor='#e6e6e6'
+                onPress={this.navLocation.bind(this)}>
+              <Text style={styles.tripDetailText}>Where are you going?</Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+                style = {styles.tripDetail}
+                underlayColor='#e6e6e6'
+                onPress={this.navContacts.bind(this)}>
+              <Text style={styles.tripDetailText}>Who should know?</Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+                style = {styles.tripDetail}
+                underlayColor='#e6e6e6'
+                onPress={this.navReturn.bind(this)}>
+              <Text style={styles.tripDetailText}>When will you be back?</Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+                style = {styles.tripDetail}
+                underlayColor='#e6e6e6'
+                onPress={this.navNotes.bind(this)}>
+              <Text style={styles.tripDetailText}>What more should your contact know?</Text>
+            </TouchableHighlight>
+          </ScrollView>
         </View>
         <View style={styles.startContainer}>
           <TouchableOpacity

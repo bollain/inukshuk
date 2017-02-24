@@ -61,7 +61,7 @@ export default class TripSummary extends Component {
             style={styles.start}
             onPress={this.startTrip}
             activeOpacity={.8}>
-          <Text style={styles.startText}>Start Trip</Text>
+          <Text style={styles.startText}>Submit</Text>
           </TouchableOpacity>
         </View>
       </View>

@@ -5,13 +5,21 @@
  */
 
 import React, { Component } from 'react';
-import { AppRegistry, StyleSheet, Navigator, TouchableHighlight, Text } from 'react-native';
+import { AppRegistry, StyleSheet, Navigator, TouchableHighlight, Text, BackAndroid } from 'react-native';
 
 import TripSummary from './TripSummary'
 import Location from './Location';
 import Contacts from './Contacts';
 import Return from './Return';
 import Notes from './Notes';
+
+BackAndroid.addEventListener('hardwareBackPress', () => {
+  if (_navigator.getCurrentRoutes().length === 1  ) {
+     return false;
+  }
+  _navigator.pop();
+  return true;
+});
 
 class inukshukApp extends Component {
   render() {

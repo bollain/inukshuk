@@ -5,49 +5,65 @@
  */
 
 import React, { Component } from 'react';
-import {
-  AppRegistry,
-  StyleSheet,
-  Text,
-  View
-} from 'react-native';
+import { AppRegistry, StyleSheet, Navigator, TouchableHighlight, Text } from 'react-native';
 
-export default class inukshukApp extends Component {
+import Map from './Map';
+
+class inukshukApp extends Component {
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.android.js
-        </Text>
-        <Text style={styles.instructions}>
-          Double tap R on your keyboard to reload,{'\n'}
-          Shake or press menu button for dev menu
-        </Text>
-      </View>
+      <Navigator
+        sceneStyle={{paddingTop: Navigator.NavigationBar.Styles.General.NavBarHeight}}
+        initialRoute={{ title: 'Trip Summary', index: 0 }}
+        renderScene={(route, navigator) =>
+          <Map
+            title={route.title}
+
+            // Function to call when a new scene should be displayed
+            onForward={() => {
+              const nextIndex = route.index + 1;
+              navigator.push({
+                title: 'Scene ' + nextIndex,
+                index: nextIndex,
+              });
+            }}
+
+            // Function to call to go back to the previous scene
+            onBack={() => {
+              if (route.index > 0) {
+                navigator.pop();
+              }
+            }}
+          />
+        }
+        navigationBar={
+         <Navigator.NavigationBar
+           routeMapper={{
+             LeftButton: (route, navigator, index, navState) =>
+               {
+                 if (route.index === 0) {
+                   return null;
+                 } else {
+                   return (
+                     <TouchableHighlight onPress={() => navigator.pop()}>
+                       <Text>Back</Text>
+                     </TouchableHighlight>
+                   );
+                 }
+               },
+             RightButton: (route, navigator, index, navState) =>
+               { return (<Text>Done</Text>); },
+             Title: (route, navigator, index, navState) =>
+               { return (<Text>{route.title}</Text>); },
+           }}
+           style={{backgroundColor: 'gray'}}
+         />
+        }
+      />
     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
+const styles = StyleSheet.create({});
 
 AppRegistry.registerComponent('inukshukApp', () => inukshukApp);

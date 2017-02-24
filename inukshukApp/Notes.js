@@ -1,9 +1,23 @@
 import React, { Component, PropTypes } from 'react';
-import { View, Text, TouchableHighlight, ToolbarAndroid, StyleSheet } from 'react-native';
+import { View, Text, TouchableHighlight, ToolbarAndroid, StyleSheet, TextInput, AsyncStorage, Alert } from 'react-native';
 
 var nativeImageSource = require('nativeImageSource');
 
 export default class Notes extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { text: '' };
+  }
+
+  async saveNote() {
+    try {
+      await AsyncStorage.setItem('@MySuperStore:note', '{this.state.text}');
+    } catch (error) {
+      Alert.alert('Error saving note')
+    }
+    _navigator.pop();
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -16,9 +30,23 @@ export default class Notes extends Component {
                         })}
                         onIconClicked={this.props.navigator.pop}
                         titleColor={'#FFFFFF'}/>
-        <Text>
-          Notes
-        </Text>
+        <TextInput
+          {...this.props}
+          multiline={false}
+          // multiline={true}
+          onChange={(event) => {
+            this.setState({
+              text: event.nativeEvent.text,
+              height: event.nativeEvent.contentSize.height + 22,
+            });
+          }}
+          style={{height: Math.max(35, this.state.height), backgroundColor: '#e6e6e6', fontSize: 16, paddingLeft: 20, paddingRight: 20 }}
+          // onChangeText={(text) => this.setState({text})}
+          underlineColorAndroid={'transparent'}
+          autoFocus={true}
+          placeholder={"What else should your contact know?"}
+          onSubmitEditing={this.saveNote}
+        />
       </View>
     );
   }

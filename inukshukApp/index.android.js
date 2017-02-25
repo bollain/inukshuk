@@ -10,7 +10,6 @@ import { AppRegistry, Navigator, View, StyleSheet, TouchableOpacity, Text, PropT
 import MapView from 'react-native-maps';
 import RNGooglePlaces from 'react-native-google-places';
 
-
 var { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
 
@@ -20,7 +19,7 @@ const LONGITUDE = 72.8777;
 
 const LATITUDE_DELTA = 0.01;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
-var Contacts = require('react-native-contacts');
+var contacttest = [];
 class inukshukApp extends Component {
 
     constructor(props) {
@@ -114,12 +113,13 @@ class inukshukApp extends Component {
     }
     getContacts()
     {
-
+        var Contacts = require('react-native-contacts')
         Contacts.getAll((err, contacts) => {
             if(err && err.type === 'permissionDenied'){
                 // x.x
             } else {
-                var contact1 = contacts[2];
+                var contact1 = contacts[0];
+                contacttest = contacts;
                 console.log(contact1.givenName);
             }
         })
@@ -160,7 +160,7 @@ class inukshukApp extends Component {
                     />
                     <Button
                         style={styles.button}
-                        onPress={() => this.getContacts()}
+                        onPress={this.getContacts()}
                         title="Contacts"
                         color="#841584"
                         accessibilityLabel="Learn more about this purple button"

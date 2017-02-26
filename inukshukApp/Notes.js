@@ -104,20 +104,20 @@ export default class Notes extends Component {
           <ScrollView>
             {textBox}
           </ScrollView>
-        </View>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={styles.submit}
-            onPress={this.saveNote}
-            activeOpacity={.8}>
-            <Text style={styles.buttonText}>Submit</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.remove}
-            onPress={this.removeNote}
-            activeOpacity={.8}>
-            <Text style={styles.buttonText}>Clear</Text>
-          </TouchableOpacity>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              style={styles.submit}
+              onPress={this.saveNote}
+              activeOpacity={.8}>
+              <Text style={styles.buttonText}>Submit</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.remove}
+              onPress={this.removeNote}
+              activeOpacity={.8}>
+              <Text style={styles.buttonText}>Clear</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     );
@@ -135,13 +135,12 @@ const styles = StyleSheet.create({
      backgroundColor: '#00aaf1',
    },
    textContainer: {
-     flex: 4,
      justifyContent: 'flex-start',
    },
    buttonContainer: {
-     flex: 1,
+     marginTop: 10,
      flexDirection: 'row',
-     justifyContent: 'space-around',
+     justifyContent: 'center',
    },
    submit: {
      backgroundColor: 'green',

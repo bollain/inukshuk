@@ -24,6 +24,16 @@ export default class Notes extends Component {
     }
   }
 
+  async removeNote() {
+    try {
+      await AsyncStorage.removeItem('note');
+    } catch (error) {
+      Alert.alert('Delete error');
+      console.error(error);
+    }
+    _navigator.pop();
+  }
+
   async saveNote() {
     try {
       let value = this.state.note;
@@ -37,9 +47,8 @@ export default class Notes extends Component {
   }
 
   render() {
-    note = this.getNote();
     let textBox;
-    if (note == null) {
+    if (this.state.note == null) {
       textBox = <TextInput
         {...this.props}
         multiline={false}
@@ -96,12 +105,18 @@ export default class Notes extends Component {
             {textBox}
           </ScrollView>
         </View>
-        <View style={styles.startContainer}>
+        <View style={styles.buttonContainer}>
           <TouchableOpacity
-            style={styles.start}
+            style={styles.submit}
             onPress={this.saveNote}
             activeOpacity={.8}>
-          <Text style={styles.startText}>Submit</Text>
+            <Text style={styles.buttonText}>Submit</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.remove}
+            onPress={this.removeNote}
+            activeOpacity={.8}>
+            <Text style={styles.buttonText}>Clear</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -123,16 +138,20 @@ const styles = StyleSheet.create({
      flex: 4,
      justifyContent: 'flex-start',
    },
-   startContainer: {
+   buttonContainer: {
      flex: 1,
-     justifyContent: 'flex-end',
-     alignItems: 'stretch'
+     flexDirection: 'row',
+     justifyContent: 'space-around',
    },
-   start: {
+   submit: {
      backgroundColor: 'green',
      padding: 18,
    },
-   startText: {
+   remove: {
+     backgroundColor: 'red',
+     padding: 18,
+   },
+   buttonText: {
      fontSize: 16,
      fontWeight: 'bold',
      color: 'white',

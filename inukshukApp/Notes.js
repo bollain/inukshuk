@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { View, Text, TouchableHighlight, ToolbarAndroid, StyleSheet, TextInput, AsyncStorage, Alert } from 'react-native';
+import { View, Text, TouchableHighlight, ToolbarAndroid, StyleSheet, TextInput, AsyncStorage, Alert, Button, TouchableOpacity, ScrollView } from 'react-native';
 
 var nativeImageSource = require('nativeImageSource');
 
@@ -7,6 +7,7 @@ export default class Notes extends Component {
   constructor(props) {
     super(props);
     this.state = {note: null};
+    this.saveNote = this.saveNote.bind(this);
   }
 
   componentDidMount() {
@@ -23,8 +24,9 @@ export default class Notes extends Component {
     }
   }
 
-  async saveNote(value) {
+  async saveNote() {
     try {
+      let value = this.state.note;
       await AsyncStorage.setItem('note', value);
       console.log(value);
     } catch (error) {
@@ -41,7 +43,7 @@ export default class Notes extends Component {
       textBox = <TextInput
         {...this.props}
         multiline={false}
-        // multiline={true}
+        multiline={true}
         onChange={(event) => {
           this.setState({
             text: event.nativeEvent.text,
@@ -49,11 +51,11 @@ export default class Notes extends Component {
           });
         }}
         style={{height: Math.max(35, this.state.height), backgroundColor: '#e6e6e6', fontSize: 16, paddingLeft: 20, paddingRight: 20 }}
-        // onChangeText={(text) => this.setState({text})}
+        onChangeText={(text) => this.setState({note: text})}
         underlineColorAndroid={'transparent'}
         autoFocus={true}
         placeholder={"What else should your contact know?"}
-        onSubmitEditing={(event) => this.saveNote(event.nativeEvent.text)}
+        // onSubmitEditing={(event) => this.saveNote(event.nativeEvent.text)}
         autoCorrect={true}
       />
     }
@@ -61,7 +63,7 @@ export default class Notes extends Component {
       textBox = <TextInput
       {...this.props}
       multiline={false}
-      // multiline={true}
+      multiline={true}
       onChange={(event) => {
         this.setState({
           text: event.nativeEvent.text,
@@ -69,10 +71,10 @@ export default class Notes extends Component {
         });
       }}
       style={{height: Math.max(35, this.state.height), backgroundColor: '#e6e6e6', fontSize: 16, paddingLeft: 20, paddingRight: 20 }}
-      // onChangeText={(text) => this.setState({text})}
+      onChangeText={(text) => this.setState({note: text})}
       underlineColorAndroid={'transparent'}
       autoFocus={true}
-      onSubmitEditing={(event) => this.saveNote(event.nativeEvent.text)}
+      // onSubmitEditing={(event) => this.saveNote(event.nativeEvent.text)}
       defaultValue={this.state.note}
       autoCorrect={true}
       />
@@ -89,7 +91,19 @@ export default class Notes extends Component {
                         })}
                         onIconClicked={this.props.navigator.pop}
                         titleColor={'#FFFFFF'}/>
-        {textBox}
+        <View style={styles.textContainer}>
+          <ScrollView>
+            {textBox}
+          </ScrollView>
+        </View>
+        <View style={styles.startContainer}>
+          <TouchableOpacity
+            style={styles.start}
+            onPress={this.saveNote}
+            activeOpacity={.8}>
+          <Text style={styles.startText}>Submit</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
@@ -105,4 +119,23 @@ const styles = StyleSheet.create({
      height: 60,
      backgroundColor: '#00aaf1',
    },
+   textContainer: {
+     flex: 4,
+     justifyContent: 'flex-start',
+   },
+   startContainer: {
+     flex: 1,
+     justifyContent: 'flex-end',
+     alignItems: 'stretch'
+   },
+   start: {
+     backgroundColor: 'green',
+     padding: 18,
+   },
+   startText: {
+     fontSize: 16,
+     fontWeight: 'bold',
+     color: 'white',
+     textAlign: 'center'
+   }
 });

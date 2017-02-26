@@ -13,10 +13,14 @@ export default class Notes extends Component {
     this.remove = this.remove.bind(this);
   }
   set() {
-    this.props.set('note', this.state.note).then(_navigator.pop());
+    this.props.set('note', this.state.note)
+    .then(this.props.callback(this.state.note))
+    .then(_navigator.pop());
   }
   remove() {
-    this.props.remove('note').then(_navigator.pop());
+    this.props.remove('note')
+    .then(this.props.callback(null))
+    .then(_navigator.pop());
   }
 
   render() {

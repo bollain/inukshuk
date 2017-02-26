@@ -16,6 +16,7 @@ export default class TripSummary extends Component {
       note: null,
     };
     console.log('constructing summary')
+    this.setSummaryNote = this.setSummaryNote.bind(this);
   }
 
   navLocation(){
@@ -38,11 +39,20 @@ export default class TripSummary extends Component {
       this.props.navigator.push({
         id: 'note',
         note: response,
+        callback: this.setSummaryNote,
       });
     });
   }
-  render() {
 
+  async setSummaryNote(currentNote) {
+    await this.setState({note: currentNote});
+  }
+
+  render() {
+    let noteCheck;
+    if (this.state.note != null) {
+      noteCheck = checkIcon;
+    }
     return (
       <View style={styles.container}>
         <ToolbarAndroid style={styles.toolbar}
@@ -74,7 +84,7 @@ export default class TripSummary extends Component {
                 onPress={this.navNotes.bind(this)}>
                 <View style = {styles.innerDetail}>
                   <Text style={styles.tripDetailText}>What more should your contact know?</Text>
-                  {checkIcon}
+                  {noteCheck}
                 </View>
             </TouchableHighlight>
           </ScrollView>

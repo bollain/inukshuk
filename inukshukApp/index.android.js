@@ -65,7 +65,7 @@ class inukshukApp extends Component {
     return (
       <Navigator
         // style={styles.container}
-        initialRoute={{id: 'tripSummary', title:'Summary'}}
+        initialRoute={{id: 'tripSummary'}}
         renderScene={this.navigatorRenderScene}
       />
     );
@@ -121,6 +121,7 @@ class inukshukApp extends Component {
             get={this.get}
             set={this.set}
             remove={this.remove}
+            callback={route.callback}
           />
         );
     }

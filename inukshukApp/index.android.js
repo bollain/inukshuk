@@ -24,29 +24,17 @@ BackAndroid.addEventListener('hardwareBackPress', () => {
 class inukshukApp extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      location: null,
-      contact: null,
-      return: null,
-      note: null,
-    };
-    this.get('location').then((response) => this.setState({location: response}));
-    this.get('contact').then((response) => this.setState({location: response}));
-    this.get('return').then((response) => this.setState({location: response}));
-    this.get('note').then((response) => this.setState({location: response}));
     this.navigatorRenderScene = this.navigatorRenderScene.bind(this);
     this.get = this.get.bind(this);
     this.remove = this.remove.bind(this);
     this.set = this.set.bind(this);
-    console.log('rebuilt');
   }
 
   async get(key) {
     try {
-      let response;
-      await AsyncStorage.getItem(key).then((value) => response = value);
-      return response;
+      const response = await AsyncStorage.getItem(key);
       console.log('get');
+      return response;
     } catch (error) {
       Alert.alert('Error getting ' + key);
       console.error(error);
@@ -56,7 +44,6 @@ class inukshukApp extends Component {
   async remove(key) {
     try {
       await AsyncStorage.removeItem(key);
-      this.setState({key: null});
       console.log('remove');
     } catch (error) {
       Alert.alert('Error removing ' + key);
@@ -67,7 +54,6 @@ class inukshukApp extends Component {
   async set(key, value) {
     try {
       await AsyncStorage.setItem(key, value);
-      this.setState({key: value});
       console.log('set');
     } catch (error) {
       Alert.alert('Error setting ' + key);
@@ -93,10 +79,7 @@ class inukshukApp extends Component {
           <TripSummary
             navigator={navigator}
             title="Summary"
-            location={this.state.location}
-            contact={this.state.contact}
-            return={this.state.return}
-            note={this.state.note}
+            get={this.get.bind(this)}
           />
         );
       case 'location':
@@ -104,7 +87,7 @@ class inukshukApp extends Component {
           <Location
             navigator={navigator}
             title="Location"
-            location={this.state.location}
+            get={this.get.bind(this)}
             set={this.set.bind(this)}
             remove={this.remove.bind(this)}
           />
@@ -114,7 +97,7 @@ class inukshukApp extends Component {
           <Contact
             navigator={navigator}
             title="Contact"
-            contact={this.state.contact}
+            get={this.get.bind(this)}
             set={this.set.bind(this)}
             remove={this.remove.bind(this)}
           />
@@ -124,7 +107,7 @@ class inukshukApp extends Component {
           <Return
             navigator={navigator}
             title="Return"
-            return={this.state.return}
+            get={this.get.bind(this)}
             set={this.set.bind(this)}
             remove={this.remove.bind(this)}
           />
@@ -134,9 +117,10 @@ class inukshukApp extends Component {
           <Note
             navigator={navigator}
             title="Note"
-            note={this.state.note}
-            set={this.set.bind(this)}
-            remove={this.remove.bind(this)}
+            note={route.note}
+            get={this.get}
+            set={this.set}
+            remove={this.remove}
           />
         );
     }

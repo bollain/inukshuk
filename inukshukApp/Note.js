@@ -7,31 +7,23 @@ export default class Notes extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      note: '',
+      note: this.props.note,
     }
+    this.set = this.set.bind(this);
+    this.remove = this.remove.bind(this);
   }
-
-  componentWillReceiveProps() {
-    console.log('in receive props');
-  }
-
   set() {
-    Alert.alert('pressed submit');
-    this.props.set('note', this.state.note)
-    _navigator.pop();
+    this.props.set('note', this.state.note).then(_navigator.pop());
   }
-
   remove() {
-    Alert.alert('pressed remove');
-    this.setState(note: null);
-    this.props.remove('note');
-    _navigator.pop();
+    this.props.remove('note').then(_navigator.pop());
   }
 
   render() {
+    console.log('rendering notes');
     let textBox;
     // Display current note if it exists
-    if (this.state.notes == null) {
+    if (this.state.note == null) {
       textBox = <TextInput
         // {...this.props}
         multiline={false}
@@ -67,7 +59,7 @@ export default class Notes extends Component {
         underlineColorAndroid={'transparent'}
         autoFocus={true}
         // onSubmitEditing={() => this.props.set('note', event.nativeEvent.text)}
-        defaultValue={this.props.note}
+        defaultValue={this.state.note}
         autoCorrect={true}
       />
     }

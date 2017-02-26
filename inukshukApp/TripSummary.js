@@ -34,9 +34,12 @@ export default class TripSummary extends Component {
     })
   }
   navNotes(){
-    this.props.navigator.push({
-      id: 'note'
-    })
+    this.props.get('note').then((response) => {
+      this.props.navigator.push({
+        id: 'note',
+        note: response,
+      });
+    });
   }
   render() {
 

@@ -83,13 +83,16 @@ class inukshukApp extends Component {
           />
         );
       case 'location':
+        // console.log({route.location});
         return (
           <Location
             navigator={navigator}
             title="Location"
+            location={route.location}
             get={this.get.bind(this)}
             set={this.set.bind(this)}
             remove={this.remove.bind(this)}
+            callback={route.callback}
           />
         );
       case 'contact':
@@ -100,6 +103,7 @@ class inukshukApp extends Component {
             get={this.get.bind(this)}
             set={this.set.bind(this)}
             remove={this.remove.bind(this)}
+            callback={route.callback}
           />
         );
       case 'return':
@@ -110,6 +114,7 @@ class inukshukApp extends Component {
             get={this.get.bind(this)}
             set={this.set.bind(this)}
             remove={this.remove.bind(this)}
+            callback={route.callback}
           />
         );
       case 'note':

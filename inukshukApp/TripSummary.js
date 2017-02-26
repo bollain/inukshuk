@@ -17,12 +17,18 @@ export default class TripSummary extends Component {
     };
     console.log('constructing summary')
     this.setSummaryNote = this.setSummaryNote.bind(this);
+    this.setSummaryLocation = this.setSummaryLocation.bind(this);
+
   }
 
   navLocation(){
-    this.props.navigator.push({
-      id: 'location'
-    })
+    this.props.get('location').then((response) => {
+      this.props.navigator.push({
+        id: 'location',
+        location: response,
+        callback: this.setSummaryLocation,
+      });
+    });
   }
   navContacts(){
     this.props.navigator.push({
@@ -48,11 +54,14 @@ export default class TripSummary extends Component {
     await this.setState({note: currentNote});
   }
 
+  async setSummaryLocation(currentLocation) {
+    await this.setState({location: currentLocation});
+  }
+
   render() {
-    let noteCheck;
-    if (this.state.note != null) {
-      noteCheck = checkIcon;
-    }
+    // Set check marks if details have been provided
+    let noteCheck = (this.state.note != null ? checkIcon : null);
+    let locationCheck = (this.state.location != null ? checkIcon : null);
     return (
       <View style={styles.container}>
         <ToolbarAndroid style={styles.toolbar}
@@ -64,7 +73,10 @@ export default class TripSummary extends Component {
                 style = {styles.tripDetail}
                 underlayColor='#e6e6e6'
                 onPress={this.navLocation.bind(this)}>
-              <Text style={styles.tripDetailText}>Where are you going?</Text>
+              <View style = {styles.innerDetail}>
+                <Text style={styles.tripDetailText}>Where are you going?</Text>
+                {locationCheck}
+              </View>
             </TouchableHighlight>
             <TouchableHighlight
                 style = {styles.tripDetail}

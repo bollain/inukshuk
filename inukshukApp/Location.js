@@ -9,9 +9,9 @@ import RNGooglePlaces from 'react-native-google-places';
 var { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
 
-// (Initial Static Location) Mumbai
-const LATITUDE = 19.0760;
-const LONGITUDE = 72.8777;
+// (Initial Static Location) Vancouver
+const LATITUDE = 49.282729;
+const LONGITUDE = -123.120738;
 
 const LATITUDE_DELTA = 0.01;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
@@ -20,49 +20,69 @@ export default class Location extends Component {
 
   constructor(props) {
     super(props);
+    if (this.props.location != null) {
+      this.state = {
+        region: {
+          latitude: parseFloat(this.props.location.split(',')[0]),
+          longitude: parseFloat(this.props.location.split(',')[1]),
+          latitudeDelta: LATITUDE_DELTA,
+          longitudeDelta: LONGITUDE_DELTA,
+        },
+      };
+    } else {
+      this.state = {
+        region: {
+          latitude: LATITUDE,
+          longitude: LONGITUDE,
+          latitudeDelta: LATITUDE_DELTA,
+          longitudeDelta: LONGITUDE_DELTA,
+        },
+      };
+    }
     this.onRegionChange = this.onRegionChange.bind(this);
     this.centerLocation = this.centerLocation.bind(this);
-    this.state = {
-      region: {
-        latitude: LATITUDE,
-        longitude: LONGITUDE,
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA,
-      },
-      initialRegion: {
-        latitude: LATITUDE,
-        longitude: LONGITUDE,
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA,
-      }
-    };
+    this.set = this.set.bind(this);
+    this.remove = this.remove.bind(this);
+  }
+
+  set() {
+    this.props.set('location', this.state.region.latitude + ',' + this.state.region.longitude)
+    .then(this.props.callback(this.state.region.latitude + ',' + this.state.region.longitude))
+    .then(_navigator.pop());
+  }
+  remove() {
+    this.props.remove('location')
+    .then(this.props.callback(null))
+    .then(_navigator.pop());
   }
 
  componentDidMount() {
-   navigator.geolocation.getCurrentPosition(
-     (position) => {
+   if (this.props.location == null) {
+     navigator.geolocation.getCurrentPosition(
+       (position) => {
+         this.setState({
+           region: {
+             latitude: position.coords.latitude,
+             longitude: position.coords.longitude,
+             latitudeDelta: LATITUDE_DELTA,
+             longitudeDelta: LONGITUDE_DELTA,
+           },
+         });
+       },
+       (error) => alert(JSON.stringify(error)),
+       {enableHighAccuracy: false, timeout: 20000, maximumAge: 1000}
+     );
+     this.watchID = navigator.geolocation.watchPosition((position) => {
        this.setState({
-         initialRegion: {
+         region: {
            latitude: position.coords.latitude,
            longitude: position.coords.longitude,
            latitudeDelta: LATITUDE_DELTA,
            longitudeDelta: LONGITUDE_DELTA,
          },
        });
-     },
-     (error) => alert(JSON.stringify(error)),
-     {enableHighAccuracy: false, timeout: 20000, maximumAge: 1000}
-   );
-   this.watchID = navigator.geolocation.watchPosition((position) => {
-     this.setState({
-       region: {
-         latitude: position.coords.latitude,
-         longitude: position.coords.longitude,
-         latitudeDelta: LATITUDE_DELTA,
-         longitudeDelta: LONGITUDE_DELTA,
-       },
      });
-   });
+   }
  }
 
  componentWillUnmount() {
@@ -102,13 +122,12 @@ export default class Location extends Component {
          longitudeDelta: LONGITUDE_DELTA,
        },
      })
-       // console.log(place);
-       // console.log(this.state.region);
    })
    .catch(error => console.log(error.message));  // error is a Javascript Error object
  }
 
   render() {
+    console.log('rendering map');
     var { width, height } = Dimensions.get('window');
     const ASPECT_RATIO = width / height;
     return (
@@ -137,21 +156,28 @@ export default class Location extends Component {
               onPress={this.centerLocation}
               title="Center"
               color="#841584"
-              accessibilityLabel="Learn more about this purple button"
+              accessibilityLabel="Center"
             />
             <Button
               style={styles.button}
               onPress={() => this.openSearchModal()}
               title="Search"
               color="#841584"
-              accessibilityLabel="Learn more about this purple button"
+              accessibilityLabel="Search"
             />
             <Button
               style={styles.button}
-              onPress={() => Alert.alert('Submited ' + this.state.region.latitude.toPrecision(7) + ", " + this.state.region.longitude.toPrecision(7))}
+              onPress={() => this.set()}
               title="Submit"
               color="#841584"
-              accessibilityLabel="Learn more about this purple button"
+              accessibilityLabel="Submit"
+            />
+            <Button
+              style={styles.button}
+              onPress={() => this.remove()}
+              title="Remove"
+              color="#841584"
+              accessibilityLabel="Submit"
             />
         </TouchableOpacity>
           <View style={styles.markerContainer}>

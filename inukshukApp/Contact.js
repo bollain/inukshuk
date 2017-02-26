@@ -3,7 +3,7 @@ import { View, Text, TouchableHighlight, ToolbarAndroid, StyleSheet } from 'reac
 
 var nativeImageSource = require('nativeImageSource');
 
-export default class Contacts extends Component {
+export default class Contact extends Component {
   render() {
     return (
       <View style={styles.container}>
@@ -17,7 +17,7 @@ export default class Contacts extends Component {
                         onIconClicked={this.props.navigator.pop}
                         titleColor={'#FFFFFF'}/>
         <Text>
-          Contacts
+          Contact
         </Text>
       </View>
     );

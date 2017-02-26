@@ -6,86 +6,69 @@ var nativeImageSource = require('nativeImageSource');
 export default class Notes extends Component {
   constructor(props) {
     super(props);
-    this.state = {note: null};
-    this.saveNote = this.saveNote.bind(this);
-  }
-
-  componentDidMount() {
-    this.getNote().then((value) => this.setState({note: value}));
-  }
-
-  async getNote() {
-    try {
-      let returnValue;
-      await AsyncStorage.getItem('note').then((value) => returnValue = value);
-      return returnValue;
-    } catch (error) {
-      Alert.alert('Error retrieving note');
+    this.state = {
+      note: '',
     }
   }
 
-  async removeNote() {
-    try {
-      await AsyncStorage.removeItem('note');
-    } catch (error) {
-      Alert.alert('Delete error');
-      console.error(error);
-    }
+  componentWillReceiveProps() {
+    console.log('in receive props');
+  }
+
+  set() {
+    Alert.alert('pressed submit');
+    this.props.set('note', this.state.note)
     _navigator.pop();
   }
 
-  async saveNote() {
-    try {
-      let value = this.state.note;
-      await AsyncStorage.setItem('note', value);
-      console.log(value);
-    } catch (error) {
-      Alert.alert('Save error');
-      console.error(error);
-    }
+  remove() {
+    Alert.alert('pressed remove');
+    this.setState(note: null);
+    this.props.remove('note');
     _navigator.pop();
   }
 
   render() {
     let textBox;
-    if (this.state.note == null) {
+    // Display current note if it exists
+    if (this.state.notes == null) {
       textBox = <TextInput
-        {...this.props}
+        // {...this.props}
         multiline={false}
         multiline={true}
         onChange={(event) => {
           this.setState({
-            text: event.nativeEvent.text,
+            note: event.nativeEvent.text,
             height: event.nativeEvent.contentSize.height + 22,
           });
         }}
         style={{height: Math.max(35, this.state.height), backgroundColor: '#e6e6e6', fontSize: 16, paddingLeft: 20, paddingRight: 20 }}
-        onChangeText={(text) => this.setState({note: text})}
+        // onChangeText={(text) => this.setState({note: text})}
         underlineColorAndroid={'transparent'}
         autoFocus={true}
         placeholder={"What else should your contact know?"}
-        // onSubmitEditing={(event) => this.saveNote(event.nativeEvent.text)}
+        // onSubmitEditing={() => this.props.set('note', event.nativeEvent.text)}
         autoCorrect={true}
       />
     }
     else {
       textBox = <TextInput
-      {...this.props}
-      multiline={false}
-      multiline={true}
-      onChange={(event) => {
-        this.setState({
-          text: event.nativeEvent.text,
-          height: event.nativeEvent.contentSize.height + 22,
-        });
-      }}
-      style={{height: Math.max(35, this.state.height), backgroundColor: '#e6e6e6', fontSize: 16, paddingLeft: 20, paddingRight: 20 }}
-      onChangeText={(text) => this.setState({note: text})}
-      underlineColorAndroid={'transparent'}
-      autoFocus={true}
-      // onSubmitEditing={(event) => this.saveNote(event.nativeEvent.text)}
-      defaultValue={this.state.note}
-      autoCorrect={true}
+        // {...this.props}
+        multiline={false}
+        multiline={true}
+        onChange={(event) => {
+          this.setState({
+            note: event.nativeEvent.text,
+            height: event.nativeEvent.contentSize.height + 22,
+          });
+        }}
+        style={{height: Math.max(35, this.state.height), backgroundColor: '#e6e6e6', fontSize: 16, paddingLeft: 20, paddingRight: 20 }}
+        // onChangeText={(text) => this.setState({note: text})}
+        underlineColorAndroid={'transparent'}
+        autoFocus={true}
+        // onSubmitEditing={() => this.props.set('note', event.nativeEvent.text)}
+        defaultValue={this.props.note}
+        autoCorrect={true}
       />
     }
 
@@ -107,13 +90,13 @@ export default class Notes extends Component {
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={styles.submit}
-              onPress={this.saveNote}
+              onPress={() => this.set()}
               activeOpacity={.8}>
               <Text style={styles.buttonText}>Submit</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.remove}
-              onPress={this.removeNote}
+              onPress={() => this.remove()}
               activeOpacity={.8}>
               <Text style={styles.buttonText}>Clear</Text>
             </TouchableOpacity>

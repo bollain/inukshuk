@@ -25,7 +25,7 @@ export default class TripSummary extends Component {
   }
   navContacts(){
     this.props.navigator.push({
-      id: 'contacts'
+      id: 'contact'
     })
   }
   navReturn(){
@@ -35,7 +35,7 @@ export default class TripSummary extends Component {
   }
   navNotes(){
     this.props.navigator.push({
-      id: 'notes'
+      id: 'note'
     })
   }
   render() {
@@ -71,7 +71,7 @@ export default class TripSummary extends Component {
                 onPress={this.navNotes.bind(this)}>
                 <View style = {styles.innerDetail}>
                   <Text style={styles.tripDetailText}>What more should your contact know?</Text>
-                  {note}
+                  {checkIcon}
                 </View>
             </TouchableHighlight>
           </ScrollView>

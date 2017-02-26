@@ -1,7 +1,23 @@
 import React, { Component, PropTypes } from 'react';
-import { View, ScrollView, Text, TouchableHighlight, ToolbarAndroid, StyleSheet, Alert, Button, TouchableOpacity } from 'react-native';
+import { View, ScrollView, Text, TouchableHighlight, ToolbarAndroid, StyleSheet, Alert, Button, TouchableOpacity, Image, AsyncStorage } from 'react-native';
+
+var nativeImageSource = require('nativeImageSource');
+
+import Icon from 'react-native-vector-icons/MaterialIcons';
+const checkIcon = <Icon name="check-circle" size={24} color="green" />;
 
 export default class TripSummary extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      location: null,
+      contact: null,
+      return: null,
+      note: null,
+    };
+    console.log('constructing summary')
+  }
+
   navLocation(){
     this.props.navigator.push({
       id: 'location'
@@ -23,6 +39,7 @@ export default class TripSummary extends Component {
     })
   }
   render() {
+
     return (
       <View style={styles.container}>
         <ToolbarAndroid style={styles.toolbar}
@@ -52,7 +69,10 @@ export default class TripSummary extends Component {
                 style = {styles.tripDetail}
                 underlayColor='#e6e6e6'
                 onPress={this.navNotes.bind(this)}>
-              <Text style={styles.tripDetailText}>What more should your contact know?</Text>
+                <View style = {styles.innerDetail}>
+                  <Text style={styles.tripDetailText}>What more should your contact know?</Text>
+                  {note}
+                </View>
             </TouchableHighlight>
           </ScrollView>
         </View>
@@ -96,6 +116,10 @@ const styles = StyleSheet.create({
    },
    tripDetailText: {
      fontSize: 16,
+   },
+   innerDetail: {
+     flexDirection: 'row',
+     justifyContent: 'space-between',
    },
    startContainer: {
      flex: 1,

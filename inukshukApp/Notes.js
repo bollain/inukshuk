@@ -6,19 +6,78 @@ var nativeImageSource = require('nativeImageSource');
 export default class Notes extends Component {
   constructor(props) {
     super(props);
-    this.state = { text: '' };
+    this.state = {note: null};
   }
 
-  async saveNote() {
+  componentDidMount() {
+    this.getNote().then((value) => this.setState({note: value}));
+  }
+
+  async getNote() {
     try {
-      await AsyncStorage.setItem('@MySuperStore:note', '{this.state.text}');
+      let returnValue;
+      await AsyncStorage.getItem('note').then((value) => returnValue = value);
+      return returnValue;
     } catch (error) {
-      Alert.alert('Error saving note')
+      Alert.alert('Error retrieving note');
+    }
+  }
+
+  async saveNote(value) {
+    try {
+      await AsyncStorage.setItem('note', value);
+      console.log(value);
+    } catch (error) {
+      Alert.alert('Save error');
+      console.error(error);
     }
     _navigator.pop();
   }
 
   render() {
+    note = this.getNote();
+    let textBox;
+    if (note == null) {
+      textBox = <TextInput
+        {...this.props}
+        multiline={false}
+        // multiline={true}
+        onChange={(event) => {
+          this.setState({
+            text: event.nativeEvent.text,
+            height: event.nativeEvent.contentSize.height + 22,
+          });
+        }}
+        style={{height: Math.max(35, this.state.height), backgroundColor: '#e6e6e6', fontSize: 16, paddingLeft: 20, paddingRight: 20 }}
+        // onChangeText={(text) => this.setState({text})}
+        underlineColorAndroid={'transparent'}
+        autoFocus={true}
+        placeholder={"What else should your contact know?"}
+        onSubmitEditing={(event) => this.saveNote(event.nativeEvent.text)}
+        autoCorrect={true}
+      />
+    }
+    else {
+      textBox = <TextInput
+      {...this.props}
+      multiline={false}
+      // multiline={true}
+      onChange={(event) => {
+        this.setState({
+          text: event.nativeEvent.text,
+          height: event.nativeEvent.contentSize.height + 22,
+        });
+      }}
+      style={{height: Math.max(35, this.state.height), backgroundColor: '#e6e6e6', fontSize: 16, paddingLeft: 20, paddingRight: 20 }}
+      // onChangeText={(text) => this.setState({text})}
+      underlineColorAndroid={'transparent'}
+      autoFocus={true}
+      onSubmitEditing={(event) => this.saveNote(event.nativeEvent.text)}
+      defaultValue={this.state.note}
+      autoCorrect={true}
+      />
+    }
+
     return (
       <View style={styles.container}>
         <ToolbarAndroid style={styles.toolbar}
@@ -30,23 +89,7 @@ export default class Notes extends Component {
                         })}
                         onIconClicked={this.props.navigator.pop}
                         titleColor={'#FFFFFF'}/>
-        <TextInput
-          {...this.props}
-          multiline={false}
-          // multiline={true}
-          onChange={(event) => {
-            this.setState({
-              text: event.nativeEvent.text,
-              height: event.nativeEvent.contentSize.height + 22,
-            });
-          }}
-          style={{height: Math.max(35, this.state.height), backgroundColor: '#e6e6e6', fontSize: 16, paddingLeft: 20, paddingRight: 20 }}
-          // onChangeText={(text) => this.setState({text})}
-          underlineColorAndroid={'transparent'}
-          autoFocus={true}
-          placeholder={"What else should your contact know?"}
-          onSubmitEditing={this.saveNote}
-        />
+        {textBox}
       </View>
     );
   }

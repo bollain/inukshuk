@@ -16,7 +16,7 @@ import {
   TouchableHighlight
 } from 'react-native';
 
-import SignUp from './android/app/src/main/scripts/signup';
+import SignUp from './Signup';
 
 export default class inukshukApp extends Component {
     render() {

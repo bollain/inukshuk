@@ -13,16 +13,13 @@ import {
 
 
 export class login extends Component {
-    var navigator = this.props.navigator;
-    render() {
-        return (
-            <Text> Mock home page </Text>
-        )
-    }
+
 }
 
 
 
 const styles = StyleSheet.create({
+    button{}
+
 
 });

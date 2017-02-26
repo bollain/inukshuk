@@ -18,6 +18,8 @@ import {
   TouchableHighlight
 } from 'react-native';
 
+import inukshukApp from './index.android';
+
 export default class SignUp extends Component {
     constructor(props) {
         super(props);
@@ -62,6 +64,7 @@ export default class SignUp extends Component {
            <TextInput placeholder = "Your email"/>
            <TextInput placeholder = "Your contact number"/>
            <Text style={styles.signupBotton} onPress={()=> this._execute()}> Create Account </Text>
+           <Text style={[styles.signupBotton, styles.cancelBotton]} onPress={()=>this.props.navigator.pop()}> Back </Text>
         </View>
         );
     }
@@ -76,9 +79,14 @@ const styles = StyleSheet.create({
   signupBotton: {
     fontSize: 18,
     padding: 10,
+    borderWidth: 3,
+    borderColor: 'white',
     backgroundColor: '#1e90ff',
     borderRadius: 5,
     alignSelf: 'stretch',
 
+  },
+  cancelBotton: {
+    backgroundColor: 'gainsboro',
   }
 });

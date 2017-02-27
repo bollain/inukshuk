@@ -52,7 +52,7 @@ class LoginPage extends Component {
         <View style = {{
             flex: 1,
             flexDirection: 'column',
-            backgroundColor: '#A2E8A9',
+            backgroundColor: 'white',
             justifyContent: 'center',
             alignItems: 'center'
             }}>
@@ -71,12 +71,9 @@ class LoginPage extends Component {
             <Text style = {styles.button}>
                 LOGIN
             </Text>
-            <Text style={styles.subTitle}>
-                Don't have an account? Sign in with Google
-            </Text>
             <TouchableHighlight>
-                <Text style={styles.subTitle} onPress={()=> this._navSignUp()}>
-                    Or create your own account now
+                <Text style={[styles.button, styles.createAccount]} onPress={()=> this._navSignUp()}>
+                    Don't have an account? Create one now
                  </Text>
             </TouchableHighlight>
         </View> );
@@ -97,35 +94,30 @@ function requireAuth(nextState, replace) {
 }
 
 const styles = StyleSheet.create({
-  backgroundColor: {
-    color: '#A2E8A9'
-  },
   textContainer: {
     alignSelf: 'stretch',
     flexDirection: 'row',
     height: 40,
   },
-  subTitle: {
-    fontSize: 14,
-  },
   textColored: {
     color: 'white',
   },
   button: {
-    backgroundColor: 'white',
-    paddingTop: 10,
-    paddingBottom: 10,
-    flexDirection: 'row',
+    fontSize: 18,
+    backgroundColor: 'yellowgreen',
+    borderRadius: 5,
+    margin: 9,
+    padding: 10,
+    alignSelf: 'stretch',
   },
   welcome: {
     fontSize: 20,
     textAlign: 'center',
-    margin: 10,
+    margin: 8,
   },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
+  createAccount: {
+    fontSize: 14,
+    backgroundColor: '#1e90ff',
   },
 });
 

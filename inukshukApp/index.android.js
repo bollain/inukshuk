@@ -19,7 +19,14 @@ class inukshukApp extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dataSource: ds.cloneWithRows(['Loading...']),
+      dataSource: ds.cloneWithRows({
+        contact: {
+          firstName: 'firstName',
+          lastName: 'lastName',
+          emails: 'emails',
+          phones: 'phones',
+        }
+      }),
     };
   }
 
@@ -35,7 +42,13 @@ class inukshukApp extends Component {
         console.log(contacts);
         let newState = [];
         for (i = 0; i < contacts.length; i++) {
-          newState[i] = contacts[i].givenName + " " + contacts[i].familyName;
+          newState[i] = {
+            firstName: contacts[i].givenName,
+            middleName: contacts[i].middleName,
+            lastName: contacts[i].familyName,
+            emails: contacts[i].emailAddresses,
+            phones: contacts[i].phoneNumbers,
+          }
         }
         console.log(newState);
         this.setState({
@@ -44,7 +57,7 @@ class inukshukApp extends Component {
       }
     });
   }
-  //
+
   render() {
     return (
       <View style={styles.container}>
@@ -55,10 +68,12 @@ class inukshukApp extends Component {
               <View>
                 <TouchableHighlight
                   style={styles.contact}
-                  underlayColor='blue'
+                  underlayColor='#e6e6e6'
                   onPress={() => console.log(rowData)}
                 >
-                  <Text>{rowData}</Text>
+                  <View>
+                    <Text style={styles.contactText}>{[rowData.firstName,rowData.middleName,rowData.lastName].join(" ")}</Text>
+                  </View>
                 </TouchableHighlight>
               </View>
             }
@@ -70,11 +85,20 @@ class inukshukApp extends Component {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        ...StyleSheet.absoluteFillObject,
-        justifyContent: 'flex-start',
-        alignItems: 'flex-start',
-    },
+  container: {
+    ...StyleSheet.absoluteFillObject,
+    flex: 1,
+    justifyContent: 'flex-start',
+    alignItems: 'stretch',
+  },
+  contact: {
+    padding: 15,
+    borderBottomColor: '#e6e6e6',
+    borderBottomWidth: 1,
+  },
+  contactText: {
+    fontSize: 16,
+  }
 });
 
 AppRegistry.registerComponent('inukshukApp', () => inukshukApp);

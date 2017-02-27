@@ -40,7 +40,7 @@ export default class TripSummary extends Component {
     this.props.get('return').then((response) => {
       this.props.navigator.push({
         id: 'return',
-        location: response,
+        return: response,
         callback: this.setSummaryReturn,
       });
     });

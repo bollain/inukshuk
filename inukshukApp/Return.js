@@ -30,12 +30,9 @@ export default class Return extends Component {
   constructor(props) {
     super(props);
     if (this.props.return != null) {
-      this.state = {
-        return: (this.props.return),
-      }
+      this.state = JSON.parse(this.props.return);
     } else {
       let now = new Date();
-      console.log(now);
       this.state = {
         hour: now.getHours(),
         minute: now.getMinutes(),
@@ -50,8 +47,9 @@ export default class Return extends Component {
     this.showDatePicker = this.showDatePicker.bind(this);
   }
   set() {
-    this.props.set('return', this.state.return)
-    .then(this.props.callback(this.state.return))
+    let currentReturn = JSON.stringify(this.state);
+    this.props.set('return', currentReturn)
+    .then(this.props.callback(currentReturn))
     .then(_navigator.pop());
   }
   remove() {

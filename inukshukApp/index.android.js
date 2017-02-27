@@ -5,231 +5,133 @@
  */
 
 import React, { Component } from 'react';
-import { AppRegistry, ListView, Navigator, View, StyleSheet, Text, Image, Button, Alert, ScrollView, TouchableHighlight, TextInput, Modal } from 'react-native';
+import { AppRegistry, StyleSheet, Navigator, TouchableHighlight, Text, BackAndroid, AsyncStorage, Alert } from 'react-native';
 
-import MapView from 'react-native-maps';
-import RNGooglePlaces from 'react-native-google-places';
-import Contacts from 'react-native-contacts';
+import TripSummary from './androidComponents/TripSummary'
+import Location from './androidComponents/Location';
+import Contact from './androidComponents/Contact';
+import Return from './androidComponents/Return';
+import Note from './androidComponents/Note';
 
-var contacttest = [];
-const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+BackAndroid.addEventListener('hardwareBackPress', () => {
+  if (_navigator.getCurrentRoutes().length === 1  ) {
+     return false;
+  }
+  _navigator.pop();
+  return true;
+});
 
 class inukshukApp extends Component {
-
   constructor(props) {
     super(props);
-    this.state = {
-      searchText: '',
-      dataSource: ds.cloneWithRows({
-        contact: {
-          firstName: 'firstName',
-          middleName: 'middleName',
-          lastName: 'lastName',
-          emails: 'emails',
-          phones: 'phones',
-        }
-      }),
-      rawData: null,
-      modalVisible: false,
-      chosenContact: {
-        firstName: 'firstName',
-        middleName: 'middleName',
-        lastName: 'lastName',
-        emails: 'emails',
-        phones: 'phones',
-      },
-      addressDataSource: ds.cloneWithRows(['Loading...']),
-    };
+    this.navigatorRenderScene = this.navigatorRenderScene.bind(this);
+    this.get = this.get.bind(this);
+    this.remove = this.remove.bind(this);
+    this.set = this.set.bind(this);
   }
 
-  componentDidMount() {
-    this.getContacts().then(console.log('mounted contacts'));
-  }
-
-  async getContacts() {
-    await Contacts.getAll((err, contacts) => {
-      if(err && err.type === 'permissionDenied'){
-        console.error(err);
-      } else {
-        console.log(contacts);
-        let newState = [];
-        for (i = 0; i < contacts.length; i++) {
-          newState[i] = {
-            firstName: contacts[i].givenName,
-            middleName: contacts[i].middleName,
-            lastName: contacts[i].familyName,
-            emails: contacts[i].emailAddresses,
-            phones: contacts[i].phoneNumbers,
-          }
-        }
-        console.log(newState);
-        this.setState({
-          dataSource: ds.cloneWithRows(newState),
-          rawData: newState,
-        });
-      }
-    });
-  }
-
-  searchContacts(event) {
-    console.log(JSON.stringify(this.state.rawData));
-    let searchText = event.nativeEvent.text;
-    this.setState({searchText});
-    let filteredContacts = this.filterContacts(searchText, JSON.stringify(this.state.rawData));
-    console.log(filteredContacts);
-    this.setState({
-      dataSource: ds.cloneWithRows(filteredContacts),
-    });
-  }
-
-  filterContacts(searchText, contacts) {
-    console.log(contacts);
-    let text = searchText.toLowerCase();
-    return JSON.parse(contacts).filter((entry) => {
-      let inFirst = entry.firstName != null && entry.firstName.toLowerCase().search(text) !== -1;
-      let inMiddle = entry.middleName != null && entry.middleName.toLowerCase().search(text) !== -1;
-      let inLast = entry.lastName != null && entry.lastName.toLowerCase().search(text) !== -1;
-      return inFirst || inMiddle || inLast;
-    });
-  }
-
-  setModalVisible(visible) {
-    this.setState({modalVisible: visible});
-  }
-
-  showContactChooser(contact) {
-    let contactArray = new Array();
-    for (i = 0; i < contact.emails.length ; i++){
-      contactArray.push(contact.emails[i].email);
+  async get(key) {
+    try {
+      const response = await AsyncStorage.getItem(key);
+      console.log('get');
+      return response;
+    } catch (error) {
+      Alert.alert('Error getting ' + key);
+      console.error(error);
     }
-    for (i = 0; i < contact.phones.length ; i++){
-      contactArray.push(contact.phones[i].number);
-    }
-    this.setState({
-      chosenContact: contact,
-      addressDataSource: ds.cloneWithRows(contactArray),
-    });
-    this.setModalVisible(true);
   }
 
-  formatName(first, middle, last) {
-    first = (first == null ? "" : first);
-    middle = (middle == null ? "" : " " + middle);
-    last = (last == null ? "" : " " + last);
-    return first + middle + last;
+  async remove(key) {
+    try {
+      await AsyncStorage.removeItem(key);
+      console.log('remove');
+    } catch (error) {
+      Alert.alert('Error removing ' + key);
+      console.error(error);
+    }
+  }
+
+  async set(key, value) {
+    try {
+      await AsyncStorage.setItem(key, value);
+      console.log('set');
+    } catch (error) {
+      Alert.alert('Error setting ' + key);
+      console.error(error);
+    }
   }
 
   render() {
     return (
-      <View style={styles.container}>
-        <TextInput
-           style={styles.search}
-           value={this.state.searchText}
-           onChange={this.searchContacts.bind(this)}
-           placeholder="Search"
-        />
-        <ScrollView>
-          <ListView
-            dataSource={this.state.dataSource}
-            renderRow={(rowData) =>
-              <View>
-                <TouchableHighlight
-                  style={styles.contact}
-                  underlayColor='#e6e6e6'
-                  onPress={() => this.showContactChooser(rowData)}
-                >
-                  <View>
-                    <Text style={styles.contactText}>{this.formatName(rowData.firstName,rowData.middleName,rowData.lastName)}</Text>
-                  </View>
-                </TouchableHighlight>
-              </View>
-            }
-          />
-        </ScrollView>
-        <Modal
-          animationType={"fade"}
-          transparent={true}
-          visible={this.state.modalVisible}
-          onRequestClose={() => {alert("Modal has been closed.")}}
-          >
-         <View style={{
-           flex: 1,
-           flexDirection: 'column',
-           justifyContent: 'center',
-           alignItems: 'center',
-           backgroundColor: 'rgba(0, 0, 0, 0.5)'
-         }}>
-          <View style={{
-            width: 300,
-            height: 300,
-            justifyContent: 'flex-start',
-            alignItems: 'stretch',
-            backgroundColor: 'white',
-          }}>
-            <View style={{padding:10, borderBottomColor: '#e6e6e6', borderBottomWidth: 1}}>
-              <Text style={{
-                fontSize: 20,
-                fontWeight: 'bold',
-                textAlign: 'center',
-              }}>
-                {this.formatName(this.state.chosenContact.firstName,this.state.chosenContact.middleName,this.state.chosenContact.lastName)}
-              </Text>
-            </View>
-
-            <ListView
-              dataSource={this.state.addressDataSource}
-              renderRow={(rowData) =>
-                <View>
-                  <TouchableHighlight
-                    style={styles.contact}
-                    underlayColor='#e6e6e6'
-                    onPress={() => {console.log(rowData)}}
-                  >
-                    <View>
-                      <Text style={styles.contactText}>{rowData}</Text>
-                    </View>
-                  </TouchableHighlight>
-                </View>
-              }
-            />
-
-            <View style={{padding:10}}>
-              <TouchableHighlight
-                onPress={() => {
-                this.setModalVisible(!this.state.modalVisible)
-              }}>
-                <Text style={{fontSize: 16, textAlign: 'center'}}>Close</Text>
-              </TouchableHighlight>
-            </View>
-
-          </View>
-         </View>
-        </Modal>
-      </View>
+      <Navigator
+        // style={styles.container}
+        initialRoute={{id: 'tripSummary'}}
+        renderScene={this.navigatorRenderScene}
+      />
     );
   }
-}
 
-const styles = StyleSheet.create({
-  container: {
-    ...StyleSheet.absoluteFillObject,
-    flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'stretch',
-  },
-  contact: {
-    padding: 15,
-    borderBottomColor: '#e6e6e6',
-    borderBottomWidth: 1,
-  },
-  contactText: {
-    fontSize: 16,
-  },
-  search: {
-    fontSize: 16,
-    paddingLeft: 15,
-    paddingRight: 15,
+  navigatorRenderScene(route, navigator) {
+    _navigator = navigator;
+    switch (route.id) {
+      case 'tripSummary':
+        return (
+          <TripSummary
+            navigator={navigator}
+            title="Summary"
+            get={this.get.bind(this)}
+          />
+        );
+      case 'location':
+        return (
+          <Location
+            navigator={navigator}
+            title="Location"
+            location={route.location}
+            get={this.get.bind(this)}
+            set={this.set.bind(this)}
+            remove={this.remove.bind(this)}
+            callback={route.callback}
+          />
+        );
+      case 'contact':
+        return (
+          <Contact
+            navigator={navigator}
+            title="Contact"
+            contact={route.contact}
+            get={this.get.bind(this)}
+            set={this.set.bind(this)}
+            remove={this.remove.bind(this)}
+            callback={route.callback}
+          />
+        );
+      case 'return':
+        return (
+          <Return
+            navigator={navigator}
+            title="Return"
+            return={route.return}
+            get={this.get.bind(this)}
+            set={this.set.bind(this)}
+            remove={this.remove.bind(this)}
+            callback={route.callback}
+          />
+        );
+      case 'note':
+        return (
+          <Note
+            navigator={navigator}
+            title="Note"
+            note={route.note}
+            get={this.get}
+            set={this.set}
+            remove={this.remove}
+            callback={route.callback}
+          />
+        );
+    }
   }
-});
+}
 
 AppRegistry.registerComponent('inukshukApp', () => inukshukApp);

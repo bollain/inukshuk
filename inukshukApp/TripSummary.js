@@ -18,6 +18,7 @@ export default class TripSummary extends Component {
     console.log('constructing summary')
     this.setSummaryNote = this.setSummaryNote.bind(this);
     this.setSummaryLocation = this.setSummaryLocation.bind(this);
+    this.setSummaryReturn = this.setSummaryReturn.bind(this);
 
   }
 
@@ -36,9 +37,13 @@ export default class TripSummary extends Component {
     })
   }
   navReturn(){
-    this.props.navigator.push({
-      id: 'return'
-    })
+    this.props.get('return').then((response) => {
+      this.props.navigator.push({
+        id: 'return',
+        location: response,
+        callback: this.setSummaryReturn,
+      });
+    });
   }
   navNotes(){
     this.props.get('note').then((response) => {
@@ -58,10 +63,15 @@ export default class TripSummary extends Component {
     await this.setState({location: currentLocation});
   }
 
+  async setSummaryReturn(currentReturn) {
+    await this.setState({return: currentReturn});
+  }
+
   render() {
     // Set check marks if details have been provided
     let noteCheck = (this.state.note != null ? checkIcon : null);
     let locationCheck = (this.state.location != null ? checkIcon : null);
+    let returnCheck = (this.state.return != null ? checkIcon : null);
     return (
       <View style={styles.container}>
         <ToolbarAndroid style={styles.toolbar}
@@ -88,7 +98,10 @@ export default class TripSummary extends Component {
                 style = {styles.tripDetail}
                 underlayColor='#e6e6e6'
                 onPress={this.navReturn.bind(this)}>
-              <Text style={styles.tripDetailText}>When will you be back?</Text>
+              <View style = {styles.innerDetail}>
+                <Text style={styles.tripDetailText}>When will you be back?</Text>
+                {returnCheck}
+              </View>
             </TouchableHighlight>
             <TouchableHighlight
                 style = {styles.tripDetail}

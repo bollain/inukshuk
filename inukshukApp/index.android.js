@@ -83,7 +83,6 @@ class inukshukApp extends Component {
           />
         );
       case 'location':
-        // console.log({route.location});
         return (
           <Location
             navigator={navigator}
@@ -111,6 +110,7 @@ class inukshukApp extends Component {
           <Return
             navigator={navigator}
             title="Return"
+            return={route.return}
             get={this.get.bind(this)}
             set={this.set.bind(this)}
             remove={this.remove.bind(this)}

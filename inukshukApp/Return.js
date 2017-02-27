@@ -1,9 +1,97 @@
 import React, { Component, PropTypes } from 'react';
-import { View, Text, TouchableHighlight, ToolbarAndroid, StyleSheet } from 'react-native';
+import { View, Text, TouchableHighlight, ToolbarAndroid, StyleSheet, TouchableWithoutFeedback, DatePickerAndroid, TimePickerAndroid, TouchableOpacity } from 'react-native';
 
 var nativeImageSource = require('nativeImageSource');
 
+var weekdayArray = new Array(7);
+weekdayArray[0] = "Sunday";
+weekdayArray[1] = "Monday";
+weekdayArray[2] = "Tuesday";
+weekdayArray[3] = "Wednesday";
+weekdayArray[4] = "Thursday";
+weekdayArray[5] = "Friday";
+weekdayArray[6] = "Saturday";
+
+var monthArray = new Array();
+monthArray[0] = "January";
+monthArray[1] = "February";
+monthArray[2] = "March";
+monthArray[3] = "April";
+monthArray[4] = "May";
+monthArray[5] = "June";
+monthArray[6] = "July";
+monthArray[7] = "August";
+monthArray[8] = "September";
+monthArray[9] = "October";
+monthArray[10] = "November";
+monthArray[11] = "December";
+
 export default class Return extends Component {
+  constructor(props) {
+    super(props);
+    if (this.props.return != null) {
+      this.state = {
+        return: (this.props.return),
+      }
+    } else {
+      let now = new Date();
+      console.log(now);
+      this.state = {
+        hour: now.getHours(),
+        minute: now.getMinutes(),
+        year: now.getFullYear(),
+        month: now.getMonth(),
+        day: now.getDate(),
+        dayOfWeek: now.getDay(),
+      }
+    }
+    this.set = this.set.bind(this);
+    this.remove = this.remove.bind(this);
+    this.showDatePicker = this.showDatePicker.bind(this);
+  }
+  set() {
+    this.props.set('return', this.state.return)
+    .then(this.props.callback(this.state.return))
+    .then(_navigator.pop());
+  }
+  remove() {
+    this.props.remove('return')
+    .then(this.props.callback(null))
+    .then(_navigator.pop());
+  }
+
+  async showDatePicker() {
+    try {
+      var date = new Date(this.state.year, this.state.month, this.state.day);
+      const {action, year, month, day} = await DatePickerAndroid.open({date: date});
+      if (action !== DatePickerAndroid.dismissedAction) {
+        var date = new Date(year, month, day);
+        this.setState({
+          year: year,
+          month: month,
+          day: day,
+          dayOfWeek: date.getDay(),
+        });
+      }
+    } catch ({code, message}) {
+      console.warn('Error setting date: ', message);
+    }
+  }
+
+  async showTimePicker() {
+    try {
+      const {action, minute, hour} = await TimePickerAndroid.open({hour: this.state.hour, minute: this.state.minute});
+      if (action === TimePickerAndroid.timeSetAction) {
+        this.setState({
+          hour: hour,
+          minute: minute,
+        });
+      }
+    } catch ({code, message}) {
+      console.warn('Error setting time: ', message);
+    }
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -17,8 +105,29 @@ export default class Return extends Component {
                         onIconClicked={this.props.navigator.pop}
                         titleColor={'#FFFFFF'}/>
         <Text>
-          Return
+          {this.state.return}
         </Text>
+        <TouchableWithoutFeedback onPress={this.showDatePicker.bind(this)}>
+          <View><Text style={styles.text}>{weekdayArray[this.state.dayOfWeek]},{this.state.day},{monthArray[this.state.month]},{this.state.year}</Text></View>
+        </TouchableWithoutFeedback>
+        <TouchableWithoutFeedback
+          onPress={this.showTimePicker.bind(this)}>
+          <View><Text style={styles.text}>{this.state.hour},{this.state.minute}</Text></View>
+        </TouchableWithoutFeedback>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={styles.submit}
+            onPress={() => this.set()}
+            activeOpacity={.8}>
+            <Text style={styles.buttonText}>Submit</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.remove}
+            onPress={() => this.remove()}
+            activeOpacity={.8}>
+            <Text style={styles.buttonText}>Clear</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   }
@@ -34,4 +143,23 @@ const styles = StyleSheet.create({
      height: 60,
      backgroundColor: '#00aaf1',
    },
+   buttonContainer: {
+     marginTop: 10,
+     flexDirection: 'row',
+     justifyContent: 'center',
+   },
+   submit: {
+     backgroundColor: 'green',
+     padding: 18,
+   },
+   remove: {
+     backgroundColor: 'red',
+     padding: 18,
+   },
+   buttonText: {
+     fontSize: 16,
+     fontWeight: 'bold',
+     color: 'white',
+     textAlign: 'center'
+   }
 });

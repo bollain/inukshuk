@@ -26,6 +26,9 @@ monthArray[9] = "October";
 monthArray[10] = "November";
 monthArray[11] = "December";
 
+// To pad time
+var pad = "00"
+
 export default class Return extends Component {
   constructor(props) {
     super(props);
@@ -90,6 +93,10 @@ export default class Return extends Component {
     }
   }
 
+  padTime(str) {
+    return pad.substring(0, pad.length - str.length) + str
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -102,16 +109,31 @@ export default class Return extends Component {
                         })}
                         onIconClicked={this.props.navigator.pop}
                         titleColor={'#FFFFFF'}/>
-        <Text>
-          {this.state.return}
-        </Text>
-        <TouchableWithoutFeedback onPress={this.showDatePicker.bind(this)}>
-          <View><Text style={styles.text}>{weekdayArray[this.state.dayOfWeek]},{this.state.day},{monthArray[this.state.month]},{this.state.year}</Text></View>
-        </TouchableWithoutFeedback>
-        <TouchableWithoutFeedback
-          onPress={this.showTimePicker.bind(this)}>
-          <View><Text style={styles.text}>{this.state.hour},{this.state.minute}</Text></View>
-        </TouchableWithoutFeedback>
+
+        <View style={styles.timeContainer}>
+          <TouchableHighlight
+            style={styles.timeButton}
+            underlayColor='#e6e6e6'
+            onPress={this.showDatePicker.bind(this)}>
+            <View>
+              <Text style={[styles.buttonText, styles.timeText]}>
+                {weekdayArray[this.state.dayOfWeek]} {monthArray[this.state.month]} {this.state.day}, {this.state.year}
+              </Text>
+            </View>
+          </TouchableHighlight>
+
+          <TouchableHighlight
+            style={styles.timeButton}
+            underlayColor='#e6e6e6'
+            onPress={this.showTimePicker.bind(this)}>
+            <View>
+              <Text style={[styles.buttonText, styles.timeText]}>
+                {this.padTime(this.state.hour)}:{this.padTime(this.state.minute)}
+              </Text>
+            </View>
+          </TouchableHighlight>
+        </View>
+
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.submit}
@@ -159,5 +181,15 @@ const styles = StyleSheet.create({
      fontWeight: 'bold',
      color: 'white',
      textAlign: 'center'
-   }
+   },
+   timeButton: {
+     backgroundColor: 'lightgrey',
+     padding: 18,
+     borderTopColor: 'white',
+     borderTopWidth: 2,
+   },
+   timeText: {
+     color: 'black',
+     fontWeight: 'normal',
+   },
 });

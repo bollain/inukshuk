@@ -1,5 +1,5 @@
 /**
- * Inukshuk Splash Page
+ * Inukshuk Android Version
  * "Woot woot!"
  */
 
@@ -100,19 +100,13 @@ class inukshukApp extends Component {
         <Login
           navigator={navigator}
           title="Login"
-          location={route.login}
           />
         );
       case 'signup':
         return (
-          <Location
+          <SignUp
             navigator={navigator}
             title="SignUp"
-            location={route.signup}
-            get={this.get.bind(this)}
-            set={this.set.bind(this)}
-            remove={this.remove.bind(this)}
-            callback={route.callback}
           />
       );
       case 'contact':

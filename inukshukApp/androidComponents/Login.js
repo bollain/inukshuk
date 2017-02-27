@@ -1,3 +1,6 @@
+
+/** The splash login page **/
+import React, { Component } from 'react';
 import {
   AppRegistry,
   StyleSheet,
@@ -9,7 +12,7 @@ import {
   TouchableHighlight
 } from 'react-native';
 
-export default class LoginPage extends Component {
+export default class Login extends Component {
     _navSignUp(){
         this.props.navigator.push({
             id: 'signup'
@@ -52,7 +55,6 @@ export default class LoginPage extends Component {
 }
 
 function isLoggedIn() {
-    // stub
     return  false;
 }
 

@@ -1,11 +1,9 @@
-/* This page will gather all user information and send it to server */
-
-
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
+/** Sign up page
+* gather user's first and last name, username, email and
+* phone number and then submits all information to server.
+* Also handles error messages returned by the server should
+* user information be invalid
+**/
 
 import React, { Component } from 'react';
 import {
@@ -27,12 +25,15 @@ export default class SignUp extends Component {
             userName: '',
             fName: '',
             lName: '',
-            email: '',
+            userEmail: '',
             phoneNumber: '',
         };
     }
+    /**
+    * POST /users
+    **/
     execute() {
-        fetch('http://192.168.1.73:8080/users', {
+        fetch('http://128.189.240.44:8080/users', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -43,22 +44,22 @@ export default class SignUp extends Component {
                 userName: this.state.userName,
                 firstName: this.state.fName,
                 lastName: this.state.lName,
-                email: this.state.email,
+                email: this.state.userEmail,
                 phoneNumber: this.state.phoneNumber,
             })
         })
         .then(handleErrors)
-        .then(function(response) {
+        .then(response => response.json())
+        .then(function(responseJson) {
             Alert.alert(
               'Success!',
               'Your account has been created!',
               [
-                {text: 'OK', onPress: () => console.log('OK Pressed')},
+                {text: 'OK', onPress: () => console.log('OK')},
               ],
               { cancelable: false }
             )
-            return responseJson.users;
-
+            return responseJson.users
         }).catch(function(error) {
             Alert.alert(
               'Invalid Contact Info',
@@ -70,15 +71,17 @@ export default class SignUp extends Component {
             )
         })
     }
+
+
     render() {
         return (
         <View style = { {padding: 10}}>
            <Text style={styles.title}> Sign Up </Text>
-           <TextInput placeholder = "Your user name"/>
-           <TextInput placeholder = "Your first name"/>
-           <TextInput placeholder = "Your last name"/>
-           <TextInput placeholder = "Your email"/>
-           <TextInput placeholder = "Your contact number"/>
+           <TextInput placeholder = "Your user name" onChangeText={(text) => this.setState({userName: text})}/>
+           <TextInput placeholder = "Your first name" onChangeText={(text) => this.setState({fName: text})}/>
+           <TextInput placeholder = "Your last name" onChangeText={(text) => this.setState({lName: text})}/>
+           <TextInput placeholder = "Your email" onChangeText={(text) => this.setState({userEmail: text})}/>
+           <TextInput placeholder = "Your contact number" onChangeText={(text) => this.setState({phoneNumber: text})}/>
            <Text style={styles.signupBotton} onPress={()=> this.execute()}> Create Account </Text>
            <Text style={[styles.signupBotton, styles.cancelBotton]} onPress={()=> this.props.navigator.pop()}> Back </Text>
         </View>
@@ -86,6 +89,9 @@ export default class SignUp extends Component {
     }
 }
 
+/**
+* handles POST /users if response != 200
+**/
 function handleErrors(response) {
     if (!response.ok) {
         if (response.status == 401)

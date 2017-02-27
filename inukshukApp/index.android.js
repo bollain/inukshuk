@@ -7,11 +7,11 @@
 import React, { Component } from 'react';
 import { AppRegistry, StyleSheet, Navigator, TouchableHighlight, Text, BackAndroid, AsyncStorage, Alert } from 'react-native';
 
-import TripSummary from './TripSummary'
-import Location from './Location';
-import Contact from './Contact';
-import Return from './Return';
-import Note from './Note';
+import TripSummary from './androidComponents/TripSummary'
+import Location from './androidComponents/Location';
+import Contact from './androidComponents/Contact';
+import Return from './androidComponents/Return';
+import Note from './androidComponents/Note';
 
 BackAndroid.addEventListener('hardwareBackPress', () => {
   if (_navigator.getCurrentRoutes().length === 1  ) {

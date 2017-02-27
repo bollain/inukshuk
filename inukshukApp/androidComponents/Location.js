@@ -181,7 +181,7 @@ export default class Location extends Component {
             />
         </TouchableOpacity>
           <View style={styles.markerContainer}>
-            <Image style={styles.marker} source={require('./marker.png')} />
+            <Image style={styles.marker} source={require('../assets/marker.png')} />
           </View>
           <TouchableOpacity>
             <Text style={{ textAlign: 'center'}}>

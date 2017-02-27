@@ -1,3 +1,9 @@
 rootProject.name = 'inukshukApp'
-
+include ':react-native-google-places'
+project(':react-native-google-places').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-google-places/android')
+include ':react-native-maps'
+project(':react-native-maps').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-maps/android')
+include ':react-native-google-places-autocomplete'
+include ':react-native-contacts'
+project(':react-native-contacts').projectDir = new File(settingsDir, '../node_modules/react-native-contacts/android')
 include ':app'

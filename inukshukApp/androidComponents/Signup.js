@@ -17,8 +17,7 @@ import {
   Navigator
 } from 'react-native';
 
-import inukshukApp from './index.android';
-import Guards from './guards';
+import inukshukApp from '../index.android';
 
 export default class SignUp extends Component {
     constructor(props) {
@@ -81,7 +80,7 @@ export default class SignUp extends Component {
            <TextInput placeholder = "Your email"/>
            <TextInput placeholder = "Your contact number"/>
            <Text style={styles.signupBotton} onPress={()=> this.execute()}> Create Account </Text>
-           <Text style={[styles.signupBotton, styles.cancelBotton]} onPress={()=>this.props.navigator.pop()}> Back </Text>
+           <Text style={[styles.signupBotton, styles.cancelBotton]} onPress={()=> this.props.navigator.pop()}> Back </Text>
         </View>
         );
     }

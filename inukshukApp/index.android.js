@@ -5,7 +5,7 @@
  */
 
 import React, { Component } from 'react';
-import { AppRegistry, ListView, Navigator, View, StyleSheet, TouchableOpacity, Text, PropTypes, Dimensions, Image, Button, Alert, ScrollView, TouchableHighlight, TextInput } from 'react-native';
+import { AppRegistry, ListView, Navigator, View, StyleSheet, Text, Image, Button, Alert, ScrollView, TouchableHighlight, TextInput, Modal } from 'react-native';
 
 import MapView from 'react-native-maps';
 import RNGooglePlaces from 'react-native-google-places';
@@ -30,6 +30,15 @@ class inukshukApp extends Component {
         }
       }),
       rawData: null,
+      modalVisible: false,
+      chosenContact: {
+        firstName: 'firstName',
+        middleName: 'middleName',
+        lastName: 'lastName',
+        emails: 'emails',
+        phones: 'phones',
+      },
+      addressDataSource: ds.cloneWithRows(['Loading...']),
     };
   }
 
@@ -84,6 +93,32 @@ class inukshukApp extends Component {
     });
   }
 
+  setModalVisible(visible) {
+    this.setState({modalVisible: visible});
+  }
+
+  showContactChooser(contact) {
+    let contactArray = new Array();
+    for (i = 0; i < contact.emails.length ; i++){
+      contactArray.push(contact.emails[i].email);
+    }
+    for (i = 0; i < contact.phones.length ; i++){
+      contactArray.push(contact.phones[i].number);
+    }
+    this.setState({
+      chosenContact: contact,
+      addressDataSource: ds.cloneWithRows(contactArray),
+    });
+    this.setModalVisible(true);
+  }
+
+  formatName(first, middle, last) {
+    first = (first == null ? "" : first);
+    middle = (middle == null ? "" : " " + middle);
+    last = (last == null ? "" : " " + last);
+    return first + middle + last;
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -101,16 +136,75 @@ class inukshukApp extends Component {
                 <TouchableHighlight
                   style={styles.contact}
                   underlayColor='#e6e6e6'
-                  onPress={() => console.log(rowData)}
+                  onPress={() => this.showContactChooser(rowData)}
                 >
                   <View>
-                    <Text style={styles.contactText}>{[rowData.firstName,rowData.middleName,rowData.lastName].join(" ")}</Text>
+                    <Text style={styles.contactText}>{this.formatName(rowData.firstName,rowData.middleName,rowData.lastName)}</Text>
                   </View>
                 </TouchableHighlight>
               </View>
             }
           />
         </ScrollView>
+        <Modal
+          animationType={"fade"}
+          transparent={true}
+          visible={this.state.modalVisible}
+          onRequestClose={() => {alert("Modal has been closed.")}}
+          >
+         <View style={{
+           flex: 1,
+           flexDirection: 'column',
+           justifyContent: 'center',
+           alignItems: 'center',
+           backgroundColor: 'rgba(0, 0, 0, 0.5)'
+         }}>
+          <View style={{
+            width: 300,
+            height: 300,
+            justifyContent: 'flex-start',
+            alignItems: 'stretch',
+            backgroundColor: 'white',
+          }}>
+            <View style={{padding:10, borderBottomColor: '#e6e6e6', borderBottomWidth: 1}}>
+              <Text style={{
+                fontSize: 20,
+                fontWeight: 'bold',
+                textAlign: 'center',
+              }}>
+                {this.formatName(this.state.chosenContact.firstName,this.state.chosenContact.middleName,this.state.chosenContact.lastName)}
+              </Text>
+            </View>
+
+            <ListView
+              dataSource={this.state.addressDataSource}
+              renderRow={(rowData) =>
+                <View>
+                  <TouchableHighlight
+                    style={styles.contact}
+                    underlayColor='#e6e6e6'
+                    onPress={() => {console.log(rowData)}}
+                  >
+                    <View>
+                      <Text style={styles.contactText}>{rowData}</Text>
+                    </View>
+                  </TouchableHighlight>
+                </View>
+              }
+            />
+
+            <View style={{padding:10}}>
+              <TouchableHighlight
+                onPress={() => {
+                this.setModalVisible(!this.state.modalVisible)
+              }}>
+                <Text style={{fontSize: 16, textAlign: 'center'}}>Close</Text>
+              </TouchableHighlight>
+            </View>
+
+          </View>
+         </View>
+        </Modal>
       </View>
     );
   }

@@ -5,49 +5,132 @@
  */
 
 import React, { Component } from 'react';
-import {
-  AppRegistry,
-  StyleSheet,
-  Text,
-  View
-} from 'react-native';
+import { AppRegistry, StyleSheet, Navigator, TouchableHighlight, Text, BackAndroid, AsyncStorage, Alert } from 'react-native';
 
-export default class inukshukApp extends Component {
+import TripSummary from './androidComponents/TripSummary'
+import Location from './androidComponents/Location';
+import Contact from './androidComponents/Contact';
+import Return from './androidComponents/Return';
+import Note from './androidComponents/Note';
+
+BackAndroid.addEventListener('hardwareBackPress', () => {
+  if (_navigator.getCurrentRoutes().length === 1  ) {
+     return false;
+  }
+  _navigator.pop();
+  return true;
+});
+
+class inukshukApp extends Component {
+  constructor(props) {
+    super(props);
+    this.navigatorRenderScene = this.navigatorRenderScene.bind(this);
+    this.get = this.get.bind(this);
+    this.remove = this.remove.bind(this);
+    this.set = this.set.bind(this);
+  }
+
+  async get(key) {
+    try {
+      const response = await AsyncStorage.getItem(key);
+      console.log('get');
+      return response;
+    } catch (error) {
+      Alert.alert('Error getting ' + key);
+      console.error(error);
+    }
+  }
+
+  async remove(key) {
+    try {
+      await AsyncStorage.removeItem(key);
+      console.log('remove');
+    } catch (error) {
+      Alert.alert('Error removing ' + key);
+      console.error(error);
+    }
+  }
+
+  async set(key, value) {
+    try {
+      await AsyncStorage.setItem(key, value);
+      console.log('set');
+    } catch (error) {
+      Alert.alert('Error setting ' + key);
+      console.error(error);
+    }
+  }
+
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.android.js
-        </Text>
-        <Text style={styles.instructions}>
-          Double tap R on your keyboard to reload,{'\n'}
-          Shake or press menu button for dev menu
-        </Text>
-      </View>
+      <Navigator
+        // style={styles.container}
+        initialRoute={{id: 'tripSummary'}}
+        renderScene={this.navigatorRenderScene}
+      />
     );
   }
-}
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
-});
+  navigatorRenderScene(route, navigator) {
+    _navigator = navigator;
+    switch (route.id) {
+      case 'tripSummary':
+        return (
+          <TripSummary
+            navigator={navigator}
+            title="Summary"
+            get={this.get.bind(this)}
+          />
+        );
+      case 'location':
+        return (
+          <Location
+            navigator={navigator}
+            title="Location"
+            location={route.location}
+            get={this.get.bind(this)}
+            set={this.set.bind(this)}
+            remove={this.remove.bind(this)}
+            callback={route.callback}
+          />
+        );
+      case 'contact':
+        return (
+          <Contact
+            navigator={navigator}
+            title="Contact"
+            get={this.get.bind(this)}
+            set={this.set.bind(this)}
+            remove={this.remove.bind(this)}
+            callback={route.callback}
+          />
+        );
+      case 'return':
+        return (
+          <Return
+            navigator={navigator}
+            title="Return"
+            return={route.return}
+            get={this.get.bind(this)}
+            set={this.set.bind(this)}
+            remove={this.remove.bind(this)}
+            callback={route.callback}
+          />
+        );
+      case 'note':
+        return (
+          <Note
+            navigator={navigator}
+            title="Note"
+            note={route.note}
+            get={this.get}
+            set={this.set}
+            remove={this.remove}
+            callback={route.callback}
+          />
+        );
+    }
+  }
+}
 
 AppRegistry.registerComponent('inukshukApp', () => inukshukApp);

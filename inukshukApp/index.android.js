@@ -23,6 +23,7 @@ class inukshukApp extends Component {
       dataSource: ds.cloneWithRows({
         contact: {
           firstName: 'firstName',
+          middleName: 'middleName',
           lastName: 'lastName',
           emails: 'emails',
           phones: 'phones',
@@ -76,19 +77,22 @@ class inukshukApp extends Component {
     console.log(contacts);
     let text = searchText.toLowerCase();
     return JSON.parse(contacts).filter((entry) => {
-      return entry.firstName.toLowerCase().search(text) !== -1;
+      let inFirst = entry.firstName != null && entry.firstName.toLowerCase().search(text) !== -1;
+      let inMiddle = entry.middleName != null && entry.middleName.toLowerCase().search(text) !== -1;
+      let inLast = entry.lastName != null && entry.lastName.toLowerCase().search(text) !== -1;
+      return inFirst || inMiddle || inLast;
     });
   }
 
   render() {
     return (
       <View style={styles.container}>
-      <TextInput
-         style={styles.search}
-         value={this.state.searchText}
-         onChange={this.searchContacts.bind(this)}
-         placeholder="Search"
-      />
+        <TextInput
+           style={styles.search}
+           value={this.state.searchText}
+           onChange={this.searchContacts.bind(this)}
+           placeholder="Search"
+        />
         <ScrollView>
           <ListView
             dataSource={this.state.dataSource}
@@ -126,6 +130,11 @@ const styles = StyleSheet.create({
   },
   contactText: {
     fontSize: 16,
+  },
+  search: {
+    fontSize: 16,
+    paddingLeft: 15,
+    paddingRight: 15,
   }
 });
 

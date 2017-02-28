@@ -21,7 +21,6 @@ export default class SignUp extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            id: 0,
             userName: '',
             fName: '',
             lName: '',
@@ -62,7 +61,7 @@ export default class SignUp extends Component {
             return responseJson.users
         }).catch(function(error) {
             Alert.alert(
-              'Invalid Contact Info',
+              'Invalid contact info',
               error.message,
               [
                 {text: 'OK', onPress: () => console.log('OK Pressed')},
@@ -94,7 +93,7 @@ export default class SignUp extends Component {
 **/
 function handleErrors(response) {
     if (!response.ok) {
-        if (response.status == 401)
+        if (response.status == 401) {
             throw Error("Please enter valid email address and phone number");
         }
         else if (response.status == 422) {

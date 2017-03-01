@@ -32,7 +32,7 @@ export default class SignUp extends Component {
     * POST /users
     **/
     execute() {
-        fetch('http://localhost:8080/users', {
+        fetch('http://128.189.243.148:8080/users', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -99,6 +99,7 @@ function handleErrors(response) {
         else if (response.status == 422) {
             throw Error("The email is already registered");
         }
+    }
     return response;
 }
 

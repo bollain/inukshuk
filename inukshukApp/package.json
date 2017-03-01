@@ -10,7 +10,6 @@
   "dependencies": {
     "react": "15.4.2",
     "react-native": "0.41.2",
-    "react-native-google-signin": "^0.8.1",
     "react-native-google-places": "^2.0.8",
     "react-native-google-places-autocomplete": "^1.2.7",
     "react-native-maps": "^0.12.4",

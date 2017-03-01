@@ -1,7 +1,6 @@
 /**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
+ * Inukshuk Android Version
+ * "Woot woot!"
  */
 
 import React, { Component } from 'react';
@@ -12,6 +11,9 @@ import Location from './androidComponents/Location';
 import Contact from './androidComponents/Contact';
 import Return from './androidComponents/Return';
 import Note from './androidComponents/Note';
+import Login from './androidComponents/Login';
+import SignUp from './androidComponents/Signup';
+
 
 BackAndroid.addEventListener('hardwareBackPress', () => {
   if (_navigator.getCurrentRoutes().length === 1  ) {
@@ -64,8 +66,7 @@ class inukshukApp extends Component {
   render() {
     return (
       <Navigator
-        // style={styles.container}
-        initialRoute={{id: 'tripSummary'}}
+        initialRoute={{id: 'login'}}
         renderScene={this.navigatorRenderScene}
       />
     );
@@ -94,6 +95,20 @@ class inukshukApp extends Component {
             callback={route.callback}
           />
         );
+      case 'login':
+        return (
+        <Login
+          navigator={navigator}
+          title="Login"
+          />
+        );
+      case 'signup':
+        return (
+          <SignUp
+            navigator={navigator}
+            title="SignUp"
+          />
+      );
       case 'contact':
         return (
           <Contact

@@ -3,9 +3,10 @@ var Schema = mongoose.Schema;
 var autoIncrement = require('mongoose-auto-increment');
 var findOrCreate = require('mongoose-findorcreate');
 var validator = require('validator');
+var config = require('config')
 
 
-var connection = mongoose.createConnection('mongodb://localhost/inukshukdatabase');
+var connection = mongoose.createConnection(config.DBHost);
 
 //This is to make IDs start at 0 and increment
 //when new trip created...good for MVP but perhaps good
@@ -34,6 +35,7 @@ var tripSchema = new Schema({
     coordinates: [Number]
   },
   note: {type: String},
+  completed: {type: Boolean},
   created_at: Date,
   updated_at: Date
 });

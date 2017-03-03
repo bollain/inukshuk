@@ -6,10 +6,11 @@ var swaggerTools = require('swagger-tools');
 var jsyaml = require('js-yaml');
 var fs = require('fs');
 var serverPort = 8080;
+var config = require('config')
 var mongoose = require('mongoose')
 mongoose.Promise = global.Promise;
 
-mongoose.connect('mongodb://localhost/inukshukdatabase')
+mongoose.connect(config.DBHost)
 
 // swaggerRouter configuration
 var options = {

@@ -2,7 +2,7 @@
 
 var Trip = require('../models/Trip');
 var User = require('../models/User');
-
+var AlertService = require('./AlertService');
 
 /**
  * Create `Trip` for a specific `User`
@@ -19,6 +19,7 @@ exports.createTrip = function(args, res, next) {
     contactPhone: params.contactPhone,
     contactEmail: params.contactEmail,
     note: params.note,
+    completed: false,
     startingLocation: {
       coordinates: [params.startingLocation.latitude,
                     params.startingLocation.longitude]}
@@ -45,6 +46,8 @@ exports.createTrip = function(args, res, next) {
               return;
             }
           });
+          //Create text Alert
+          scheduleAlerts(newTrip)
           console.log("Trip created!")
           res.setHeader('Content-Type', 'application/json');
           res.end(JSON.stringify(newTrip));
@@ -155,12 +158,15 @@ exports.updateTrip = function(args, res, next) {
       trip.contactPhone = params.contactPhone || trip.contactPhone;
       trip.startingLocation = params.startingLocation ? updateCoordinates(params.startingLocation) : trip.startingLocation;
       trip.note = params.note || trip.note;
+      trip.note = params.completed || trip.completed;
 
       trip.save(function(err){
         if(err){
           handleError(res, err);
           return;
         }
+        //If trip is completed cancel your
+        //alerts
         console.log("Trip updated!")
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify(trip));
@@ -168,6 +174,41 @@ exports.updateTrip = function(args, res, next) {
     }
   });
 }
+
+//TODO: What parameters to pass? Maybe a trip object?
+var scheduleAlerts = function(trip){
+  //Send confirmation to emerg contaact and user
+  //Schedule EMERGENCY alerts
+  scheduleSMSAlert(trip._id + "_SMS", trip.contactPhone, trip.returnTime);
+
+
+}
+
+//TODO: incorporate node mailer
+//ID is a string made up of tripID_EMAIL
+var scheduleEmailAlert = function(id, emailAddress, triggerTime){
+  //
+
+}
+
+//ID is a string made up of tripID_SMS
+//Push it into the scheduler
+var scheduleSMSAlert = function (id, phoneNumber, triggerTime){
+  AlertService.createSMSAlert(id, phoneNumber, triggerTime);
+}
+
+//Cancel scheduled alerts for a trip
+var cancelAlerts = function (tripID){
+  //Cancel all scheduled alerts
+  AlertService.cancelAlert(tripID + "_SMS");
+}
+
+//User does not get one
+var createReturnedSafelyAlert = function(){
+  //Confirm with
+}
+
+
 
 var handleError = function(res, error) {
   var message = '';

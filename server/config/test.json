@@ -1,0 +1,6 @@
+{
+  "DBHost" : "mongodb://localhost/inukshuktestdb",
+  "TWILIO_ACCOUNT_SID": "AC7bde14fe994791960aaf9029a85e20d0",
+  "TWILIO_AUTH_TOKEN": "65b0c04fa2e7f4d0b4e594031a783b60",
+  "TWILIO_NUMBER": "+15005550006"
+}

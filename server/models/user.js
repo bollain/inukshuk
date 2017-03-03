@@ -3,8 +3,9 @@ var Schema = mongoose.Schema;
 var autoIncrement = require('mongoose-auto-increment');
 var findOrCreate = require('mongoose-findorcreate');
 var validator = require('validator');
+var config = require('config')
 
-var connection = mongoose.createConnection('mongodb://localhost/inukshukdatabase');
+var connection = mongoose.createConnection(config.DBHost);
 
 //This is to make IDs start at 0 and increment
 //when new user created...good for MVP but perhaps good

@@ -8,6 +8,9 @@
     "start": "NODE_ENV=dev && node index.js",
     "test": "mocha --timeout 10000",
     "nodemon": "nodemon index.js"
+    "fixcode": "standard --fix",
+    "lint": "standard --verbose | snazzy",
+    "precommit": "npm run lint"
   },
   "keywords": [
     "swagger"
@@ -27,7 +30,9 @@
     "validator": "^6.2.1"
   },
   "devDependencies": {
+    "husky": "^0.13.2",
     "nodemon": "^1.11.0",
+    "snazzy": "^6.0.0",
     "standard": "^9.0.0"
   }
 }

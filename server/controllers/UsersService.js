@@ -1,8 +1,8 @@
-'use strict';
+'use strict'
 
 var User = require('../models/User')
 
-exports.createUser = function(args, res, next) {
+exports.createUser = function (args, res, next) {
   /**
    * Creates a user based on provided information
    *
@@ -15,158 +15,156 @@ exports.createUser = function(args, res, next) {
     firstName: params.firstName,
     lastName: params.lastName,
     phoneNumber: params.phoneNumber
-  };
+  }
 
   User.findOrCreate({email: params.email}, newUser,
-    function(err, user, created){
-    if(err){
-      console.log("I died");
-      console.log(err);
-      if(!err.errors){
-        //duplicate user name
-        console.log("duplicate user name");
-        res.statusCode = 401;
-        res.statusMessage = 'Bad request';
-        res.end("userName already exists");
-        return;
+    function (err, user, created) {
+      if (err) {
+        console.log('I died')
+        console.log(err)
+        if (!err.errors) {
+        // duplicate user name
+          console.log('duplicate user name')
+          res.statusCode = 401
+          res.statusMessage = 'Bad request'
+          res.end('userName already exists')
+          return
+        }
+        if (err.errors.email) {
+          console.log('The email was bad')
+          res.statusCode = 401
+          res.statusMessage = 'Bad request'
+          res.end('Invalid email')
+          return
+        } else if (err.errors.phoneNumber) {
+          console.log('phonenumber was bad')
+          res.statusCode = 401
+          res.statusMessage = 'Bad request'
+          res.end('Phone number too short or too long')
+          return
+        } else {
+          res.statusCode = 401
+          res.statusMessage = 'Bad request'
+          res.end()
+          return
+        }
       }
-      if(err.errors.email){
-        console.log("The email was bad");
-        res.statusCode = 401;
-        res.statusMessage = 'Bad request';
-        res.end("Invalid email");
-        return;
-      } else if(err.errors.phoneNumber) {
-        console.log("phonenumber was bad");
-        res.statusCode = 401;
-        res.statusMessage = 'Bad request';
-        res.end("Phone number too short or too long");
-        return;
+      if (created) {
+        console.log('User saved successfully!')
+        res.setHeader('Content-Type', 'application/json')
+        res.end(JSON.stringify(user))
       } else {
-        res.statusCode = 401;
-        res.statusMessage = 'Bad request';
-        res.end();
-        return;
+        console.log('The user exists!')
+        res.statusCode = 422
+        res.statusMessage = 'Bad request'
+        res.end('Email exists in database')
       }
-
-    }
-    if(created){
-      console.log("User saved successfully!")
-      res.setHeader('Content-Type', 'application/json');
-      res.end(JSON.stringify(user));
-    } else {
-      console.log("The user exists!")
-      res.statusCode = 422;
-      res.statusMessage = 'Bad request';
-      res.end("Email exists in database");
-    }
-  })
+    })
 }
 
-exports.deleteUser = function(args, res, next) {
+exports.deleteUser = function (args, res, next) {
   /**
    * Delete `User` with given ID
    *
    * userId Long ID of user
    * no response value expected for this operation
    **/
-   //TODO: Need an authentication measure... do we even need to expose this?
-   var userId = args.userId.value;
-   User.findByIdAndRemove(userId, function(err) {
-     if(err){
-       console.log(err);
-       res.statusCode = 401;
-       res.statusMessage = 'Bad request';
-       res.end()
-     }
-     console.log("User deleted");
-     res.end("User deleted");
-   });
+   // TODO: Need an authentication measure... do we even need to expose this?
+  var userId = args.userId.value
+  User.findByIdAndRemove(userId, function (err) {
+    if (err) {
+      console.log(err)
+      res.statusCode = 401
+      res.statusMessage = 'Bad request'
+      res.end()
+    }
+    console.log('User deleted')
+    res.end('User deleted')
+  })
 }
 
-exports.updateUser = function(args, res, next) {
+exports.updateUser = function (args, res, next) {
   /**
    * Updates an existing `User`
    *
    * user User User with updated info
    * returns user
    **/
-   //For now we only update phone numbers... no emails
-   var params = args.user.value;
-   var userId = params.id;
-   var phoneNumber = params.phoneNumber;
-   User.findOneAndUpdate(userId, {phoneNumber: phoneNumber}, function(err, user){
-     if(err){
-       console.log(err);
-       res.statusCode = 401;
-       res.statusMessage = 'Bad request';
-       res.end()
-     }
-     res.end("User updated");
-   });
-
+   // For now we only update phone numbers... no emails
+  var params = args.user.value
+  var userId = params.id
+  var phoneNumber = params.phoneNumber
+  User.findOneAndUpdate(userId, {phoneNumber: phoneNumber}, function (err, user) {
+    if (err) {
+      console.log(err)
+      res.statusCode = 401
+      res.statusMessage = 'Bad request'
+      res.end()
+    }
+    res.end('User updated')
+  })
 }
 
-exports.getUser = function(args, res, next) {
+exports.getUser = function (args, res, next) {
   /**
    * Gets `User` with specific ID
    *
    * userId Long ID of user
    * returns user
    **/
-   var param  = args.userId.value;
-   console.log(args.userId.value);
-   User.find({_id: param}, function(err, user){
-     if(err){
-       console.log(err);
-       res.statusCode = 401;
-       res.statusMessage = 'Bad request';
-       res.end()
-     }
+  var param = args.userId.value
+  console.log(args.userId.value)
+  User.find({_id: param}, function (err, user) {
+    if (err) {
+      console.log(err)
+      res.statusCode = 401
+      res.statusMessage = 'Bad request'
+      res.end()
+    }
 
-     if(!user.length) {
-       res.statusCode = 404;
-       res.statusMessage = 'User does not exist';
-       res.end("User does not exist");
-     } else {
-       res.setHeader('Content-Type', 'application/json');
-       res.end(JSON.stringify(user));
-     }
-   })
+    if (!user.length) {
+      res.statusCode = 404
+      res.statusMessage = 'User does not exist'
+      res.end('User does not exist')
+    } else {
+      res.setHeader('Content-Type', 'application/json')
+      res.end(JSON.stringify(user))
+    }
+  })
 }
 
-exports.getUserTrips = function(args, res, next) {
+exports.getUserTrips = function (args, res, next) {
   /**
    * Get all `Trips` for a user
    *
    * userId Long The User for which we want all trips
    * returns tripsCollection
    **/
-  var examples = {};
+  var examples = {}
   examples['application/json'] = {
-  "trips" : [ {
-    "note" : "aeiou",
-    "contactEmail" : "aeiou",
-    "startingLocation" : {
-      "latitude" : 1.3579000000000001069366817318950779736042022705078125,
-      "longitude" : 1.3579000000000001069366817318950779736042022705078125
-    },
-    "tripId" : 123456789,
-    "contactPhone" : "aeiou",
-    "userId" : 123456789,
-    "returnTime" : "2000-01-23T04:56:07.000+00:00"
-  } ],
-  "userId" : 123
-};
+    'trips': [ {
+      'note': 'aeiou',
+      'contactEmail': 'aeiou',
+      'startingLocation': {
+        'latitude': 1.3579000000000001069366817318950779736042022705078125,
+        'longitude': 1.3579000000000001069366817318950779736042022705078125
+      },
+      'tripId': 123456789,
+      'contactPhone': 'aeiou',
+      'userId': 123456789,
+      'returnTime': '2000-01-23T04:56:07.000+00:00'
+    } ],
+    'userId': 123
+  }
   if (Object.keys(examples).length > 0) {
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(examples[Object.keys(examples)[0]] || {}, null, 2));
+    res.setHeader('Content-Type', 'application/json')
+    res.end(JSON.stringify(examples[Object.keys(examples)[0]] || {}, null, 2))
   } else {
-    res.end();
+    res.end()
   }
 }
 
-exports.searchTrip = function(args, res, next) {
+exports.searchTrip = function (args, res, next) {
   /**
    * Gets a specific `Trip` associated with a `User`
    *
@@ -174,23 +172,23 @@ exports.searchTrip = function(args, res, next) {
    * tripId String The ID of a trip
    * returns trip
    **/
-  var examples = {};
+  var examples = {}
   examples['application/json'] = {
-  "note" : "aeiou",
-  "contactEmail" : "aeiou",
-  "startingLocation" : {
-    "latitude" : 1.3579000000000001069366817318950779736042022705078125,
-    "longitude" : 1.3579000000000001069366817318950779736042022705078125
-  },
-  "tripId" : 123456789,
-  "contactPhone" : "aeiou",
-  "userId" : 123456789,
-  "returnTime" : "2000-01-23T04:56:07.000+00:00"
-};
+    'note': 'aeiou',
+    'contactEmail': 'aeiou',
+    'startingLocation': {
+      'latitude': 1.3579000000000001069366817318950779736042022705078125,
+      'longitude': 1.3579000000000001069366817318950779736042022705078125
+    },
+    'tripId': 123456789,
+    'contactPhone': 'aeiou',
+    'userId': 123456789,
+    'returnTime': '2000-01-23T04:56:07.000+00:00'
+  }
   if (Object.keys(examples).length > 0) {
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(examples[Object.keys(examples)[0]] || {}, null, 2));
+    res.setHeader('Content-Type', 'application/json')
+    res.end(JSON.stringify(examples[Object.keys(examples)[0]] || {}, null, 2))
   } else {
-    res.end();
+    res.end()
   }
 }

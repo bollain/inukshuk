@@ -13,7 +13,7 @@ import Return from './androidComponents/Return';
 import Note from './androidComponents/Note';
 import Login from './androidComponents/Login';
 import SignUp from './androidComponents/Signup';
-
+import Start from './androidComponents/Start';
 
 BackAndroid.addEventListener('hardwareBackPress', () => {
   if (_navigator.getCurrentRoutes().length === 1  ) {
@@ -143,6 +143,17 @@ class inukshukApp extends Component {
             set={this.set}
             remove={this.remove}
             callback={route.callback}
+          />
+        );
+      case 'start':
+        return (
+          <Start
+            navigator={navigator}
+            title="Start"
+            return={route.return}
+            get={this.get.bind(this)}
+            set={this.set.bind(this)}
+            remove={this.remove.bind(this)}
           />
         );
     }

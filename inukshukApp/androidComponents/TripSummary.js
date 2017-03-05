@@ -58,6 +58,14 @@ export default class TripSummary extends Component {
       });
     });
   }
+  navStart(){
+    this.props.get('return').then((response) => {
+      this.props.navigator.push({
+        id: 'start',
+        return: response,
+      });
+    });
+  }
 
   async setSummaryNote(currentNote) {
     await this.setState({note: currentNote});
@@ -129,17 +137,13 @@ export default class TripSummary extends Component {
         <View style={styles.startContainer}>
           <TouchableOpacity
             style={styles.start}
-            onPress={this.startTrip}
+            onPress={this.navStart.bind(this)}
             activeOpacity={.8}>
           <Text style={styles.startText}>Submit</Text>
           </TouchableOpacity>
         </View>
       </View>
     );
-  }
-
-  startTrip() {
-    Alert.alert('Oops! Not ready yet.')
   }
 }
 

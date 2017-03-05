@@ -11,7 +11,7 @@ module.exports.sendSms = function (to, message) {
       console.error('Could not notify ')
       console.error(err)
     } else {
-      console.log('message sent')
+      console.log('Text message sent')
     }
   })
 }

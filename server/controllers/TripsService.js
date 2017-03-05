@@ -47,6 +47,7 @@ exports.createTrip = function (args, res, next) {
         })
           // Create text Alert
         scheduleAlerts(newTrip)
+        confirmEmergencyContact(newTrip, user)
         console.log('Trip created!')
         res.setHeader('Content-Type', 'application/json')
         res.end(JSON.stringify(newTrip))
@@ -64,7 +65,6 @@ exports.deleteTrip = function (args, res, next) {
    **/
    // TODO: need permissions on who can do this....
   var tripId = args.tripId.value
-  console.log(tripId)
   Trip.findById(tripId, function (err, trip) {
     if (err) {
       return handleError(res, err)
@@ -87,8 +87,9 @@ exports.deleteTrip = function (args, res, next) {
         if (err) {
           return handleError(res, err)
         }
-        // Cancel all alerts and update person?
+        // Cancel all alerts
         cancelAlerts(trip._id)
+        createCancelMessage(trip.contactPhone, trip.contactEmail)
         res.end('Trip deleted')
       })
     }
@@ -173,19 +174,18 @@ exports.updateTrip = function (args, res, next) {
   })
 }
 
-// TODO: What parameters to pass? Maybe a trip object?
+var confirmEmergencyContact = function (trip, user) {
+  AlertService.confirmEmergencyContactSMS(trip.contactPhone, user)
+}
+
 var scheduleAlerts = function (trip) {
-  // Send confirmation to emerg contaact and user
-  // Schedule EMERGENCY alerts
   scheduleSMSAlert(trip._id + '_SMS', trip.contactPhone, trip.returnTime)
   scheduleEmailAlert(trip._id + '_EMAIL', trip.contactEmail, trip.returnTime)
 }
 
-// TODO: incorporate node mailer
 // ID is a string made up of tripID_EMAIL
 var scheduleEmailAlert = function (id, emailAddress, triggerTime) {
-  //
-
+  AlertService.createEmailAlert(id, emailAddress, triggerTime)
 }
 
 // ID is a string made up of tripID_SMS
@@ -206,11 +206,18 @@ var updateAlerts = function (trip) {
 var cancelAlerts = function (tripID) {
   // Cancel all scheduled alerts
   AlertService.cancelAlert(tripID + '_SMS')
+  AlertService.cancelAlert(tripID + '_EMAIL')
+}
+
+var createCancelMessage = function (contactPhone, contactEmail) {
+  AlertService.sendCancelSMS(contactPhone)
+  AlertService.sendCancelEmail(contactEmail)
 }
 
 // User does not get one
 var createReturnedSafelyAlerts = function (contactPhone, contactEmail) {
   AlertService.sendReturnedSafeSMS(contactPhone)
+  AlertService.sendReturnedSafeEmail(contactEmail)
 }
 
 var handleError = function (res, error) {

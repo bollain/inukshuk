@@ -1,11 +1,11 @@
 'use strict'
 
-var app = require('connect')();
-var http = require('http');
-var swaggerTools = require('swagger-tools');
-var jsyaml = require('js-yaml');
-var fs = require('fs');
-var serverPort = 8080;
+var app = require('connect')()
+var http = require('http')
+var swaggerTools = require('swagger-tools')
+var jsyaml = require('js-yaml')
+var fs = require('fs')
+var serverPort = 8080
 var config = require('config')
 var mongoose = require('mongoose')
 mongoose.Promise = global.Promise

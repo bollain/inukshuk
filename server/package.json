@@ -7,7 +7,7 @@
     "prestart": "npm install",
     "start": "NODE_ENV=dev && node index.js",
     "test": "mocha --timeout 10000",
-    "nodemon": "nodemon index.js"
+    "nodemon": "nodemon index.js",
     "fixcode": "standard --fix",
     "lint": "standard --verbose | snazzy",
     "precommit": "npm run lint"

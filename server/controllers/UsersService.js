@@ -20,8 +20,6 @@ exports.createUser = function (args, res, next) {
   User.findOrCreate({email: params.email}, newUser,
     function (err, user, created) {
       if (err) {
-        console.log('I died')
-        console.log(err)
         if (!err.errors) {
         // duplicate user name
           console.log('duplicate user name')

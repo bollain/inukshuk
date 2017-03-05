@@ -10,6 +10,8 @@ var config = require('config')
 var mongoose = require('mongoose')
 mongoose.Promise = global.Promise
 
+var db = config.get('DBHost') //Making sure connected to right DB
+console.log(db)
 mongoose.connect(config.DBHost)
 
 // swaggerRouter configuration
@@ -43,3 +45,5 @@ swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
     console.log('Swagger-ui is available on http://localhost:%d/docs', serverPort)
   })
 })
+
+module.exports = app // For testing

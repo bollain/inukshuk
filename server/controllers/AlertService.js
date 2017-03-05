@@ -3,13 +3,14 @@
 var twilioClient = require('../utils/twilioClient')
 var scheduler = require('node-schedule')
 var nodemailer = require('nodemailer')
+var config = require('config')
 
 var transporter = nodemailer.createTransport({
   host: 'mail.privateemail.com',
   port: 587,
   auth: {
-    user: 'inukshuk@inukshuk.me',
-    pass: 'Sanbl41SdCUlV@NJW8x' // This stuff should not go here
+    user: config.EMAIL_USER,
+    pass: config.EMAIL_PWD
   }
 })
 

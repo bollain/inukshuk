@@ -2,5 +2,7 @@
   "DBHost" : "mongodb://localhost/inukshukdatabase",
   "TWILIO_ACCOUNT_SID": "ACe643a26744d7f72778781ac411336e1b",
   "TWILIO_AUTH_TOKEN": "2f6d9c09948a16649915254237dd77c4",
-  "TWILIO_NUMBER": "+16043301468"
+  "TWILIO_NUMBER": "+16043301468",
+  "EMAIL_USER": "inukshuk@inukshuk.me",
+  "EMAIL_PWD": "Sanbl41SdCUlV@NJW8x"
 }

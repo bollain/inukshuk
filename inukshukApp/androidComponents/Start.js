@@ -42,7 +42,7 @@ export default class Start extends Component {
                         onIconClicked={this.props.navigator.pop}
                         titleColor={'#FFFFFF'}/>
         <View style={styles.textContainer}>
-          <Text></Text>
+          <Text>You told {this.props.contact} that you would be back from {this.props.location} by {this.props.return}</Text>
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={styles.submit}

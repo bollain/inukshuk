@@ -51,6 +51,7 @@ export default class TripSummary extends Component {
   }
   navNotes(){
     this.props.get('note').then((response) => {
+      console.log(response);
       this.props.navigator.push({
         id: 'note',
         note: response,
@@ -59,10 +60,14 @@ export default class TripSummary extends Component {
     });
   }
   navStart(){
-    this.props.get('return').then((response) => {
+    this.props.multiGet(['location','contact','return','notes']).then((response) => {
+      console.log(response);
       this.props.navigator.push({
         id: 'start',
-        return: response,
+        location: response[0][1],
+        contact: response[1][1],
+        return: response[2][1],
+        note: response[3][1],
       });
     });
   }

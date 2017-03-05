@@ -28,6 +28,7 @@ class inukshukApp extends Component {
     super(props);
     this.navigatorRenderScene = this.navigatorRenderScene.bind(this);
     this.get = this.get.bind(this);
+    this.multiGet = this.multiGet.bind(this);
     this.remove = this.remove.bind(this);
     this.set = this.set.bind(this);
   }
@@ -39,6 +40,17 @@ class inukshukApp extends Component {
       return response;
     } catch (error) {
       Alert.alert('Error getting ' + key);
+      console.error(error);
+    }
+  }
+
+  async multiGet(keys) {
+    try {
+      const response = await AsyncStorage.multiGet(keys);
+      console.log('multiget');
+      return response;
+    } catch (error) {
+      Alert.alert('Error getting ' + keys);
       console.error(error);
     }
   }
@@ -81,6 +93,7 @@ class inukshukApp extends Component {
             navigator={navigator}
             title="Summary"
             get={this.get.bind(this)}
+            multiGet={this.multiGet.bind(this)}
           />
         );
       case 'location':
@@ -150,7 +163,10 @@ class inukshukApp extends Component {
           <Start
             navigator={navigator}
             title="Start"
+            location={route.location}
+            contact={route.contact}
             return={route.return}
+            note={route.note}
             get={this.get.bind(this)}
             set={this.set.bind(this)}
             remove={this.remove.bind(this)}

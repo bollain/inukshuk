@@ -10,7 +10,8 @@
     "nodemon": "nodemon index.js",
     "fixcode": "standard --fix",
     "lint": "standard --verbose | snazzy",
-    "precommit": "npm run lint"
+    "precommit": "npm run lint",
+    "prepush": "npm test"
   },
   "keywords": [
     "swagger"
@@ -40,6 +41,6 @@
     "standard": "^9.0.0"
   },
    "standard": {
-  
+
   }
 }

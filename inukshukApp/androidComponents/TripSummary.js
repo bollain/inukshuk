@@ -168,7 +168,6 @@ const styles = StyleSheet.create({
    container: {
      ...StyleSheet.absoluteFillObject,
      justifyContent: 'flex-start',
-
    },
    toolbar: {
      backgroundColor: '#00aaf1',

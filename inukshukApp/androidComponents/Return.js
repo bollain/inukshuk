@@ -93,8 +93,8 @@ export default class Return extends Component {
     }
   }
 
-  padTime(str) {
-    return pad.substring(0, pad.length - str.length) + str
+  padTime(num) {
+    return pad.substring(0, pad.length - num.toString().length) + num.toString();
   }
 
   render() {

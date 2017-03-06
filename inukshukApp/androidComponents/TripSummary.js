@@ -14,6 +14,7 @@ export default class TripSummary extends Component {
       contact: null,
       return: null,
       note: null,
+      user: null,
     };
     console.log('constructing summary')
     this.setSummaryNote = this.setSummaryNote.bind(this);
@@ -73,6 +74,10 @@ export default class TripSummary extends Component {
 
   async setSummaryReturn(currentReturn) {
     await this.setState({return: currentReturn});
+  }
+
+  async setSummaryUser(currentUser) {
+    await this.setState({user: currentUser});
   }
 
   render() {
@@ -139,6 +144,7 @@ export default class TripSummary extends Component {
   }
 
   startTrip() {
+  //TODO: hit the trip POST endpoint
     Alert.alert('Oops! Not ready yet.')
   }
 }

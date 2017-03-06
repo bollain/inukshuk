@@ -100,6 +100,7 @@ class inukshukApp extends Component {
         <Login
           navigator={navigator}
           title="Login"
+          callback={route.callback}
           />
         );
       case 'signup':
@@ -107,6 +108,7 @@ class inukshukApp extends Component {
           <SignUp
             navigator={navigator}
             title="SignUp"
+            callback={route.callback}
           />
       );
       case 'contact':
@@ -142,6 +144,17 @@ class inukshukApp extends Component {
             get={this.get}
             set={this.set}
             remove={this.remove}
+            callback={route.callback}
+          />
+        );
+      case 'user':
+        return (
+          <User
+            navigator={navigator}
+            title="User"
+            note={route.note}
+            get={this.get}
+            set={this.set}
             callback={route.callback}
           />
         );

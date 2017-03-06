@@ -41,9 +41,6 @@ export default class Login extends Component {
       })
      .then(handleErrors)
      .then(response => response.json())
-     .then(function(responseJson) {
-          User.setUser(responseJson)
-     })
     }
 
     loginMock() {
@@ -52,8 +49,12 @@ export default class Login extends Component {
       .then(handleErrors)
       .then(response => response.json())
       .then(responseJson => {
-        _navigator.push({id: 'tripSummary', user: responseJson});
+        _navigator.push({
+          id: 'tripSummary',
+          user: responseJson[0],
+          });
        })
+
     }
 
     render() {

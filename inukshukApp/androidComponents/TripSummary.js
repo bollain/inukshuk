@@ -51,7 +51,7 @@ export default class TripSummary extends Component {
     });
   }
   navNotes(){
-    this.props.get('note').then((response) => {
+    this.props.get('notes').then((response) => {
       this.props.navigator.push({
         id: 'note',
         note: response,
@@ -143,6 +143,7 @@ export default class TripSummary extends Component {
   }
 
   startTrip() {
+    console.log(this.props.user);
     fetch('http://192.168.1.73:8080/trips', {
       method: 'POST',
       headers: {
@@ -151,15 +152,15 @@ export default class TripSummary extends Component {
       },
       body: JSON.stringify({
           tripId: 0,
-          userId: this.props.user.id,
-          returnTime: '2017-03-08T00:51:16.224Z',
-          contactEmail: 'bollain@gmail.com',
-          contactPhone: '7783029374',
+          userId: this.props.user._id,
+          returnTime: '2017-07-09T00:51:16.224Z',
+          contactEmail: 'nanstchen@gmail.com',
+          contactPhone: '7788334289',
           startingLocation: {
             latitude: 49.2504,
             longitude: -123.1094,
           },
-          note: 'Am all good!',
+          note: this.state.note,
       })
     })
     .then(handleErrors)
@@ -169,7 +170,7 @@ export default class TripSummary extends Component {
         'Success!',
         'Your trip has been created!',
         [
-          {text: 'OK', onPress: () => Alert.alert('Start Page under development')},
+          {text: 'OK', onPress: () => Alert.alert('Start Page Under Development')},
         ],
         { cancelable: false }
       )

@@ -81,6 +81,7 @@ class inukshukApp extends Component {
             navigator={navigator}
             title="Summary"
             get={this.get.bind(this)}
+            set={this.set.bind(this)}
           />
         );
       case 'location':
@@ -99,7 +100,7 @@ class inukshukApp extends Component {
         return (
         <Login
           navigator={navigator}
-          title="Login"
+          title="Log in"
           callback={route.callback}
           />
         );
@@ -107,7 +108,7 @@ class inukshukApp extends Component {
         return (
           <SignUp
             navigator={navigator}
-            title="SignUp"
+            title="Sign Up"
             callback={route.callback}
           />
       );
@@ -151,7 +152,7 @@ class inukshukApp extends Component {
         return (
           <User
             navigator={navigator}
-            title="User"
+            title="Your Account"
             note={route.note}
             get={this.get}
             set={this.set}

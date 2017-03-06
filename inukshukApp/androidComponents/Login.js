@@ -12,7 +12,7 @@ import {
   TouchableHighlight
 } from 'react-native';
 
-import User from './User'
+import User from './User';
 
 export default class Login extends Component {
     constructor(props) {
@@ -46,22 +46,14 @@ export default class Login extends Component {
      })
     }
 
-    loginMock(navigator) {
-      let responseJson = fetch('http://192.168.1.73:8080/users/9', {
+    loginMock() {
+      fetch('http://192.168.1.73:8080/users/9', {
       })
       .then(handleErrors)
       .then(response => response.json())
-      .then(responseJson => {User.setUser(responseJson).then(navigator.push({id: 'tripSummary'}))})
-    }
-
-    navTripSummary(user){
-      this.props.get('user').then((response) => {
-        this.props.navigator.push({
-          id: 'tripSummary',
-          user: response,
-          callback: tripSummary.setSummaryUser(user)
-        });
-      });
+      .then(responseJson => {
+        _navigator.push({id: 'tripSummary', user: responseJson});
+       })
     }
 
     render() {
@@ -88,7 +80,7 @@ export default class Login extends Component {
           placeholder="Password"
           onChangeText={(text) => this.setState({text: password})}
         />
-        <Text style = {styles.button} onPress={()=> this.loginMock(this.props.navigator)}>
+        <Text style = {styles.button} onPress={()=> this.loginMock()}>
             LOGIN
         </Text>
         <TouchableHighlight>
@@ -102,9 +94,7 @@ export default class Login extends Component {
 
 function handleErrors(response) {
   if (!response.ok) {
-    if (response.status == 403) {
-      throw Error("Invalid username or password");
-    }
+    throw Error("Invalid user name and/or password");
   }
   return response;
 }

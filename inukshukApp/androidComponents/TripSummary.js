@@ -14,7 +14,7 @@ export default class TripSummary extends Component {
       contact: null,
       return: null,
       note: null,
-      user: null,
+      user: this.props.user,
     };
     console.log('constructing summary')
     this.setSummaryNote = this.setSummaryNote.bind(this);
@@ -59,6 +59,9 @@ export default class TripSummary extends Component {
       });
     });
   }
+  navUser(){
+    //TODO: set up profile button
+  }
 
   async setSummaryNote(currentNote) {
     await this.setState({note: currentNote});
@@ -74,10 +77,6 @@ export default class TripSummary extends Component {
 
   async setSummaryReturn(currentReturn) {
     await this.setState({return: currentReturn});
-  }
-
-  async setSummaryUser(currentUser) {
-    await this.setState({user: currentUser});
   }
 
   render() {
@@ -134,7 +133,7 @@ export default class TripSummary extends Component {
         <View style={styles.startContainer}>
           <TouchableOpacity
             style={styles.start}
-            onPress={this.startTrip}
+            onPress={this.startTrip.bind(this)}
             activeOpacity={.8}>
           <Text style={styles.startText}>Submit</Text>
           </TouchableOpacity>
@@ -144,9 +143,47 @@ export default class TripSummary extends Component {
   }
 
   startTrip() {
-  //TODO: hit the trip POST endpoint
-    Alert.alert('Oops! Not ready yet.')
+    fetch('http://192.168.1.73:8080/trips', {
+      method: 'POST',
+      headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+          tripId: 0,
+          userId: this.props.user.id,
+          returnTime: '2017-03-08T00:51:16.224Z',
+          contactEmail: 'bollain@gmail.com',
+          contactPhone: '7783029374',
+          startingLocation: {
+            latitude: 49.2504,
+            longitude: -123.1094,
+          },
+          note: 'Am all good!',
+      })
+    })
+    .then(handleErrors)
+    .then(response => response.json())
+    .then(function(responseJson) {
+      Alert.alert(
+        'Success!',
+        'Your trip has been created!',
+        [
+          {text: 'OK', onPress: () => Alert.alert('Start Page under development')},
+        ],
+        { cancelable: false }
+      )
+    })
   }
+}
+
+function handleErrors(response) {
+  if (!response.ok) {
+    if (response.status == 400) {
+      throw Error("Please log out and then try again");
+    }
+  }
+  return response;
 }
 
 const styles = StyleSheet.create({

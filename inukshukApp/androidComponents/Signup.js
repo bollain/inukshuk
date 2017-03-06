@@ -58,18 +58,8 @@ export default class SignUp extends Component {
           ],
           { cancelable: false }
         )
-      }).catch(function(error) {
-        Alert.alert(
-          'Invalid contact info',
-          error.message,
-          [
-            {text: 'OK', onPress: () => console.log('Invalid contact info')},
-          ],
-          { cancelable: false }
-        )
       })
     }
-
 
     render() {
         return (

@@ -2,9 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="93d7e885-b9e1-40aa-9eb3-8ba3785d8dc0" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/inukshukApp/androidComponents/Login.js" afterPath="$PROJECT_DIR$/inukshukApp/androidComponents/Login.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/inukshukApp/androidComponents/Signup.js" afterPath="$PROJECT_DIR$/inukshukApp/androidComponents/Signup.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/inukshukApp/androidComponents/TripSummary.js" afterPath="$PROJECT_DIR$/inukshukApp/androidComponents/TripSummary.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/inukshukApp/androidComponents/User.js" afterPath="$PROJECT_DIR$/inukshukApp/androidComponents/User.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/inukshukApp/index.android.js" afterPath="$PROJECT_DIR$/inukshukApp/index.android.js" />
     </list>
     <ignored path="Inukshuk.iws" />
@@ -63,48 +65,18 @@
       <file leaf-file-name="index.android.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/inukshukApp/index.android.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="261">
-              <caret line="75" column="14" selection-start-line="75" selection-start-column="4" selection-end-line="75" selection-end-column="14" />
+            <state relative-caret-position="246">
+              <caret line="83" column="37" selection-start-line="83" selection-start-column="37" selection-end-line="83" selection-end-column="37" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TripSummary.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="TripSummary.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/TripSummary.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="222">
-              <caret line="32" column="7" selection-start-line="32" selection-start-column="7" selection-end-line="32" selection-end-column="7" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Login.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Login.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="14" column="19" selection-start-line="14" selection-start-column="19" selection-end-line="14" selection-end-column="19" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Signup.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Signup.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="17" column="43" selection-start-line="17" selection-start-column="43" selection-end-line="17" selection-end-column="43" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Note.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Note.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="17" column="20" selection-start-line="17" selection-start-column="10" selection-end-line="17" selection-end-column="20" />
+            <state relative-caret-position="2295">
+              <caret line="153" column="29" selection-start-line="153" selection-start-column="29" selection-end-line="153" selection-end-column="29" />
               <folding />
             </state>
           </provider>
@@ -113,8 +85,38 @@
       <file leaf-file-name="User.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/User.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="795">
-              <caret line="53" column="5" selection-start-line="53" selection-start-column="5" selection-end-line="53" selection-end-column="5" />
+            <state relative-caret-position="195">
+              <caret line="13" column="51" selection-start-line="13" selection-start-column="51" selection-end-line="13" selection-end-column="51" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Note.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Note.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="234">
+              <caret line="21" column="29" selection-start-line="21" selection-start-column="21" selection-end-line="21" selection-end-column="29" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Login.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Login.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="321">
+              <caret line="54" column="62" selection-start-line="54" selection-start-column="50" selection-end-line="54" selection-end-column="62" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Signup.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Signup.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="30">
+              <caret line="41" column="18" selection-start-line="41" selection-start-column="18" selection-end-line="41" selection-end-column="18" />
               <folding />
             </state>
           </provider>
@@ -259,11 +261,11 @@
         <option value="$PROJECT_DIR$/inukshukApp/Login.js" />
         <option value="$PROJECT_DIR$/inukshukApp/package.json" />
         <option value="$PROJECT_DIR$/inukshukApp/androidComponents/Trip.js" />
-        <option value="$PROJECT_DIR$/inukshukApp/androidComponents/TripSummary.js" />
-        <option value="$PROJECT_DIR$/inukshukApp/index.android.js" />
+        <option value="$PROJECT_DIR$/inukshukApp/androidComponents/User.js" />
         <option value="$PROJECT_DIR$/inukshukApp/androidComponents/Signup.js" />
         <option value="$PROJECT_DIR$/inukshukApp/androidComponents/Login.js" />
-        <option value="$PROJECT_DIR$/inukshukApp/androidComponents/User.js" />
+        <option value="$PROJECT_DIR$/inukshukApp/androidComponents/TripSummary.js" />
+        <option value="$PROJECT_DIR$/inukshukApp/index.android.js" />
       </list>
     </option>
   </component>
@@ -304,7 +306,56 @@
       <pane id="PackagesPane" />
       <pane id="Scratches" />
       <pane id="ProjectPane">
-        <subPane />
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Inukshuk" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Inukshuk" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Inukshuk" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Inukshuk" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Inukshuk" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="inukshukApp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Inukshuk" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Inukshuk" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="inukshukApp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="androidComponents" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
       </pane>
       <pane id="Scope" />
     </panes>
@@ -587,14 +638,14 @@
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23715416" sideWeight="0.5115578" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23583663" sideWeight="0.51544404" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2364395" sideWeight="0.4884422" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23583663" sideWeight="0.484556" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23429416" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23429416" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32889876" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -783,21 +834,15 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Trip.js" />
     <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Return.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1200">
+        <state relative-caret-position="1305">
           <caret line="100" column="10" selection-start-line="100" selection-start-column="4" selection-end-line="100" selection-end-column="10" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Location.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="174">
-          <caret line="49" column="29" selection-start-line="49" selection-start-column="21" selection-end-line="49" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Trip.js" />
     <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Contact.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
@@ -806,50 +851,58 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Login.js">
+    <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Location.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="14" column="19" selection-start-line="14" selection-start-column="19" selection-end-line="14" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Note.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" column="20" selection-start-line="17" selection-start-column="10" selection-end-line="17" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/TripSummary.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="222">
-          <caret line="32" column="7" selection-start-line="32" selection-start-column="7" selection-end-line="32" selection-end-column="7" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/inukshukApp/index.android.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="261">
-          <caret line="75" column="14" selection-start-line="75" selection-start-column="4" selection-end-line="75" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/User.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="795">
-          <caret line="53" column="5" selection-start-line="53" selection-start-column="5" selection-end-line="53" selection-end-column="5" />
+        <state relative-caret-position="174">
+          <caret line="25" column="18" selection-start-line="25" selection-start-column="10" selection-end-line="25" selection-end-column="18" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Signup.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="17" column="43" selection-start-line="17" selection-start-column="43" selection-end-line="17" selection-end-column="43" />
+        <state relative-caret-position="30">
+          <caret line="41" column="18" selection-start-line="41" selection-start-column="18" selection-end-line="41" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/User.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="13" column="51" selection-start-line="13" selection-start-column="51" selection-end-line="13" selection-end-column="51" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Login.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="321">
+          <caret line="54" column="62" selection-start-line="54" selection-start-column="50" selection-end-line="54" selection-end-column="62" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Note.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="234">
+          <caret line="21" column="29" selection-start-line="21" selection-start-column="21" selection-end-line="21" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/inukshukApp/index.android.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="246">
+          <caret line="83" column="37" selection-start-line="83" selection-start-column="37" selection-end-line="83" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/TripSummary.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2295">
+          <caret line="153" column="29" selection-start-line="153" selection-start-column="29" selection-end-line="153" selection-end-column="29" />
           <folding />
         </state>
       </provider>

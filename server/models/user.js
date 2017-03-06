@@ -18,6 +18,10 @@ var validatePhone = function (phoneNumber) {
   return validator.isMobilePhone(phoneNumber, LOCALE)
 }
 
+var validateEmail = function (email) {
+  return validator.isEmail(email)
+}
+
 var userSchema = new Schema({
   userName: {type: String, required: true, unique: true},
   firstName: {type: String, required: true},
@@ -27,7 +31,7 @@ var userSchema = new Schema({
     required: true,
     unique: true,
     trim: true,
-    validate: [validator.isEmail, 'Please fill a valid email address']
+    validate: [validateEmail, 'Please fill a valid email address']
   },
   phoneNumber: {
     type: String,

@@ -51,7 +51,6 @@ export default class TripSummary extends Component {
   }
   navNotes(){
     this.props.get('note').then((response) => {
-      console.log(response);
       this.props.navigator.push({
         id: 'note',
         note: response,
@@ -61,7 +60,6 @@ export default class TripSummary extends Component {
   }
   navStart(){
     this.props.multiGet(['location','contact','return','notes']).then((response) => {
-      console.log(response);
       this.props.navigator.push({
         id: 'start',
         location: response[0][1],
@@ -81,7 +79,7 @@ export default class TripSummary extends Component {
   }
 
   async setSummaryContact(currentContact) {
-    await this.setState({contact: currentContact});
+    await this.setState({contact: JSON.parse(currentContact)});
   }
 
   async setSummaryReturn(currentReturn) {
@@ -93,7 +91,9 @@ export default class TripSummary extends Component {
     let noteCheck = (this.state.note != null ? checkIcon : null);
     let locationCheck = (this.state.location != null ? checkIcon : null);
     let returnCheck = (this.state.return != null ? checkIcon : null);
+    let chosenContact = (this.state.contact != null ? this.state.contact.firstName : null);
     let contactCheck = (this.state.contact != null ? checkIcon : null);
+
     return (
       <View style={styles.container}>
         <ToolbarAndroid style={styles.toolbar}
@@ -116,7 +116,12 @@ export default class TripSummary extends Component {
                 onPress={this.navContacts.bind(this)}>
               <View style = {styles.innerDetail}>
                 <Text style={styles.tripDetailText}>Who should know?</Text>
-                {contactCheck}
+                <View style = {styles.chosenValues}>
+                  <Text style={styles.tripDetailText}>
+                    {chosenContact}
+                  </Text>
+                  {contactCheck}
+                </View>
               </View>
             </TouchableHighlight>
             <TouchableHighlight
@@ -175,10 +180,15 @@ const styles = StyleSheet.create({
    },
    tripDetailText: {
      fontSize: 16,
+     marginRight: 10,
    },
    innerDetail: {
      flexDirection: 'row',
      justifyContent: 'space-between',
+   },
+   chosenValues: {
+     flexDirection: 'row',
+     justifyContent: 'flex-end',
    },
    startContainer: {
      flex: 1,

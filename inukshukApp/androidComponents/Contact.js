@@ -62,8 +62,10 @@ export default class Contact extends Component {
   }
 
   set(address) {
-    this.props.set('contact', address)
-    .then(this.props.callback(address))
+    let chosenContact = JSON.stringify(this.state.chosenContact);
+    this.props.set('contact', chosenContact)
+    .then(this.props.set('contactAddress', address))
+    .then(this.props.callback(chosenContact))
     .then(() => {
       this.setModalVisible(!this.state.modalVisible);
       _navigator.pop();

@@ -6,7 +6,7 @@ export default class User extends Component {
       super(props);
       this.state = {
         user: {
-          id: this.props.user.id,
+          id: this.props.user._id,
           userName: this.props.user.userName,
           firstName: this.props.user.firstName,
           lastName: this.props.user.lastName,
@@ -26,13 +26,8 @@ export default class User extends Component {
       .then(this.props.callback(null))
     }
 
-    handleEvent(event) {
-
-      }
-
     async setUser(responseJson) {
       await this.setState({userName: responseJson.userName})
-      await this.setState({id: responseJson.id})
       await this.setState({lastName: responseJson.lastName})
       await this.setState({email: responseJson.email})
       await this.setState({phoneNumber: responseJson.phoneNumber})

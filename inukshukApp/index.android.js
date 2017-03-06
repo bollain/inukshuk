@@ -154,7 +154,7 @@ class inukshukApp extends Component {
           <User
             navigator={navigator}
             title="Your Account"
-            note={route.note}
+            user={route.user}
             get={this.get}
             set={this.set}
             callback={route.callback}

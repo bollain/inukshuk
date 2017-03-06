@@ -6,6 +6,32 @@ var nativeImageSource = require('nativeImageSource');
 import Icon from 'react-native-vector-icons/MaterialIcons';
 const checkIcon = <Icon name="check-circle" size={24} color="green" />;
 
+var weekdayArray = new Array(7);
+weekdayArray[0] = "Sunday";
+weekdayArray[1] = "Monday";
+weekdayArray[2] = "Tuesday";
+weekdayArray[3] = "Wednesday";
+weekdayArray[4] = "Thursday";
+weekdayArray[5] = "Friday";
+weekdayArray[6] = "Saturday";
+
+var monthArray = new Array();
+monthArray[0] = "Jan";
+monthArray[1] = "Feb";
+monthArray[2] = "Mar";
+monthArray[3] = "Apr";
+monthArray[4] = "May";
+monthArray[5] = "Jun";
+monthArray[6] = "Jul";
+monthArray[7] = "Aug";
+monthArray[8] = "Sept";
+monthArray[9] = "Oct";
+monthArray[10] = "Nov";
+monthArray[11] = "Dec";
+
+// To pad time
+var pad = "00"
+
 export default class TripSummary extends Component {
   constructor(props) {
     super(props);
@@ -83,16 +109,25 @@ export default class TripSummary extends Component {
   }
 
   async setSummaryReturn(currentReturn) {
-    await this.setState({return: currentReturn});
+    await this.setState({return: JSON.parse(currentReturn)});
+  }
+
+  padTime(num) {
+    return pad.substring(0, pad.length - num.toString().length) + num.toString();
   }
 
   render() {
-    // Set check marks if details have been provided
+    // Set check values if details have been provided
     let noteCheck = (this.state.note != null ? checkIcon : null);
+
     let locationCheck = (this.state.location != null ? checkIcon : null);
-    let chosenLocationLat = (this.state.location != null ? this.state.location.latitude.toFixed(4) : null);
+    let chosenLocationLat = (this.state.location != null ? this.state.location.latitude.toFixed(4).toString() + ',' : null);
     let chosenLocationLon = (this.state.location != null ? this.state.location.longitude.toFixed(4) : null);
+
     let returnCheck = (this.state.return != null ? checkIcon : null);
+    let chosenReturnTime = (this.state.return != null ? this.padTime(this.state.return.hour) + ':' + this.padTime(this.state.return.minute) : null);
+    let chosenReturnDate = (this.state.return != null ? monthArray[this.state.return.month] + ' ' + this.state.return.day.toString() + ', ' : null);
+
     let chosenContact = (this.state.contact != null ? this.state.contact.firstName : null);
     let contactCheck = (this.state.contact != null ? checkIcon : null);
 
@@ -111,7 +146,7 @@ export default class TripSummary extends Component {
                 <Text style={styles.tripDetailText}>Where are you going?</Text>
                 <View style = {styles.chosenValues}>
                   <Text style={styles.chosenValuesText}>
-                    {chosenLocationLat},{chosenLocationLon}
+                    {chosenLocationLat}{chosenLocationLon}
                   </Text>
                   {locationCheck}
                 </View>
@@ -137,7 +172,12 @@ export default class TripSummary extends Component {
                 onPress={this.navReturn.bind(this)}>
               <View style = {styles.innerDetail}>
                 <Text style={styles.tripDetailText}>When will you be back?</Text>
-                {returnCheck}
+                <View style = {styles.chosenValues}>
+                  <Text style={styles.chosenValuesText}>
+                    {chosenReturnDate}{chosenReturnTime}
+                  </Text>
+                  {returnCheck}
+                </View>
               </View>
             </TouchableHighlight>
             <TouchableHighlight

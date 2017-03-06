@@ -2,6 +2,7 @@
 
 var Trip = require('../models/Trip')
 var User = require('../models/User')
+var AlertService = require('./AlertService')
 
 /**
  * Create `Trip` for a specific `User`
@@ -18,6 +19,7 @@ exports.createTrip = function (args, res, next) {
     contactPhone: params.contactPhone,
     contactEmail: params.contactEmail,
     note: params.note,
+    completed: false,
     startingLocation: {
       coordinates: [params.startingLocation.latitude,
         params.startingLocation.longitude]}
@@ -43,6 +45,9 @@ exports.createTrip = function (args, res, next) {
             handleError(res, err)
           }
         })
+          // Create text Alert
+        scheduleAlerts(newTrip)
+        confirmEmergencyContact(newTrip, user)
         console.log('Trip created!')
         res.setHeader('Content-Type', 'application/json')
         res.end(JSON.stringify(newTrip))
@@ -60,7 +65,6 @@ exports.deleteTrip = function (args, res, next) {
    **/
    // TODO: need permissions on who can do this....
   var tripId = args.tripId.value
-  console.log(tripId)
   Trip.findById(tripId, function (err, trip) {
     if (err) {
       return handleError(res, err)
@@ -83,24 +87,13 @@ exports.deleteTrip = function (args, res, next) {
         if (err) {
           return handleError(res, err)
         }
+        // Cancel all alerts
+        cancelAlerts(trip._id)
+        createCancelMessage(trip.contactPhone, trip.contactEmail)
         res.end('Trip deleted')
       })
     }
   })
-
-  //
-  //  Trip.findByIdAndRemove(tripId, function(err) {
-  //    if(err){
-  //      console.log(err);
-  //      res.statusCode = 401;
-  //      res.statusMessage = 'Bad request';
-  //      res.end()
-  //    }
-  //    //Also delete from user
-  //    User.findById
-  //    console.log("Trip deleted");
-  //    res.end("Trip deleted");
-  //  });
 }
 
 exports.getTrip = function (args, res, next) {
@@ -153,18 +146,78 @@ exports.updateTrip = function (args, res, next) {
       trip.contactPhone = params.contactPhone || trip.contactPhone
       trip.startingLocation = params.startingLocation ? updateCoordinates(params.startingLocation) : trip.startingLocation
       trip.note = params.note || trip.note
+      trip.completed = params.completed || trip.completed
 
       trip.save(function (err) {
         if (err) {
           handleError(res, err)
           return
         }
+        // If trip is completed cancel your
+        // alerts
+        if (trip.completed) {
+          console.log('Trip completed, cancelling alerts!')
+          cancelAlerts(trip._id)
+          createReturnedSafelyAlerts(trip.contactPhone, trip.contactEmail)
+        }
+        // If return time was updated, update alerts
+        if (params.returnTime) {
+          console.log('Im updating return time')
+          updateAlerts(trip)
+        }
+
         console.log('Trip updated!')
         res.setHeader('Content-Type', 'application/json')
         res.end(JSON.stringify(trip))
       })
     }
   })
+}
+
+var confirmEmergencyContact = function (trip, user) {
+  AlertService.confirmEmergencyContactSMS(trip.contactPhone, user)
+}
+
+var scheduleAlerts = function (trip) {
+  scheduleSMSAlert(trip._id + '_SMS', trip.contactPhone, trip.returnTime)
+  scheduleEmailAlert(trip._id + '_EMAIL', trip.contactEmail, trip.returnTime)
+}
+
+// ID is a string made up of tripID_EMAIL
+var scheduleEmailAlert = function (id, emailAddress, triggerTime) {
+  AlertService.createEmailAlert(id, emailAddress, triggerTime)
+}
+
+// ID is a string made up of tripID_SMS
+// Push it into the scheduler
+var scheduleSMSAlert = function (id, phoneNumber, triggerTime) {
+  AlertService.createSMSAlert(id, phoneNumber, triggerTime)
+}
+
+// Update Alerts
+var updateAlerts = function (trip) {
+  // First cancel current alerts
+  cancelAlerts(trip._id)
+  // Then reschedule them!
+  scheduleAlerts(trip)
+}
+
+// Cancel scheduled alerts for a trip
+var cancelAlerts = function (tripID) {
+  // Cancel all scheduled alerts
+  AlertService.cancelAlert(tripID + '_SMS')
+  AlertService.cancelAlert(tripID + '_EMAIL')
+}
+
+var createCancelMessage = function (contactPhone, contactEmail) {
+  AlertService.sendCancelSMS(contactPhone)
+  AlertService.sendCancelEmail(contactEmail)
+}
+
+// User does not get one
+var createReturnedSafelyAlerts = function (contactPhone, contactEmail) {
+  AlertService.sendReturnedSafeSMS(contactPhone)
+  AlertService.sendReturnedSafeEmail(contactEmail)
 }
 
 var handleError = function (res, error) {

@@ -20,11 +20,9 @@ exports.createUser = function (args, res, next) {
   User.findOrCreate({email: params.email}, newUser,
     function (err, user, created) {
       if (err) {
-        console.log('I died')
-        console.log(err)
         if (!err.errors) {
         // duplicate user name
-          console.log('duplicate user name')
+          console.log('duplicate user name or email')
           res.statusCode = 401
           res.statusMessage = 'Bad request'
           res.end('userName already exists')
@@ -128,7 +126,7 @@ exports.getUser = function (args, res, next) {
       res.end('User does not exist')
     } else {
       res.setHeader('Content-Type', 'application/json')
-      res.end(JSON.stringify(user))
+      res.end(JSON.stringify(user[0]))
     }
   })
 }

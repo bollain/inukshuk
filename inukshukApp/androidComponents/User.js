@@ -5,19 +5,18 @@ export default class User extends Component {
   constructor(props){
     super(props);
     this.state = {
-      user: {
-        id: this.props.user._id,
-        userName: this.props.user.userName,
-        firstName: this.props.user.firstName,
-        lastName: this.props.user.lastName,
-        email: this.props.user.email,
-        phoneNumber: this.props.user.phoneNumber,
-      }
+      id: this.props.user._id,
+      userName: this.props.user.userName,
+      firstName: this.props.user.firstName,
+      lastName: this.props.user.lastName,
+      email: this.props.user.email,
+      phoneNumber: this.props.user.phoneNumber,
     }
     this.set = this.set.bind(this);
   }
   /**
   * updating user account from profile page
+  * only email and phone number can be updated by design
   **/
   set() {
     this.props.set('user', JSON.stringify(this.state.user))
@@ -29,12 +28,12 @@ export default class User extends Component {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            id: this.state.user.id,
-            userName: this.state.user.userName,
-            firstName: this.state.user.firstName,
-            lastName: this.state.user.lastName,
-            email: this.state.user.email,
-            phoneNumber: this.state.user.phoneNumber,
+            id: this.state.id,
+            userName: "",
+            firstName: "",
+            lastName: "",
+            email: this.state.email,
+            phoneNumber: this.state.phoneNumber,
         })
       })
       .then(handleErrors)
@@ -93,18 +92,21 @@ export default class User extends Component {
     return(
       <View style = { {padding: 10}}>
          <Text style={styles.title}> Your Account </Text>
-         <Text> Username </Text>
-         <TextInput defaultValue={this.state.user.userName} onChangeText={(text) => this.setState({userName: text})}/>
-         <Text> First Name </Text>
-         <TextInput defaultValue={this.state.user.firstName} onChangeText={(text) => this.setState({firstName: text})}/>
-         <Text> Last Name </Text>
-         <TextInput defaultValue={this.state.user.lastName} onChangeText={(text) => this.setState({lastName: text})}/>
-         <Text> Email </Text>
-         <TextInput defaultValue={this.state.user.email} onChangeText={(text) => this.setState({email: text})}/>
-         <Text> Contact Number </Text>
-         <TextInput defaultValue={this.state.user.phoneNumber} onChangeText={(text) => this.setState({phoneNumber: text})}/>
+         <Text style={styles.subTitle}> Username </Text>
+         <Text style={styles.field}> {this.state.userName}</Text>
+         <Text style={styles.subTitle}> First Name </Text>
+         <Text style={styles.field}> {this.state.firstName}</Text>
+         <Text style={styles.subTitle}> Last Name </Text>
+         <Text style={styles.field}> {this.state.lastName}</Text>
+         <Text style={styles.subTitle}> Email</Text>
+         <TextInput defaultValue={this.state.email}
+                    onChangeText={(text) => this.setState({email: text})}/>
+         <Text style={styles.subTitle}> Contact Number</Text>
+         <TextInput defaultValue={this.state.phoneNumber}
+                    onChangeText={(text) => this.setState({phoneNumber: text})}/>
          <Text style={styles.saveBotton} onPress={()=> this.set()}> Save </Text>
-         <Text style={[styles.saveBotton, styles.backBotton]} onPress={()=> _navigator.pop()}> Back </Text>
+         <Text style={[styles.saveBotton, styles.backBotton]}
+               onPress={()=> _navigator.pop()}> Back </Text>
       </View>
   )};
 }
@@ -121,6 +123,15 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
+  },
+  subTitle: {
+    fontSize: 18,
+    marginBottom: 4,
+    marginTop: 10,
+  },
+  field: {
+    fontSize: 18,
+    color: 'black',
   },
   saveBotton: {
     fontSize: 18,

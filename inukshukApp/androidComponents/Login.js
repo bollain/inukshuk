@@ -29,7 +29,7 @@ export default class Login extends Component {
         })
     }
     login() {
-      fetch('http://128.189.243.148:8080/login', {
+      fetch('http://localhost:8080/login', {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
@@ -41,10 +41,17 @@ export default class Login extends Component {
       })
      .then(handleErrors)
      .then(response => response.json())
+     .then(responseJson => {
+             _navigator.push({
+               id: 'tripSummary',
+               user: responseJson[0],
+               });
+            })
     }
 
+    // Assuming first user is created already (can be done through sign up)
     loginMock() {
-      fetch('http://192.168.1.73:8080/users/9', {
+      fetch('http://localhost:8080/users/0', {
       })
       .then(handleErrors)
       .then(response => response.json())

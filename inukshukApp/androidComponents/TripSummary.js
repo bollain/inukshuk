@@ -144,7 +144,7 @@ export default class TripSummary extends Component {
 
   startTrip() {
     console.log(this.props.user);
-    fetch('http://192.168.1.73:8080/trips', {
+    fetch('http://localhost:8080/trips', {
       method: 'POST',
       headers: {
           'Accept': 'application/json',

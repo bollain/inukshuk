@@ -32,7 +32,7 @@ export default class SignUp extends Component {
     * POST /users
     **/
     async execute(navigator) {
-      fetch('http://192.168.1.73:8080/users', {
+      fetch('http://localhost:8080/users', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',

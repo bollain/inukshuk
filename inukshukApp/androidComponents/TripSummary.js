@@ -75,7 +75,7 @@ export default class TripSummary extends Component {
   }
 
   async setSummaryLocation(currentLocation) {
-    await this.setState({location: currentLocation});
+    await this.setState({location: JSON.parse(currentLocation)});
   }
 
   async setSummaryContact(currentContact) {
@@ -90,6 +90,8 @@ export default class TripSummary extends Component {
     // Set check marks if details have been provided
     let noteCheck = (this.state.note != null ? checkIcon : null);
     let locationCheck = (this.state.location != null ? checkIcon : null);
+    let chosenLocationLat = (this.state.location != null ? this.state.location.latitude.toFixed(4) : null);
+    let chosenLocationLon = (this.state.location != null ? this.state.location.longitude.toFixed(4) : null);
     let returnCheck = (this.state.return != null ? checkIcon : null);
     let chosenContact = (this.state.contact != null ? this.state.contact.firstName : null);
     let contactCheck = (this.state.contact != null ? checkIcon : null);
@@ -107,7 +109,12 @@ export default class TripSummary extends Component {
                 onPress={this.navLocation.bind(this)}>
               <View style = {styles.innerDetail}>
                 <Text style={styles.tripDetailText}>Where are you going?</Text>
-                {locationCheck}
+                <View style = {styles.chosenValues}>
+                  <Text style={styles.chosenValuesText}>
+                    {chosenLocationLat},{chosenLocationLon}
+                  </Text>
+                  {locationCheck}
+                </View>
               </View>
             </TouchableHighlight>
             <TouchableHighlight
@@ -117,7 +124,7 @@ export default class TripSummary extends Component {
               <View style = {styles.innerDetail}>
                 <Text style={styles.tripDetailText}>Who should know?</Text>
                 <View style = {styles.chosenValues}>
-                  <Text style={styles.tripDetailText}>
+                  <Text style={styles.chosenValuesText}>
                     {chosenContact}
                   </Text>
                   {contactCheck}
@@ -189,6 +196,10 @@ const styles = StyleSheet.create({
    chosenValues: {
      flexDirection: 'row',
      justifyContent: 'flex-end',
+   },
+   chosenValuesText: {
+     marginRight:5,
+     marginTop:3,
    },
    startContainer: {
      flex: 1,

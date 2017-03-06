@@ -23,8 +23,8 @@ export default class Location extends Component {
     if (this.props.location != null) {
       this.state = {
         region: {
-          latitude: parseFloat(this.props.location.split(',')[0]),
-          longitude: parseFloat(this.props.location.split(',')[1]),
+          latitude: LATITUDE,
+          longitude: LONGITUDE,
           latitudeDelta: LATITUDE_DELTA,
           longitudeDelta: LONGITUDE_DELTA,
         },
@@ -46,8 +46,8 @@ export default class Location extends Component {
   }
 
   set() {
-    this.props.set('location', this.state.region.latitude + ',' + this.state.region.longitude)
-    .then(this.props.callback(this.state.region.latitude + ',' + this.state.region.longitude))
+    this.props.set('location', JSON.stringify(this.state.region))
+    .then(this.props.callback(JSON.stringify(this.state.region)))
     .then(_navigator.pop());
   }
   remove() {

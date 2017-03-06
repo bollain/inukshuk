@@ -65,6 +65,16 @@ class inukshukApp extends Component {
     }
   }
 
+  async multiRemove(keys) {
+    try {
+      await AsyncStorage.multiRemove(keys);
+      console.log('multiremove');
+    } catch (error) {
+      Alert.alert('Error removing ' + keys);
+      console.error(error);
+    }
+  }
+
   async set(key, value) {
     try {
       await AsyncStorage.setItem(key, value);
@@ -94,6 +104,7 @@ class inukshukApp extends Component {
             title="Summary"
             get={this.get.bind(this)}
             multiGet={this.multiGet.bind(this)}
+            multiRemove={this.multiRemove.bind(this)}
           />
         );
       case 'location':

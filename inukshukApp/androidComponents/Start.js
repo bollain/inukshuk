@@ -29,7 +29,7 @@ export default class Start extends Component {
   }
 
   render() {
-    console.log('rendering start');
+    console.log(this.props);
     return (
       <View style={styles.container}>
         <ToolbarAndroid style={styles.toolbar}
@@ -42,7 +42,7 @@ export default class Start extends Component {
                         onIconClicked={this.props.navigator.pop}
                         titleColor={'#FFFFFF'}/>
         <View style={styles.textContainer}>
-          <Text>You told {this.props.contact} that you would be back from {this.props.location} by {this.props.return}</Text>
+          <Text>You told {this.props.contact.firstName} that you would be back from {this.props.location.latitute},{this.props.location.longitude} by {this.props.return.month}</Text>
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={styles.submit}

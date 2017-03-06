@@ -1,19 +1,10 @@
 import React, { Component, PropTypes } from 'react';
-import { View, ScrollView, Text, TouchableHighlight, ToolbarAndroid, StyleSheet, Alert, Button, TouchableOpacity, Image, AsyncStorage } from 'react-native';
+import { View, ScrollView, Text, TouchableHighlight, ToolbarAndroid, StyleSheet, Alert, Button, TouchableOpacity, Image, AsyncStorage, Modal } from 'react-native';
 
 var nativeImageSource = require('nativeImageSource');
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 const checkIcon = <Icon name="check-circle" size={24} color="green" />;
-
-var weekdayArray = new Array(7);
-weekdayArray[0] = "Sunday";
-weekdayArray[1] = "Monday";
-weekdayArray[2] = "Tuesday";
-weekdayArray[3] = "Wednesday";
-weekdayArray[4] = "Thursday";
-weekdayArray[5] = "Friday";
-weekdayArray[6] = "Saturday";
 
 var monthArray = new Array();
 monthArray[0] = "Jan";
@@ -40,12 +31,24 @@ export default class TripSummary extends Component {
       contact: null,
       return: null,
       note: null,
+      modalVisible: false,
     };
     console.log('constructing summary')
     this.setSummaryNote = this.setSummaryNote.bind(this);
     this.setSummaryLocation = this.setSummaryLocation.bind(this);
     this.setSummaryReturn = this.setSummaryReturn.bind(this);
     this.setSummaryContact = this.setSummaryContact.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.multiGet(['location','contact','return','note']).then((response => {
+      this.setState({
+        location: JSON.parse(response[0][1]),
+        contact: JSON.parse(response[1][1]),
+        return: JSON.parse(response[2][1]),
+        note: response[3][1],
+      });
+    }));
   }
 
   navLocation(){
@@ -85,15 +88,34 @@ export default class TripSummary extends Component {
     });
   }
   navStart(){
-    this.props.multiGet(['location','contact','return','notes']).then((response) => {
+    console.log('navstart');
+    if (this.state.location != null && this.state.contact != null && this.state.return != null && this.state.note != null) {
       this.props.navigator.push({
         id: 'start',
-        location: response[0][1],
-        contact: response[1][1],
-        return: response[2][1],
-        note: response[3][1],
+        location: this.state.location,
+        contact: this.state.contact,
+        return: this.state.return,
+        note: this.state.note,
       });
-    });
+    } else {
+      Alert.alert('Please fill in all trip details before proceeding')
+    }
+  }
+
+  clearTrip() {
+    this.props.multiRemove(['location','contact','return','note']).then((response => {
+      this.setState({
+        location: null,
+        contact: null,
+        return: null,
+        note: null,
+      });
+    }));
+    this.setModalVisible(!this.state.modalVisible);
+  }
+
+  setModalVisible(visible) {
+    this.setState({modalVisible: visible});
   }
 
   async setSummaryNote(currentNote) {
@@ -191,14 +213,75 @@ export default class TripSummary extends Component {
             </TouchableHighlight>
           </ScrollView>
         </View>
-        <View style={styles.startContainer}>
-          <TouchableOpacity
-            style={styles.start}
-            onPress={this.navStart.bind(this)}
-            activeOpacity={.8}>
-          <Text style={styles.startText}>Submit</Text>
-          </TouchableOpacity>
+        <View style={styles.buttons}>
+          <View style={styles.clearContainer}>
+            <TouchableOpacity
+              style={styles.clear}
+              onPress={() => this.setModalVisible(!this.state.modalVisible)}
+              activeOpacity={.8}>
+              <Text style={styles.startText}>Clear</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.startContainer}>
+            <TouchableOpacity
+              style={styles.start}
+              onPress={this.navStart.bind(this)}
+              activeOpacity={.8}>
+              <Text style={styles.startText}>Submit</Text>
+            </TouchableOpacity>
+          </View>
         </View>
+        <Modal
+          animationType={"fade"}
+          transparent={true}
+          visible={this.state.modalVisible}
+          onRequestClose={() => {alert("Modal has been closed.")}}
+          >
+         <View style={{
+           flex: 1,
+           flexDirection: 'column',
+           justifyContent: 'center',
+           alignItems: 'center',
+           backgroundColor: 'rgba(0, 0, 0, 0.5)'
+         }}>
+          <View style={{
+            width: 300,
+            justifyContent: 'flex-start',
+            alignItems: 'stretch',
+            backgroundColor: 'white',
+          }}>
+            <Text style={{
+              fontSize: 20,
+              fontWeight: 'bold',
+              textAlign: 'center',
+              margin: 5,
+            }}>
+              Are you sure you want to clear this trip?
+            </Text>
+            <View style={{
+              borderTopWidth: 1,
+              borderTopColor: '#e6e6e6',
+            }}>
+              <TouchableHighlight
+                style={styles.modalOption}
+                underlayColor='#e6e6e6'
+                onPress={() => {
+                this.clearTrip()
+              }}>
+                <Text style={{fontSize: 16, textAlign: 'center'}}>Clear</Text>
+              </TouchableHighlight>
+              <TouchableHighlight
+                style={styles.modalOption}
+                underlayColor='#e6e6e6'
+                onPress={() => {
+                this.setModalVisible(!this.state.modalVisible)
+              }}>
+                <Text style={{fontSize: 16, textAlign: 'center'}}>Cancel</Text>
+              </TouchableHighlight>
+            </View>
+          </View>
+         </View>
+        </Modal>
       </View>
     );
   }
@@ -240,8 +323,11 @@ const styles = StyleSheet.create({
      marginRight:5,
      marginTop:3,
    },
+   buttons: {
+     flexDirection: 'row',
+   },
    startContainer: {
-     flex: 1,
+     flex: 3,
      justifyContent: 'flex-end',
      alignItems: 'stretch'
    },
@@ -249,10 +335,23 @@ const styles = StyleSheet.create({
      backgroundColor: 'green',
      padding: 18,
    },
+   clearContainer: {
+     flex: 1,
+     alignItems: 'stretch',
+   },
+   clear: {
+     backgroundColor: 'red',
+     padding: 18,
+   },
    startText: {
      fontSize: 16,
      fontWeight: 'bold',
      color: 'white',
      textAlign: 'center'
+   },
+   modalOption: {
+     padding: 15,
+     borderBottomColor: '#e6e6e6',
+     borderBottomWidth: 1,
    }
 });

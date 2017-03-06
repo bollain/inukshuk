@@ -13,6 +13,7 @@ import Return from './androidComponents/Return';
 import Note from './androidComponents/Note';
 import Login from './androidComponents/Login';
 import SignUp from './androidComponents/Signup';
+import User from './androidComponents/User';
 
 
 BackAndroid.addEventListener('hardwareBackPress', () => {

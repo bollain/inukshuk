@@ -51,7 +51,7 @@ export default class Login extends Component {
 
     // Assuming first user is created already (can be done through sign up)
     loginMock() {
-      fetch('http://localhost:8080/users/0', {
+      fetch('http://localhost:8080/users/9', {
       })
       .then(handleErrors)
       .then(response => response.json())

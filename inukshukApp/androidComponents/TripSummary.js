@@ -79,6 +79,10 @@ export default class TripSummary extends Component {
     await this.setState({return: currentReturn});
   }
 
+  async setSummaryUser(currentUser) {
+    await this.setState({user: currentUser});
+  }
+
   render() {
     // Set check marks if details have been provided
     let noteCheck = (this.state.note != null ? checkIcon : null);

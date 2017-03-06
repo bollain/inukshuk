@@ -31,7 +31,7 @@ export default class SignUp extends Component {
     /**
     * POST /users
     **/
-    async execute(navigator) {
+    async execute() {
       fetch('http://localhost:8080/users', {
         method: 'POST',
         headers: {
@@ -54,11 +54,18 @@ export default class SignUp extends Component {
           'Success!',
           'Your account has been created!',
           [
-            {text: 'OK', onPress: () => navigator.push({id: 'login'})},
+            {text: 'OK', onPress: () => _navigator.push({id: 'login'})},
           ],
           { cancelable: false }
         )
       })
+      .catch(function(error) {
+         Alert.alert( 'Error', error.message,
+           [
+             {text: 'OK', onPress: () => console.log('OK Pressed')},
+           ],
+           { cancelable: false })
+       })
     }
 
     render() {
@@ -70,9 +77,9 @@ export default class SignUp extends Component {
            <TextInput placeholder = "Your last name" onChangeText={(text) => this.setState({lName: text})}/>
            <TextInput placeholder = "Your email" onChangeText={(text) => this.setState({userEmail: text})}/>
            <TextInput placeholder = "Your contact number" onChangeText={(text) => this.setState({phoneNumber: text})}/>
-           <Text style={styles.signupBotton} onPress={()=> this.execute(this.props.navigator)}>
+           <Text style={styles.signupBotton} onPress={()=> this.execute()}>
             Create Account </Text>
-           <Text style={[styles.signupBotton, styles.cancelBotton]} onPress={()=> this.props.navigator.pop()}>
+           <Text style={[styles.signupBotton, styles.cancelBotton]} onPress={()=> _navigator.pop()}>
             Back </Text>
         </View>
         );

@@ -2,6 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="93d7e885-b9e1-40aa-9eb3-8ba3785d8dc0" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/inukshukApp/androidComponents/Login.js" afterPath="$PROJECT_DIR$/inukshukApp/androidComponents/Login.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/inukshukApp/androidComponents/Signup.js" afterPath="$PROJECT_DIR$/inukshukApp/androidComponents/Signup.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/inukshukApp/androidComponents/TripSummary.js" afterPath="$PROJECT_DIR$/inukshukApp/androidComponents/TripSummary.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/inukshukApp/androidComponents/User.js" afterPath="$PROJECT_DIR$/inukshukApp/androidComponents/User.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/inukshukApp/index.android.js" afterPath="$PROJECT_DIR$/inukshukApp/index.android.js" />
     </list>
@@ -61,8 +65,18 @@
       <file leaf-file-name="index.android.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/inukshukApp/index.android.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="401">
-              <caret line="151" column="18" selection-start-line="151" selection-start-column="18" selection-end-line="151" selection-end-column="18" />
+            <state relative-caret-position="476">
+              <caret line="157" column="29" selection-start-line="157" selection-start-column="29" selection-end-line="157" selection-end-column="29" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="User.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/User.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="195">
+              <caret line="41" column="20" selection-start-line="41" selection-start-column="20" selection-end-line="41" selection-end-column="20" />
               <folding />
             </state>
           </provider>
@@ -71,8 +85,28 @@
       <file leaf-file-name="TripSummary.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/TripSummary.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="234">
-              <caret line="146" column="9" selection-start-line="146" selection-start-column="4" selection-end-line="146" selection-end-column="9" />
+            <state relative-caret-position="120">
+              <caret line="8" column="34" selection-start-line="8" selection-start-column="34" selection-end-line="8" selection-end-column="34" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Location.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Location.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="84">
+              <caret line="25" column="18" selection-start-line="25" selection-start-column="10" selection-end-line="25" selection-end-column="18" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Login.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Login.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="780">
+              <caret line="52" column="17" selection-start-line="52" selection-start-column="17" selection-end-line="52" selection-end-column="17" />
               <folding />
             </state>
           </provider>
@@ -81,18 +115,8 @@
       <file leaf-file-name="Note.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Note.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="15" column="43" selection-start-line="15" selection-start-column="4" selection-end-line="15" selection-end-column="43" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Login.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Login.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="234">
-              <caret line="90" column="62" selection-start-line="90" selection-start-column="57" selection-end-line="90" selection-end-column="62" />
+            <state relative-caret-position="360">
+              <caret line="50" column="26" selection-start-line="50" selection-start-column="26" selection-end-line="50" selection-end-column="26" />
               <folding />
             </state>
           </provider>
@@ -101,18 +125,8 @@
       <file leaf-file-name="Signup.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Signup.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="31" column="17" selection-start-line="31" selection-start-column="17" selection-end-line="31" selection-end-column="17" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="User.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/User.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="18" column="5" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="5" />
+            <state relative-caret-position="-181">
+              <caret line="50" column="40" selection-start-line="50" selection-start-column="40" selection-end-line="50" selection-end-column="40" />
               <folding />
             </state>
           </provider>
@@ -257,11 +271,11 @@
         <option value="$PROJECT_DIR$/inukshukApp/Login.js" />
         <option value="$PROJECT_DIR$/inukshukApp/package.json" />
         <option value="$PROJECT_DIR$/inukshukApp/androidComponents/Trip.js" />
-        <option value="$PROJECT_DIR$/inukshukApp/androidComponents/Login.js" />
-        <option value="$PROJECT_DIR$/inukshukApp/androidComponents/TripSummary.js" />
-        <option value="$PROJECT_DIR$/inukshukApp/androidComponents/Signup.js" />
         <option value="$PROJECT_DIR$/inukshukApp/index.android.js" />
+        <option value="$PROJECT_DIR$/inukshukApp/androidComponents/TripSummary.js" />
         <option value="$PROJECT_DIR$/inukshukApp/androidComponents/User.js" />
+        <option value="$PROJECT_DIR$/inukshukApp/androidComponents/Signup.js" />
+        <option value="$PROJECT_DIR$/inukshukApp/androidComponents/Login.js" />
       </list>
     </option>
   </component>
@@ -839,14 +853,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Location.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="174">
-          <caret line="25" column="18" selection-start-line="25" selection-start-column="10" selection-end-line="25" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Contact.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
@@ -855,50 +861,58 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Note.js">
+    <entry file="file://$PROJECT_DIR$/inukshukApp/index.android.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" column="43" selection-start-line="15" selection-start-column="4" selection-end-line="15" selection-end-column="43" />
+        <state relative-caret-position="476">
+          <caret line="157" column="29" selection-start-line="157" selection-start-column="29" selection-end-line="157" selection-end-column="29" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/TripSummary.js">
+    <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Note.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="146" column="9" selection-start-line="146" selection-start-column="4" selection-end-line="146" selection-end-column="9" />
+        <state relative-caret-position="360">
+          <caret line="50" column="26" selection-start-line="50" selection-start-column="26" selection-end-line="50" selection-end-column="26" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Signup.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="31" column="17" selection-start-line="31" selection-start-column="17" selection-end-line="31" selection-end-column="17" />
+        <state relative-caret-position="-181">
+          <caret line="50" column="40" selection-start-line="50" selection-start-column="40" selection-end-line="50" selection-end-column="40" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/inukshukApp/index.android.js">
+    <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/TripSummary.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="401">
-          <caret line="151" column="18" selection-start-line="151" selection-start-column="18" selection-end-line="151" selection-end-column="18" />
+        <state relative-caret-position="120">
+          <caret line="8" column="34" selection-start-line="8" selection-start-column="34" selection-end-line="8" selection-end-column="34" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/User.js">
+    <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Location.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="18" column="5" selection-start-line="18" selection-start-column="5" selection-end-line="18" selection-end-column="5" />
+        <state relative-caret-position="84">
+          <caret line="25" column="18" selection-start-line="25" selection-start-column="10" selection-end-line="25" selection-end-column="18" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Login.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="90" column="62" selection-start-line="90" selection-start-column="57" selection-end-line="90" selection-end-column="62" />
+        <state relative-caret-position="780">
+          <caret line="52" column="17" selection-start-line="52" selection-start-column="17" selection-end-line="52" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/User.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="41" column="20" selection-start-line="41" selection-start-column="20" selection-end-line="41" selection-end-column="20" />
           <folding />
         </state>
       </provider>

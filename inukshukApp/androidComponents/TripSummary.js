@@ -3,6 +3,8 @@ import { View, ScrollView, Text, TouchableHighlight, ToolbarAndroid, StyleSheet,
 
 var nativeImageSource = require('nativeImageSource');
 
+var localIp = '192.168.1.73';
+
 import Icon from 'react-native-vector-icons/MaterialIcons';
 const checkIcon = <Icon name="check-circle" size={24} color="green" />;
 
@@ -155,7 +157,7 @@ export default class TripSummary extends Component {
 
   startTrip() {
     console.log(this.props.user);
-    fetch('http://localhost:8080/trips', {
+    fetch('http://' + localIp + ':8080/trips', {
       method: 'POST',
       headers: {
           'Accept': 'application/json',
@@ -171,7 +173,8 @@ export default class TripSummary extends Component {
             latitude: 49.2504,
             longitude: -123.1094,
           },
-          note: this.state.note,
+          note: "am all good!",
+          completed: false,
       })
     })
     .then(handleErrors)

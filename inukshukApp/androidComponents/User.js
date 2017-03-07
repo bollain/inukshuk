@@ -42,7 +42,7 @@ export default class User extends Component {
   set() {
     this.props.set('user', JSON.stringify(this.state.user))
     .then(
-      fetch('http://localhost:8080/users', {
+      fetch('http://' + localIp + ':8080//users', {
         method: 'PUT',
         headers: {
             'Accept': 'application/json',

@@ -81,6 +81,7 @@ class inukshukApp extends Component {
           <TripSummary
             navigator={navigator}
             title="Summary"
+            user={route.user}
             get={this.get.bind(this)}
             set={this.set.bind(this)}
           />

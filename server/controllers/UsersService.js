@@ -1,6 +1,8 @@
 'use strict'
 
 var User = require('../models/User')
+var validator = require('validator')
+var LOCALE = 'en-CA' // tech debt, put this in config or something
 
 exports.createUser = function (args, res, next) {
   /**
@@ -92,15 +94,40 @@ exports.updateUser = function (args, res, next) {
   var params = args.user.value
   var userId = params.id
   var phoneNumber = params.phoneNumber
-  User.findOneAndUpdate(userId, {phoneNumber: phoneNumber}, function (err, user) {
-    if (err) {
-      console.log(err)
-      res.statusCode = 401
-      res.statusMessage = 'Bad request'
-      res.end()
-    }
-    res.end('User updated')
-  })
+  var email = params.email
+  // Lets first validate the email / phone...apparently findByIdAndUpdate doesnt
+  // run the validators
+  if (!validator.isEmail(email)) {
+    res.statusCode = 400
+    res.statusMessage = 'Bad request'
+    res.end('Invalid email')
+    return
+  }
+  if (!validator.isMobilePhone(phoneNumber, LOCALE)) {
+    res.statusCode = 400
+    res.statusMessage = 'Bad request'
+    res.end('Invalid phone number')
+    return
+  }
+
+  User.findByIdAndUpdate(userId, {phoneNumber: phoneNumber, email: email}, {new: true},
+    function (err, user) {
+      if (err) {
+        console.log('Email in use')
+        res.statusCode = 400
+        res.statusMessage = 'Bad request'
+        res.end('User Email already in use')
+        return
+      } else if (!user) {
+        console.log('User does not exist')
+        res.statusCode = 404
+        res.statusMessage = 'Bad request'
+        res.end('User ID does not exist')
+        return
+      }
+      res.setHeader('Content-Type', 'application/json')
+      res.end(JSON.stringify(user))
+    })
 }
 
 exports.getUser = function (args, res, next) {

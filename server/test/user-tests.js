@@ -149,7 +149,7 @@ describe('Users', () => {
 
   // Test the PUT endpoint
   describe('/PUT user', () => {
-    it('it should update a user correctly', (done) => {
+    it('it should update a user phone correctly', (done) => {
       let existingUser = new User({
         userName: 'papaJohn',
         firstName: 'Papa',
@@ -180,7 +180,7 @@ describe('Users', () => {
   })
 
   describe('/PUT user', () => {
-    it('it should not update a user\'s email', (done) => {
+    it('it should update a user\'s email', (done) => {
       let existingUser = new User({
         userName: 'papaJohn',
         firstName: 'Papa',
@@ -209,10 +209,135 @@ describe('Users', () => {
             .get('/users/' + user._id)
             .end((err, res) => {
               res.should.have.status(200)
-              res.body.should.have.property('email').eql('bollain@gmail.com')
+              res.body.should.have.property('email').eql('papaJ@gmail.com')
               if (err) {}
               done()
             })
+      })
+    })
+  })
+  describe('/PUT user', () => {
+    it('it should not update with an invalid email', (done) => {
+      let existingUser = new User({
+        userName: 'papaJohn',
+        firstName: 'Papa',
+        lastName: 'John',
+        phoneNumber: '7785583029',
+        email: 'bollain@gmail.com'
+      })
+      existingUser.save((err, user) => {
+        let update = {
+          id: user._id,
+          userName: 'papaJohn',
+          firstName: 'Papa',
+          lastName: 'John',
+          phoneNumber: '7785583029',
+          email: 'papaJgmail.com'
+        }
+        if (err) {}
+        chai.request(index)
+              .put('/users')
+              .send(update)
+              .end((err, res) => {
+                res.should.have.status(400)
+                if (err) {}
+              })
+        done()
+      })
+    })
+  })
+
+  describe('/PUT user', () => {
+    it('it should not update with an invalid phoneNumber', (done) => {
+      let existingUser = new User({
+        userName: 'papaJohn',
+        firstName: 'Papa',
+        lastName: 'John',
+        phoneNumber: '7785583029',
+        email: 'bollain@gmail.com'
+      })
+      existingUser.save((err, user) => {
+        let update = {
+          id: user._id,
+          userName: 'papaJohn',
+          firstName: 'Papa',
+          lastName: 'John',
+          phoneNumber: '69',
+          email: 'bollain@gmail.com'
+        }
+        if (err) {}
+        chai.request(index)
+              .put('/users')
+              .send(update)
+              .end((err, res) => {
+                res.should.have.status(400)
+                if (err) {}
+              })
+        done()
+      })
+    })
+  })
+
+  describe('/PUT user', () => {
+    it('it should not update with a non existing user ID', (done) => {
+      let fakeUser = {
+        id: 69,
+        userName: 'papaJohn',
+        firstName: 'Papa',
+        lastName: 'John',
+        phoneNumber: '7785583029',
+        email: 'bollain@gmail.com'
+      }
+      chai.request(index)
+            .put('/users')
+            .send(fakeUser)
+            .end((err, res) => {
+              res.should.have.status(404)
+              if (err) {}
+            })
+      done()
+    })
+  })
+
+  describe('/PUT user', () => {
+    it('should not update with email that already exists', (done) => {
+      let firstUser = new User({
+        userName: 'papaJohn',
+        firstName: 'Papa',
+        lastName: 'John',
+        phoneNumber: '7785583029',
+        email: 'bollain@gmail.com'
+      })
+      firstUser.save((err, user) => {
+        if (err) { console.log(err) }
+          // Do nothing with user
+        if (user) {}
+        let secondUser = new User({
+          userName: 'miguelito',
+          firstName: 'Miguel',
+          lastName: 'Lopez',
+          phoneNumber: '7785584040',
+          email: 'miguel@gmail.com'
+        })
+        secondUser.save((err, user) => {
+          let update = {
+            id: user._id,
+            userName: 'miguelito',
+            firstName: 'Miguel',
+            lastName: 'Lopez',
+            phoneNumber: '7785584040',
+            email: 'bollain@gmail.com'
+          }
+          if (err) {}
+          chai.request(index)
+                .put('/users')
+                .send(update)
+                .end((err, res) => {
+                  res.should.have.status(400)
+                  if (err) {}
+                })
+          done()
+        })
       })
     })
   })

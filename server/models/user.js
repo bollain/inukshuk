@@ -3,8 +3,9 @@ var Schema = mongoose.Schema
 var autoIncrement = require('mongoose-auto-increment')
 var findOrCreate = require('mongoose-findorcreate')
 var validator = require('validator')
+var config = require('config')
 
-var connection = mongoose.createConnection('mongodb://localhost/inukshukdatabase')
+var connection = mongoose.createConnection(config.DBHost)
 
 // This is to make IDs start at 0 and increment
 // when new user created...good for MVP but perhaps good
@@ -17,6 +18,10 @@ var validatePhone = function (phoneNumber) {
   return validator.isMobilePhone(phoneNumber, LOCALE)
 }
 
+var validateEmail = function (email) {
+  return validator.isEmail(email)
+}
+
 var userSchema = new Schema({
   userName: {type: String, required: true, unique: true},
   firstName: {type: String, required: true},
@@ -26,7 +31,7 @@ var userSchema = new Schema({
     required: true,
     unique: true,
     trim: true,
-    validate: [validator.isEmail, 'Please fill a valid email address']
+    validate: [validateEmail, 'Please fill a valid email address']
   },
   phoneNumber: {
     type: String,

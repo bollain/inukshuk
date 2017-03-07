@@ -6,10 +6,13 @@ var swaggerTools = require('swagger-tools')
 var jsyaml = require('js-yaml')
 var fs = require('fs')
 var serverPort = 8080
+var config = require('config')
 var mongoose = require('mongoose')
 mongoose.Promise = global.Promise
 
-mongoose.connect('mongodb://localhost/inukshukdatabase')
+var db = config.get('DBHost') // Making sure connected to right DB
+console.log(db)
+mongoose.connect(config.DBHost)
 
 // swaggerRouter configuration
 var options = {
@@ -42,3 +45,5 @@ swaggerTools.initializeMiddleware(swaggerDoc, function (middleware) {
     console.log('Swagger-ui is available on http://localhost:%d/docs', serverPort)
   })
 })
+
+module.exports = app // For testing

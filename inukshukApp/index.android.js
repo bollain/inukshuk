@@ -14,6 +14,7 @@ import Note from './androidComponents/Note';
 import Login from './androidComponents/Login';
 import SignUp from './androidComponents/Signup';
 import Start from './androidComponents/Start';
+import User from './androidComponents/User';
 
 BackAndroid.addEventListener('hardwareBackPress', () => {
   if (_navigator.getCurrentRoutes().length === 1  ) {
@@ -105,6 +106,7 @@ class inukshukApp extends Component {
             get={this.get.bind(this)}
             multiGet={this.multiGet.bind(this)}
             multiRemove={this.multiRemove.bind(this)}
+            set={this.set.bind(this)}
           />
         );
       case 'location':
@@ -123,14 +125,20 @@ class inukshukApp extends Component {
         return (
         <Login
           navigator={navigator}
-          title="Login"
+          title="Log in"
+          get={this.get.bind(this)}
+          set={this.set.bind(this)}
+          callback={route.callback}
           />
         );
       case 'signup':
         return (
           <SignUp
             navigator={navigator}
-            title="SignUp"
+            title="Sign Up"
+            get={this.get.bind(this)}
+            set={this.set.bind(this)}
+            callback={route.callback}
           />
       );
       case 'contact':
@@ -181,6 +189,16 @@ class inukshukApp extends Component {
             get={this.get.bind(this)}
             set={this.set.bind(this)}
             remove={this.remove.bind(this)}
+          />
+        );
+      case 'user':
+        return (
+          <User
+            navigator={navigator}
+            title="Your Account"
+            user={route.user}
+            get={this.get}
+            set={this.set}
           />
         );
     }

@@ -23,8 +23,8 @@ export default class Location extends Component {
     if (this.props.location != null) {
       this.state = {
         region: {
-          latitude: LATITUDE,
-          longitude: LONGITUDE,
+          latitude: JSON.parse(this.props.location).latitude,
+          longitude: JSON.parse(this.props.location).longitude,
           latitudeDelta: LATITUDE_DELTA,
           longitudeDelta: LONGITUDE_DELTA,
         },

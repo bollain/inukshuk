@@ -17,6 +17,8 @@ import {
 
 import inukshukApp from '../index.android';
 
+var localIp = '192.168.1.94';
+
 export default class SignUp extends Component {
     constructor(props) {
         super(props);
@@ -31,46 +33,50 @@ export default class SignUp extends Component {
     /**
     * POST /users
     **/
-    execute() {
-        fetch('http://128.189.243.148:8080/users', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                id: 0,
-                userName: this.state.userName,
-                firstName: this.state.fName,
-                lastName: this.state.lName,
-                email: this.state.userEmail,
-                phoneNumber: this.state.phoneNumber,
-            })
+    async execute() {
+      fetch('http://' + localIp + ':8080/users', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            id: 0,
+            userName: this.state.userName,
+            firstName: this.state.fName,
+            lastName: this.state.lName,
+            email: this.state.userEmail,
+            phoneNumber: this.state.phoneNumber,
         })
-        .then(handleErrors)
-        .then(response => response.json())
-        .then(function(responseJson) {
-            Alert.alert(
-              'Success!',
-              'Your account has been created!',
-              [
-                {text: 'OK', onPress: () => console.log('OK')},
-              ],
-              { cancelable: false }
-            )
-            return responseJson.users
-        }).catch(function(error) {
-            Alert.alert(
-              'Invalid contact info',
-              error.message,
-              [
-                {text: 'OK', onPress: () => console.log('OK Pressed')},
-              ],
-              { cancelable: false }
-            )
-        })
+      })
+      .then(handleErrors)
+      .then(response => response.json())
+      .then(function(responseJson) {
+        Alert.alert(
+          'Success!',
+          'Your account has been created!',
+          [
+            {text: 'OK', onPress: () => _navigator.push({id: 'login'})},
+          ],
+          { cancelable: false }
+        )
+      })
+      .catch(function(error) {
+         Alert.alert( 'Error', error.message,
+           [
+             {text: 'OK', onPress: () => console.log('OK Pressed')},
+           ],
+           { cancelable: false })
+       });
+       this.props.set('user', JSON.stringify({
+           id: 0,
+           userName: this.state.userName,
+           firstName: this.state.fName,
+           lastName: this.state.lName,
+           email: this.state.userEmail,
+           phoneNumber: this.state.phoneNumber,
+       }));
     }
-
 
     render() {
         return (
@@ -81,8 +87,10 @@ export default class SignUp extends Component {
            <TextInput placeholder = "Your last name" onChangeText={(text) => this.setState({lName: text})}/>
            <TextInput placeholder = "Your email" onChangeText={(text) => this.setState({userEmail: text})}/>
            <TextInput placeholder = "Your contact number" onChangeText={(text) => this.setState({phoneNumber: text})}/>
-           <Text style={styles.signupBotton} onPress={()=> this.execute()}> Create Account </Text>
-           <Text style={[styles.signupBotton, styles.cancelBotton]} onPress={()=> this.props.navigator.pop()}> Back </Text>
+           <Text style={styles.signupBotton} onPress={()=> this.execute()}>
+            Create Account </Text>
+           <Text style={[styles.signupBotton, styles.cancelBotton]} onPress={()=> _navigator.pop()}>
+            Back </Text>
         </View>
         );
     }

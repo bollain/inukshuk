@@ -48,6 +48,7 @@ export default class Login extends Component {
         this.props.set('user', JSON.stringify(responseJson));
         _navigator.push({
           id: 'tripSummary',
+          user: responseJson
         });
        })
       .catch(function(error) {

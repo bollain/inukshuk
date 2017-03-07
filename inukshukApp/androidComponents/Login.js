@@ -32,7 +32,7 @@ export default class Login extends Component {
         })
     }
     login() {
-      fetch('http://' + localIp + ':8080/login', {
+      fetch('http://192.168.1.73:8080/login', {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
@@ -57,7 +57,7 @@ export default class Login extends Component {
 
     // Assuming first user is created already (can be done through sign up)
     loginMock() {
-      fetch('http://' + localIp + ':8080/users/28')
+      fetch('http://' + localIp + ':8080/users/0')
       .then(handleErrors)
       .then(response => response.json())
       .then(responseJson => {

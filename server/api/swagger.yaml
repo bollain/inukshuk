@@ -288,6 +288,8 @@ definitions:
         $ref: "#/definitions/geoLocation"
       note:
         type: "string"
+      completed:
+        type: "boolean"
   tripsCollection:
     type: "object"
     properties:

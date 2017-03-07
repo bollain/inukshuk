@@ -9,10 +9,13 @@ import {
   TextInput,
   View,
   Navigator,
-  TouchableHighlight
+  TouchableHighlight,
+  Alert,
 } from 'react-native';
 
 import User from './User';
+
+var localIp = '192.168.1.94';
 
 export default class Login extends Component {
     constructor(props) {
@@ -29,39 +32,44 @@ export default class Login extends Component {
         })
     }
     login() {
-      fetch('http://localhost:8080/login', {
+      fetch('http://' + localIp + ':8080/login', {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            userName: this.state.username,
-            password: this.state.password,
+          userName: this.state.username,
+          password: this.state.password,
         })
-      })
-     .then(handleErrors)
-     .then(response => response.json())
-     .then(responseJson => {
-             _navigator.push({
-               id: 'tripSummary',
-               user: responseJson[0],
-               });
-            })
-    }
-
-    // Assuming first user is created already (can be done through sign up)
-    loginMock() {
-      fetch('http://localhost:8080/users/0', {
       })
       .then(handleErrors)
       .then(response => response.json())
       .then(responseJson => {
+        this.props.set('user', JSON.stringify(responseJson[0]));
         _navigator.push({
           id: 'tripSummary',
-          user: responseJson[0],
-          });
+        });
        })
+      .catch(function(error) {
+        Alert.alert('Can not reach server');
+      });
+   }
 
+    // Assuming first user is created already (can be done through sign up)
+    loginMock() {
+      fetch('http://' + localIp + ':8080/users/0', {
+      })
+      .then(handleErrors)
+      .then(response => response.json())
+      .then(responseJson => {
+        this.props.set('user', JSON.stringify(responseJson[0]));
+        _navigator.push({
+          id: 'tripSummary',
+        });
+       })
+       .catch(function(error) {
+         Alert.alert('Can not reach server');
+       });
     }
 
     render() {
@@ -81,12 +89,12 @@ export default class Login extends Component {
         <TextInput
           style={styles.textContainer}
           placeholder="Email"
-          onChangeText={(text) => this.setState({text: username})}
+          onChangeText={(text) => this.setState({username: text})}
         />
         <TextInput
           style={styles.textContainer}
           placeholder="Password"
-          onChangeText={(text) => this.setState({text: password})}
+          onChangeText={(text) => this.setState({password: text})}
         />
         <Text style = {styles.button} onPress={()=> this.loginMock()}>
             LOGIN

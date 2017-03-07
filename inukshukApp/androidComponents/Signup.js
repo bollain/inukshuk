@@ -17,6 +17,8 @@ import {
 
 import inukshukApp from '../index.android';
 
+var localIp = '192.168.1.94';
+
 export default class SignUp extends Component {
     constructor(props) {
         super(props);
@@ -32,7 +34,7 @@ export default class SignUp extends Component {
     * POST /users
     **/
     async execute() {
-      fetch('http://localhost:8080/users', {
+      fetch('http://' + localIp + ':8080/users', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
@@ -65,7 +67,15 @@ export default class SignUp extends Component {
              {text: 'OK', onPress: () => console.log('OK Pressed')},
            ],
            { cancelable: false })
-       })
+       });
+       this.props.set('user', JSON.stringify({
+           id: 0,
+           userName: this.state.userName,
+           firstName: this.state.fName,
+           lastName: this.state.lName,
+           email: this.state.userEmail,
+           phoneNumber: this.state.phoneNumber,
+       }));
     }
 
     render() {

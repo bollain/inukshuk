@@ -45,7 +45,7 @@ export default class Login extends Component {
       .then(handleErrors)
       .then(response => response.json())
       .then(responseJson => {
-        this.props.set('user', JSON.stringify(responseJson[0]));
+        this.props.set('user', JSON.stringify(responseJson));
         _navigator.push({
           id: 'tripSummary',
         });
@@ -61,7 +61,7 @@ export default class Login extends Component {
       .then(handleErrors)
       .then(response => response.json())
       .then(responseJson => {
-        this.props.set('user', JSON.stringify(responseJson[0]));
+        this.props.set('user', JSON.stringify(responseJson));
         _navigator.push({
           id: 'tripSummary',
         });

@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react';
-import { AppRegistry, ListView, Navigator, View, StyleSheet, Text, Button, Alert, TouchableHighlight, TextInput} from 'react-native';
+import { AppRegistry, ListView, Navigator, View, StyleSheet, Text, Button, Alert, TouchableHighlight, TextInput, ToolbarAndroid} from 'react-native';
+
+var nativeImageSource = require('nativeImageSource');
 
 export default class User extends Component {
   constructor(props){
@@ -109,23 +111,33 @@ export default class User extends Component {
 
   render() {
     return(
-      <View style = { {padding: 10}}>
-         <Text style={styles.title}> Your Account </Text>
-         <Text style={styles.subTitle}> Username </Text>
-         <Text style={styles.field}> {this.state.userName}</Text>
-         <Text style={styles.subTitle}> First Name </Text>
-         <Text style={styles.field}> {this.state.firstName}</Text>
-         <Text style={styles.subTitle}> Last Name </Text>
-         <Text style={styles.field}> {this.state.lastName}</Text>
-         <Text style={styles.subTitle}> Email</Text>
-         <TextInput defaultValue={this.state.email}
-                    onChangeText={(text) => this.setState({email: text})}/>
-         <Text style={styles.subTitle}> Contact Number</Text>
-         <TextInput defaultValue={this.state.phoneNumber}
-                    onChangeText={(text) => this.setState({phoneNumber: text})}/>
-         <Text style={styles.saveBotton} onPress={()=> this.set()}> Save </Text>
-         <Text style={[styles.saveBotton, styles.backBotton]}
-               onPress={()=> _navigator.pop()}> Back </Text>
+      <View style = {styles.container}>
+        <ToolbarAndroid style={styles.toolbar}
+                        title={this.props.title}
+                        navIcon={nativeImageSource({
+                          android: 'ic_arrow_back_white_24dp',
+                          width: 64,
+                          height: 64
+                        })}
+                        onIconClicked={this.props.navigator.pop}
+                        titleColor={'#FFFFFF'}/>
+         <View style={styles.textContainer}>
+           <Text style={styles.subTitle}> Username </Text>
+           <Text style={styles.field}> {this.state.userName}</Text>
+           <Text style={styles.subTitle}> First Name </Text>
+           <Text style={styles.field}> {this.state.firstName}</Text>
+           <Text style={styles.subTitle}> Last Name </Text>
+           <Text style={styles.field}> {this.state.lastName}</Text>
+           <Text style={styles.subTitle}> Email</Text>
+           <TextInput style={{fontSize: 16}}
+                      defaultValue={this.state.email}
+                      onChangeText={(text) => this.setState({email: text})}/>
+           <Text style={styles.subTitle}> Contact Number</Text>
+           <TextInput style={{fontSize: 16}}
+                      defaultValue={this.state.phoneNumber}
+                      onChangeText={(text) => this.setState({phoneNumber: text})}/>
+           <Text style={styles.saveBotton} onPress={()=> this.set()}> Save </Text>
+         </View>
       </View>
   )};
 }
@@ -138,6 +150,19 @@ function handleErrors(response) {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: 'flex-start',
+    alignItems: 'stretch',
+  },
+  toolbar: {
+    height: 60,
+    backgroundColor: '#00aaf1',
+  },
+  textContainer: {
+    justifyContent: 'flex-start',
+    margin: 10,
+  },
   title: {
     fontSize: 20,
     textAlign: 'center',
@@ -160,9 +185,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#1e90ff',
     borderRadius: 5,
     alignSelf: 'stretch',
-
+    color: 'white',
+    textAlign: 'center',
   },
-  backBotton: {
-    backgroundColor: 'gainsboro',
-  }
 });

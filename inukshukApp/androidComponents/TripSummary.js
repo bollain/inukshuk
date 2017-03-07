@@ -60,7 +60,9 @@ export default class TripSummary extends Component {
     });
   }
   navUser(){
-    //TODO: set up profile button
+    this.props.navigator.push({
+      id: 'user',
+    })
   }
 
   async setSummaryNote(currentNote) {
@@ -93,7 +95,12 @@ export default class TripSummary extends Component {
       <View style={styles.container}>
         <ToolbarAndroid style={styles.toolbar}
                         title={this.props.title}
-                        titleColor={'#FFFFFF'}/>
+                        titleColor={'#FFFFFF'}
+                        actions={[{title: 'Profile',
+                                  icon: require('../img/ic_account_circle_white_24dp.png'),
+                                  show: 'always'}]}
+                        onActionSelected={this.navUser.bind(this)}/>
+
         <View style={styles.tripDetailsContainer}>
           <ScrollView>
             <TouchableHighlight

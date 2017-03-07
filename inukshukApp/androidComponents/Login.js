@@ -9,12 +9,13 @@ import {
   TextInput,
   View,
   Navigator,
-  TouchableHighlight
+  TouchableHighlight,
+  Alert,
 } from 'react-native';
 
 import User from './User';
 
-var localIp = 'localhost';
+var localIp = '192.168.1.94';
 
 export default class Login extends Component {
     constructor(props) {
@@ -37,19 +38,22 @@ export default class Login extends Component {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            userName: this.state.username,
-            password: this.state.password,
+          userName: this.state.username,
+          password: this.state.password,
         })
       })
-     .then(handleErrors)
-     .then(response => response.json())
-     .then(responseJson => {
-             _navigator.push({
-               id: 'tripSummary',
-               user: responseJson[0],
-               });
-            })
-    }
+      .then(handleErrors)
+      .then(response => response.json())
+      .then(responseJson => {
+        this.props.set('user', JSON.stringify(responseJson[0]));
+        _navigator.push({
+          id: 'tripSummary',
+        });
+       })
+      .catch(function(error) {
+        Alert.alert('Can not reach server');
+      });
+   }
 
     // Assuming first user is created already (can be done through sign up)
     loginMock() {
@@ -58,12 +62,14 @@ export default class Login extends Component {
       .then(handleErrors)
       .then(response => response.json())
       .then(responseJson => {
+        this.props.set('user', JSON.stringify(responseJson[0]));
         _navigator.push({
           id: 'tripSummary',
-          user: responseJson[0],
-          });
+        });
        })
-
+       .catch(function(error) {
+         Alert.alert('Can not reach server');
+       });
     }
 
     render() {

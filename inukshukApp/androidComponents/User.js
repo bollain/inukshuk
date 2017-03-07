@@ -5,15 +5,34 @@ export default class User extends Component {
   constructor(props){
     super(props);
     this.state = {
-      id: this.props.user._id,
-      userName: this.props.user.userName,
-      firstName: this.props.user.firstName,
-      lastName: this.props.user.lastName,
-      email: this.props.user.email,
-      phoneNumber: this.props.user.phoneNumber,
+      id: null,
+      userName: null,
+      firstName: null,
+      lastName: null,
+      email: null,
+      phoneNumber: null,
     }
     this.set = this.set.bind(this);
   }
+
+  componentDidMount() {
+    this.props.get('user').then((response) => {
+      console.log(response);
+      let JSONResponse = JSON.parse(response);
+      if (response != null) {
+        this.setState({
+          id: JSONResponse._id,
+          userName: JSONResponse.userName,
+          firstName: JSONResponse.firstName,
+          lastName: JSONResponse.lastName,
+          email: JSONResponse.email,
+          phoneNumber: JSONResponse.phoneNumber,
+        });
+      }
+    })
+    .catch((err) => console.error(err));
+  }
+
   /**
   * updating user account from profile page
   * only email and phone number can be updated by design

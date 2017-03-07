@@ -81,7 +81,6 @@ class inukshukApp extends Component {
           <TripSummary
             navigator={navigator}
             title="Summary"
-            user={route.user}
             get={this.get.bind(this)}
             set={this.set.bind(this)}
           />
@@ -103,6 +102,8 @@ class inukshukApp extends Component {
         <Login
           navigator={navigator}
           title="Log in"
+          get={this.get.bind(this)}
+          set={this.set.bind(this)}
           callback={route.callback}
           />
         );
@@ -111,6 +112,8 @@ class inukshukApp extends Component {
           <SignUp
             navigator={navigator}
             title="Sign Up"
+            get={this.get.bind(this)}
+            set={this.set.bind(this)}
             callback={route.callback}
           />
       );
@@ -155,10 +158,8 @@ class inukshukApp extends Component {
           <User
             navigator={navigator}
             title="Your Account"
-            user={route.user}
             get={this.get}
             set={this.set}
-            callback={route.callback}
           />
         );
     }

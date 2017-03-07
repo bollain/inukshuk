@@ -14,6 +14,8 @@ import {
 
 import User from './User';
 
+var localIp = 'localhost';
+
 export default class Login extends Component {
     constructor(props) {
       super(props);
@@ -29,7 +31,7 @@ export default class Login extends Component {
         })
     }
     login() {
-      fetch('http://localhost:8080/login', {
+      fetch('http://' + localIp + ':8080/login', {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
@@ -51,7 +53,7 @@ export default class Login extends Component {
 
     // Assuming first user is created already (can be done through sign up)
     loginMock() {
-      fetch('http://localhost:8080/users/0', {
+      fetch('http://' + localIp + ':8080/users/0', {
       })
       .then(handleErrors)
       .then(response => response.json())
@@ -81,12 +83,12 @@ export default class Login extends Component {
         <TextInput
           style={styles.textContainer}
           placeholder="Email"
-          onChangeText={(text) => this.setState({text: username})}
+          onChangeText={(text) => this.setState({username: text})}
         />
         <TextInput
           style={styles.textContainer}
           placeholder="Password"
-          onChangeText={(text) => this.setState({text: password})}
+          onChangeText={(text) => this.setState({password: text})}
         />
         <Text style = {styles.button} onPress={()=> this.loginMock()}>
             LOGIN

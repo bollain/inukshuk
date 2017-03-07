@@ -17,6 +17,8 @@ import {
 
 import inukshukApp from '../index.android';
 
+var localIp = 'lcoalhost';
+
 export default class SignUp extends Component {
     constructor(props) {
         super(props);
@@ -32,7 +34,7 @@ export default class SignUp extends Component {
     * POST /users
     **/
     async execute() {
-      fetch('http://localhost:8080/users', {
+      fetch('http://' + localIp + ':8080/users', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',

@@ -103,6 +103,7 @@ export default class TripSummary extends Component {
   }
   navUser(){
     this.props.get('user').then((response) => {
+      console.log(response);
       this.props.navigator.push({
         id: 'user',
         user: response,

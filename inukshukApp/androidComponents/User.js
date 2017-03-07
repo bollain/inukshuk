@@ -6,35 +6,19 @@ var nativeImageSource = require('nativeImageSource');
 export default class User extends Component {
   constructor(props){
     super(props);
+    console.log(this.props.user);
+    let jsonUser = JSON.parse(this.props.user);
+    console.log(jsonUser);
     this.state = {
-      id: this.props.user._id,
-      userName: this.props.user.userName,
-      firstName: this.props.user.firstName,
-      lastName: this.props.user.lastName,
-      email: this.props.user.email,
-      phoneNumber: this.props.user.phoneNumber,
+      id: jsonUser[0]._id,
+      userName: jsonUser[0].userName,
+      firstName: jsonUser[0].firstName,
+      lastName: jsonUser[0].lastName,
+      email: jsonUser[0].email,
+      phoneNumber: jsonUser[0].phoneNumber,
     }
     this.set = this.set.bind(this);
   }
-
-  // componentDidMount() {
-  //   console.log('mounting user');
-  //   this.props.get('user').then((response) => {
-  //     console.log(response);
-  //     let JSONResponse = JSON.parse(response);
-  //     if (response != null) {
-  //       this.setState({
-  //         id: JSONResponse._id,
-  //         userName: JSONResponse.userName,
-  //         firstName: JSONResponse.firstName,
-  //         lastName: JSONResponse.lastName,
-  //         email: JSONResponse.email,
-  //         phoneNumber: JSONResponse.phoneNumber,
-  //       });
-  //     }
-  //   })
-  //   .catch((err) => console.error(err));
-  // }
 
   /**
   * updating user account from profile page

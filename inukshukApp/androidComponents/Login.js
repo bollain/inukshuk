@@ -57,8 +57,7 @@ export default class Login extends Component {
 
     // Assuming first user is created already (can be done through sign up)
     loginMock() {
-      fetch('http://' + localIp + ':8080/users/0', {
-      })
+      fetch('http://' + localIp + ':8080/users/0')
       .then(handleErrors)
       .then(response => response.json())
       .then(responseJson => {
@@ -109,6 +108,7 @@ export default class Login extends Component {
 }
 
 function handleErrors(response) {
+
   if (!response.ok) {
     throw Error("Invalid user name and/or password");
   }

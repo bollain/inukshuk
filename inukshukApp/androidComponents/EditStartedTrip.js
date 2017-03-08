@@ -12,31 +12,39 @@ export default class EditStartedTrip extends Component {
   }
 /**
 * Handles trip edition from start page.
-* Currently only allows changing return time of trip
+* including trip completion, extension, and deletion
 **/
   editTrip(action) {
     var ApiMethod = '';
     var completion = false;
     var title = '';
     var message = '';
-
-    if (action === 'cancel') {
-        ApiMethod = 'DELETE';
-        title = 'Cancelling A Trip'
-        message = 'Are you sure you want to cancel the trip?'
-    }
-    else if (action === 'extend')
-      ApiMethod = 'PUT'
-    else if (action === 'completed') {
+    if (action === 'extend') {
       ApiMethod = 'PUT';
-      completion = true;
     }
+    else {
+      if (action === 'cancel') {
+          ApiMethod = 'DELETE';
+          title = 'Cancelling A Trip'
+          message = 'Are you sure you want to cancel the trip?'
+      }
+      else if (action === 'completed') {
+        ApiMethod = 'PUT';
+        completion = true;
+        title = 'Ending A Trip';
+        message = 'Are you sure you want to end this trip?'
+      }
+      // Double confirmation on API execution
+      Alert.alert(title, message, [
+         {text: 'OK', onPress: () => execute(ApiMethod, completion)},
+         {text: 'CANCEL', onPress: () => console.log('User cancel execution.')},
+         ],
+         {cancelable: false})
+    }
+  }
 
-    Alert.alert(title, message);
-   }
-
- execute(ApiMethod) {
-  fetch('http://192.168.1.73:8080/trip', {
+ execute(ApiMethod, completion) {
+  fetch('http://' + localIp + ':8080/trip', {
     method: ApiMethod,
     headers: {
         'Accept': 'application/json',
@@ -57,13 +65,20 @@ export default class EditStartedTrip extends Component {
     })
   })
   .then(handleErrors)
-  .then(response => response.json())
   .then(responseJson => {
-    this.props.set('user', JSON.stringify(responseJson));
-    _navigator.push({
-      id: 'tripSummary',
-      user: responseJson
-    });
+    if (ApiMethod === 'DELETE' ) {
+      _navigator.push({
+        id: 'tripSummary',
+        user: responseJson})}
+    else if (APIMethod === 'PUT' && completion) {
+      //this.props.set('trip', JSON.stringify(responseJson));
+      _navigator.push({
+        id: 'tripSummary',
+        user: responseJson})}
+    else if (APIMethod === 'PUT' && !completion) {
+      //this.props.set('trip', JSON.stringify(responseJson));
+      //TODO: put in proper modal for time extension
+      Alert.alert('Time extended by this much!')}
    })
   .catch(function(error) {
     Alert.alert('No Cellular Service', 'Can not reach server');

@@ -100,14 +100,14 @@ export default class User extends Component {
     return(
       <View style = {styles.container}>
         <ToolbarAndroid style={styles.toolbar}
-                        title={this.props.title}
-                        navIcon={nativeImageSource({
-                          android: 'ic_arrow_back_white_24dp',
-                          width: 64,
-                          height: 64
-                        })}
-                        onIconClicked={this.props.navigator.pop}
-                        titleColor={'#FFFFFF'}/>
+          title={this.props.title}
+          navIcon={nativeImageSource({
+            android: 'ic_arrow_back_white_24dp',
+            width: 64,
+            height: 64
+          })}
+          onIconClicked={this.props.navigator.pop}
+          titleColor={'#FFFFFF'}/>
          <View style={styles.textContainer}>
            <Text style={styles.subTitle}> Username </Text>
            <Text style={styles.field}> {this.state.userName}</Text>

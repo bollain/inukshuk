@@ -7,6 +7,7 @@ export default class Start extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      //trip: this.props.trip,
       return: this.props.return,
       timer: {
         hours: 12,
@@ -26,6 +27,86 @@ export default class Start extends Component {
     this.props.remove('return')
     .then(this.props.callback(null))
     .then(_navigator.pop());
+  }
+
+  /**
+  * Handles trip edition from start page.
+  * including trip completion, extension, and deletion
+  **/
+  editTrip(action) {
+    var ApiMethod = '';
+    var completion = false;
+    var title = '';
+    var message = '';
+
+    if (action === 'extend') {
+      ApiMethod = 'PUT';
+      //TODO: bring up modal for time to modify trip.return
+      execute(ApiMethod, completion)
+    }
+    else {
+      if (action === 'cancel') {
+          ApiMethod = 'DELETE';
+          title = 'Cancelling A Trip'
+          message = 'Are you sure you want to cancel the trip?'
+      }
+      else if (action === 'completed') {
+        ApiMethod = 'PUT';
+        completion = true;
+        title = 'Ending A Trip';
+        message = 'Are you sure you want to end this trip?'
+      }
+      // Double confirmation on API execution for deleting/completing trips
+      Alert.alert(title, message, [
+         {text: 'OK', onPress: () => execute(ApiMethod, completion)},
+         {text: 'CANCEL', onPress: () => console.log('User cancel execution.')},
+         ],
+         {cancelable: false})
+    }
+  }
+  /**
+  * API method call to server
+  * param: tripId, method, and trip completion status
+  **/
+  execute(ApiMethod, completion) {
+    fetch('http://' + localIp + ':8080/trips/{' + trip._id + '}', {
+      method: ApiMethod,
+      headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        tripId: this.state.tripId,
+        userId: this.state.userId,
+        returnTime: this.state.return,
+        contactEmail: this.state.contact.emails,
+        contactPhone: this.state.contact.phones,
+        startingLocation: {
+           latitude: this.state.location.latitude,
+           longitude: this.state.location.longitude,
+        },
+        note: '',
+        completed: completion
+      })
+    })
+    .then(handleErrors)
+    .then(responseJson => {
+      if (ApiMethod === 'DELETE' ) {
+        _navigator.push({
+          id: 'tripSummary',
+          user: responseJson})}
+      else if (APIMethod === 'PUT' && completion) {
+        //this.props.set('trip', JSON.stringify(responseJson));
+        _navigator.push({
+          id: 'tripSummary',
+          user: responseJson})}
+      else if (APIMethod === 'PUT' && !completion) {
+        //this.props.set('trip', JSON.stringify(responseJson));
+        Alert.alert('Time extended by this much!')}
+     })
+    .catch(function(error) {
+      Alert.alert('No Cellular Service', 'Can not reach server');
+    });
   }
 
   render() {

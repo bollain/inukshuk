@@ -103,6 +103,7 @@ class inukshukApp extends Component {
           <TripSummary
             navigator={navigator}
             title="Summary"
+            user={route.user}
             get={this.get.bind(this)}
             multiGet={this.multiGet.bind(this)}
             multiRemove={this.multiRemove.bind(this)}

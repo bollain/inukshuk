@@ -17,8 +17,14 @@ export default class EditStartedTrip extends Component {
   editTrip(action) {
     var ApiMethod = '';
     var completion = false;
-    if (action === 'cancel')
-      ApiMethod = 'DELETE';
+    var title = '';
+    var message = '';
+
+    if (action === 'cancel') {
+        ApiMethod = 'DELETE';
+        title = 'Cancelling A Trip'
+        message = 'Are you sure you want to cancel the trip?'
+    }
     else if (action === 'extend')
       ApiMethod = 'PUT'
     else if (action === 'completed') {
@@ -26,39 +32,44 @@ export default class EditStartedTrip extends Component {
       completion = true;
     }
 
-    fetch('http://192.168.1.73:8080/trip', {
-      method: ApiMethod,
-      headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        tripId: this.state.tripId,
-        userId: this.state.userId,
-        returnTime: this.state.return,
-        contactEmail: this.state.contact.emails,
-        contactPhone: this.state.contact.phones,
-        startingLocation: {
-           latitude: this.state.location.latitude,
-           longitude: this.state.location.longitude,
-        },
-        note: '',
-        completed: completion
-      })
-    })
-    .then(handleErrors)
-    .then(response => response.json())
-    .then(responseJson => {
-      this.props.set('user', JSON.stringify(responseJson));
-      _navigator.push({
-        id: 'tripSummary',
-        user: responseJson
-      });
-     })
-    .catch(function(error) {
-      Alert.alert('No Cellular Service', 'Can not reach server');
-    });
+    Alert.alert();
    }
+
+ execute() {
+  fetch('http://192.168.1.73:8080/trip', {
+    method: ApiMethod,
+    headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      tripId: this.state.tripId,
+      userId: this.state.userId,
+      returnTime: this.state.return,
+      contactEmail: this.state.contact.emails,
+      contactPhone: this.state.contact.phones,
+      startingLocation: {
+         latitude: this.state.location.latitude,
+         longitude: this.state.location.longitude,
+      },
+      note: '',
+      completed: completion
+    })
+  })
+  .then(handleErrors)
+  .then(response => response.json())
+  .then(responseJson => {
+    this.props.set('user', JSON.stringify(responseJson));
+    _navigator.push({
+      id: 'tripSummary',
+      user: responseJson
+    });
+   })
+  .catch(function(error) {
+    Alert.alert('No Cellular Service', 'Can not reach server');
+  });
+ }
+
  render() {
   return(
     <View>

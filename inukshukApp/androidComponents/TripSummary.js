@@ -356,6 +356,7 @@ const styles = StyleSheet.create({
    container: {
      ...StyleSheet.absoluteFillObject,
      justifyContent: 'flex-start',
+     backgroundColor: 'white',
    },
    toolbar: {
      backgroundColor: '#00aaf1',

@@ -10,12 +10,12 @@ export default class User extends Component {
     let jsonUser = JSON.parse(this.props.user);
     console.log(jsonUser);
     this.state = {
-      id: jsonUser[0]._id,
-      userName: jsonUser[0].userName,
-      firstName: jsonUser[0].firstName,
-      lastName: jsonUser[0].lastName,
-      email: jsonUser[0].email,
-      phoneNumber: jsonUser[0].phoneNumber,
+      id: jsonUser._id,
+      userName: jsonUser.userName,
+      firstName: jsonUser.firstName,
+      lastName: jsonUser.lastName,
+      email: jsonUser.email,
+      phoneNumber: jsonUser.phoneNumber,
     }
     this.set = this.set.bind(this);
   }
@@ -139,6 +139,7 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     justifyContent: 'flex-start',
     alignItems: 'stretch',
+    backgroundColor: 'white',
   },
   toolbar: {
     height: 60,

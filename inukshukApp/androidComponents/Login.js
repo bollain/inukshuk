@@ -32,7 +32,7 @@ export default class Login extends Component {
         })
     }
     login() {
-      fetch('http://' + localIp + ':8080/login', {
+      fetch('http://" + localIp + ":8080/login', {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
@@ -48,6 +48,7 @@ export default class Login extends Component {
         this.props.set('user', JSON.stringify(responseJson));
         _navigator.push({
           id: 'tripSummary',
+          user: responseJson
         });
        })
       .catch(function(error) {
@@ -64,6 +65,7 @@ export default class Login extends Component {
         this.props.set('user', JSON.stringify(responseJson));
         _navigator.push({
           id: 'tripSummary',
+          user: responseJson,
         });
        })
        .catch(function(error) {

@@ -158,6 +158,7 @@ const styles = StyleSheet.create({
      ...StyleSheet.absoluteFillObject,
      justifyContent: 'flex-start',
      alignItems: 'stretch',
+     backgroundColor: 'white',
    },
    toolbar: {
      height: 60,

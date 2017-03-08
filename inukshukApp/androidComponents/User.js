@@ -6,33 +6,18 @@ var nativeImageSource = require('nativeImageSource');
 export default class User extends Component {
   constructor(props){
     super(props);
+    console.log(this.props.user);
+    let jsonUser = JSON.parse(this.props.user);
+    console.log(jsonUser);
     this.state = {
-      id: null,
-      userName: null,
-      firstName: null,
-      lastName: null,
-      email: null,
-      phoneNumber: null,
+      id: jsonUser._id,
+      userName: jsonUser.userName,
+      firstName: jsonUser.firstName,
+      lastName: jsonUser.lastName,
+      email: jsonUser.email,
+      phoneNumber: jsonUser.phoneNumber,
     }
     this.set = this.set.bind(this);
-  }
-
-  componentDidMount() {
-    this.props.get('user').then((response) => {
-      console.log(response);
-      let JSONResponse = JSON.parse(response);
-      if (response != null) {
-        this.setState({
-          id: JSONResponse._id,
-          userName: JSONResponse.userName,
-          firstName: JSONResponse.firstName,
-          lastName: JSONResponse.lastName,
-          email: JSONResponse.email,
-          phoneNumber: JSONResponse.phoneNumber,
-        });
-      }
-    })
-    .catch((err) => console.error(err));
   }
 
   /**
@@ -154,6 +139,7 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     justifyContent: 'flex-start',
     alignItems: 'stretch',
+    backgroundColor: 'white',
   },
   toolbar: {
     height: 60,

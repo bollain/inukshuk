@@ -3,71 +3,33 @@ import { View, Text, TouchableHighlight, ToolbarAndroid, StyleSheet, TextInput, 
 
 var nativeImageSource = require('nativeImageSource');
 
-export default class Notes extends Component {
+export default class Start extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      note: this.props.note,
+      return: this.props.return,
+      timer: {
+        hours: 12,
+        minutes: 10,
+        seconds: 30,
+      },
     }
     this.set = this.set.bind(this);
     this.remove = this.remove.bind(this);
   }
   set() {
-    this.props.set('note', this.state.note)
-    .then(this.props.callback(this.state.note))
+    this.props.set('return', this.state.return)
+    .then(this.props.callback(this.state.return))
     .then(_navigator.pop());
   }
   remove() {
-    this.props.remove('note')
+    this.props.remove('return')
     .then(this.props.callback(null))
     .then(_navigator.pop());
   }
 
   render() {
-    console.log('rendering notes');
-    let textBox;
-    // Display current note if it exists
-    if (this.state.note == null) {
-      textBox = <TextInput
-        // {...this.props}
-        multiline={false}
-        multiline={true}
-        onChange={(event) => {
-          this.setState({
-            note: event.nativeEvent.text,
-            height: event.nativeEvent.contentSize.height + 22,
-          });
-        }}
-        style={{height: Math.max(35, this.state.height), backgroundColor: '#e6e6e6', fontSize: 16, paddingLeft: 20, paddingRight: 20 }}
-        // onChangeText={(text) => this.setState({note: text})}
-        underlineColorAndroid={'transparent'}
-        autoFocus={true}
-        placeholder={"What else should your contact know?"}
-        // onSubmitEditing={() => this.props.set('note', event.nativeEvent.text)}
-        autoCorrect={true}
-      />
-    }
-    else {
-      textBox = <TextInput
-        // {...this.props}
-        multiline={false}
-        multiline={true}
-        onChange={(event) => {
-          this.setState({
-            note: event.nativeEvent.text,
-            height: event.nativeEvent.contentSize.height + 22,
-          });
-        }}
-        style={{height: Math.max(35, this.state.height), backgroundColor: '#e6e6e6', fontSize: 16, paddingLeft: 20, paddingRight: 20 }}
-        // onChangeText={(text) => this.setState({note: text})}
-        underlineColorAndroid={'transparent'}
-        autoFocus={true}
-        // onSubmitEditing={() => this.props.set('note', event.nativeEvent.text)}
-        defaultValue={this.state.note}
-        autoCorrect={true}
-      />
-    }
-
+    console.log(this.props);
     return (
       <View style={styles.container}>
         <ToolbarAndroid style={styles.toolbar}
@@ -80,21 +42,25 @@ export default class Notes extends Component {
                         onIconClicked={this.props.navigator.pop}
                         titleColor={'#FFFFFF'}/>
         <View style={styles.textContainer}>
-          <ScrollView>
-            {textBox}
-          </ScrollView>
+          <Text>You told {this.props.contact.firstName} that you would be back from {this.props.location.latitute},{this.props.location.longitude} by {this.props.return.month}</Text>
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={styles.submit}
               onPress={() => this.set()}
               activeOpacity={.8}>
-              <Text style={styles.buttonText}>Submit</Text>
+              <Text style={styles.buttonText}>Start</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.remove}
               onPress={() => this.remove()}
               activeOpacity={.8}>
-              <Text style={styles.buttonText}>Clear</Text>
+              <Text style={styles.buttonText}>Add Time</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.remove}
+              onPress={() => this.remove()}
+              activeOpacity={.8}>
+              <Text style={styles.buttonText}>Cancel</Text>
             </TouchableOpacity>
           </View>
         </View>

@@ -15,7 +15,7 @@ import {
 
 import User from './User';
 
-var localIp = '192.168.1.73';
+var localIp = '192.168.1.94';
 
 export default class Login extends Component {
     constructor(props) {
@@ -32,7 +32,7 @@ export default class Login extends Component {
         })
     }
     login() {
-      fetch('http://192.168.1.73:8080/login', {
+      fetch('http://" + localIp + ":8080/login', {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',

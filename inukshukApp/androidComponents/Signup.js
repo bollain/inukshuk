@@ -62,7 +62,7 @@ export default class SignUp extends Component {
         )
       })
       .catch(function(error) {
-         Alert.alert( 'Error', error.message,
+         Alert.alert( 'No Cellular Service', 'Cannot reach server',
            [
              {text: 'OK', onPress: () => console.log('OK Pressed')},
            ],

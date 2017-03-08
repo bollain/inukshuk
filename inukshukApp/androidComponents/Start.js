@@ -8,7 +8,7 @@ export default class Start extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      //trip: this.props.trip,
+      tripId: this.props.tripId,
       return: this.props.return,
       timer: {
         hours: 12,
@@ -60,49 +60,51 @@ export default class Start extends Component {
       // Double confirmation on API execution for deleting/completing trips
       Alert.alert(title, message, [
          {text: 'OK', onPress: () => execute(ApiMethod, completion)},
-         {text: 'CANCEL', onPress: () => console.log('User cancel execution.')},
+         {text: 'CANCEL', onPress: () => console.log('User regretted.')},
          ],
          {cancelable: false})
     }
   }
   /**
   * API method call to server
-  * param: tripId, method, and trip completion status
+  * param: method, and trip completion status
   **/
   execute(ApiMethod, completion) {
-    fetch('http://' + localIp + ':8080/trips/{' + trip._id + '}', {
+    fetch('http://' + localIp + ':8080/trips/{' + this.state.tripId + '}', {
       method: ApiMethod,
       headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        tripId: this.state.tripId,
-        userId: this.state.userId,
+        tripId: this.props.tripId,
+        userId: this.props.user._id,
         returnTime: this.state.return,
-        contactEmail: this.state.contact.emails,
-        contactPhone: this.state.contact.phones,
+        contactEmail: this.props.contact.emails,
+        contactPhone: this.props.contact.phones,
         startingLocation: {
-           latitude: this.state.location.latitude,
-           longitude: this.state.location.longitude,
+           latitude: this.props.location.latitude,
+           longitude: this.props.location.longitude,
         },
-        note: '',
+        note: this.props.note,
         completed: completion
       })
     })
     .then(handleErrors)
     .then(responseJson => {
-      if (ApiMethod === 'DELETE' ) {
+      if (ApiMethod === 'DELETE' || (APIMethod === 'PUT' && completion) ) {
+        //reset async storage values
+        this.props.set('location', null);
+        this.props.set('return', null)
+        this.props.set('note', null);
+
+        // note: maybe we can keep the value and it will complete the default contact user story
+        this.props.set('contact', null);
         _navigator.push({
-          id: 'tripSummary',
-          user: responseJson})}
-      else if (APIMethod === 'PUT' && completion) {
-        //this.props.set('trip', JSON.stringify(responseJson));
-        _navigator.push({
-          id: 'tripSummary',
-          user: responseJson})}
+          id: 'tripSummary'})
+      }
       else if (APIMethod === 'PUT' && !completion) {
-        //this.props.set('trip', JSON.stringify(responseJson));
+        this.props.set('return', this.state.return);
         Alert.alert('Time extended by this much!')}
      })
     .catch(function(error) {
@@ -140,7 +142,7 @@ export default class Start extends Component {
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.remove}
-              onPress={() => this.remove()}
+              onPress={() => editTrip('cancel')}
               activeOpacity={.8}>
               <Text style={styles.buttonText}>Cancel</Text>
             </TouchableOpacity>

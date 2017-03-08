@@ -107,6 +107,47 @@ export default class TripSummary extends Component {
     });
   }
 
+  startTrip() {
+    console.log(this.props.user);
+    fetch('http://' + localIp + ':8080/trips', {
+      method: 'POST',
+      headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+          tripId: 0,
+          userId: this.props.user._id,
+          returnTime: '2017-07-09T00:51:16.224Z',
+          contactEmail: 'nanstchen@gmail.com',
+          contactPhone: '7788334289',
+          startingLocation: {
+            latitude: 49.2504,
+            longitude: -123.1094,
+          },
+          note: "am all good!",
+          completed: false,
+      })
+    })
+    .then(handleErrors)
+    .then(response => response.json())
+    .then(function(responseJson) {
+      this.props.set('tripId', responseJson.tripId);
+      Alert.alert(
+        'Success!',
+        'Your trip has been created!',
+        [
+          {text: 'OK', onPress: this.props.navigator.push({
+            id: 'start'})
+          },
+        ],
+        { cancelable: false }
+
+        //TODO: Paul will add his logic of notifiaction here
+      )
+    })
+  }
+
   clearTrip() {
     this.props.multiRemove(['location','contact','return','note']).then((response => {
       this.setState({
@@ -298,51 +339,6 @@ export default class TripSummary extends Component {
         </Modal>
       </View>
     );
-  }
-
-  startTrip() {
-    console.log(this.props.user);
-    fetch('http://' + localIp + ':8080/trips', {
-      method: 'POST',
-      headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-          tripId: 0,
-          userId: this.props.user._id,
-          returnTime: '2017-07-09T00:51:16.224Z',
-          contactEmail: 'nanstchen@gmail.com',
-          contactPhone: '7788334289',
-          startingLocation: {
-            latitude: 49.2504,
-            longitude: -123.1094,
-          },
-          note: "am all good!",
-          completed: false,
-      })
-    })
-    .then(handleErrors)
-    .then(response => response.json())
-    .then(function(responseJson) {
-      Alert.alert(
-        'Success!',
-        'Your trip has been created!',
-        [
-          // TODO: add trip id props for start page
-          {text: 'OK', onPress: this.props.navigator.push({
-            id: 'start',
-            location: this.state.location,
-            contact: this.state.contact,
-            return: this.state.return,
-            note: this.state.note,
-          })},
-        ],
-        { cancelable: false }
-
-        //TODO: Paul will add his logic of notifiaction here
-      )
-    })
   }
 }
 

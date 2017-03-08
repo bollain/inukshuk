@@ -69,7 +69,7 @@ export default class Login extends Component {
         });
        })
        .catch(function(error) {
-         Alert.alert('Can not reach server');
+         Alert.alert('No Cellular Service', 'Cannot reach server');
        });
     }
 

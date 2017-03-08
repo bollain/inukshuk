@@ -15,7 +15,7 @@ import {
 
 import User from './User';
 
-var localIp = '192.168.1.73';
+var localIp = '28.189.242.138';
 
 export default class Login extends Component {
     constructor(props) {

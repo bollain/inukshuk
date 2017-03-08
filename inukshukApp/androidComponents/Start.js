@@ -2,31 +2,44 @@ import React, { Component, PropTypes } from 'react';
 import { View, Text, TouchableHighlight, ToolbarAndroid, StyleSheet, TextInput, AsyncStorage, Alert, Button, TouchableOpacity, ScrollView } from 'react-native';
 
 var nativeImageSource = require('nativeImageSource');
+import countdown from 'countdown';
 
 export default class Start extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      return: this.props.return,
-      timer: {
-        hours: 12,
-        minutes: 10,
-        seconds: 30,
-      },
+      counter: null,
     }
-    this.set = this.set.bind(this);
-    this.remove = this.remove.bind(this);
+    // this.set = this.set.bind(this);
+    // this.remove = this.remove.bind(this);
+    // this.tick = this.tick.bind(this);
+
   }
-  set() {
-    this.props.set('return', this.state.return)
-    .then(this.props.callback(this.state.return))
-    .then(_navigator.pop());
+  componentDidMount() {
+    // timer.setInterval(this, 'tick', this.tick, 1000);
+    // var countd = countdown.countdown( new Date(2000, 0, 1) ).toString();
+    console.log(countdown);
   }
-  remove() {
-    this.props.remove('return')
-    .then(this.props.callback(null))
-    .then(_navigator.pop());
+  componentWillUnmount() {
+    // timer.clearInterval(this);
   }
+  // tick() {
+  //   timer.requestAnimationFrame(this, 'tick', () => {
+  //     if (this.state.counter >= 10) return;
+  //     this.setState({counter: this.state.counter + 1});
+  //   });
+  // }
+
+  // set() {
+  //   this.props.set('return', this.state.return)
+  //   .then(this.props.callback(this.state.return))
+  //   .then(_navigator.pop());
+  // }
+  // remove() {
+  //   this.props.remove('return')
+  //   .then(this.props.callback(null))
+  //   .then(_navigator.pop());
+  // }
 
   render() {
     console.log(this.props);
@@ -42,23 +55,24 @@ export default class Start extends Component {
                         onIconClicked={this.props.navigator.pop}
                         titleColor={'#FFFFFF'}/>
         <View style={styles.textContainer}>
-          <Text>You told {this.props.contact.firstName} that you would be back from {this.props.location.latitute},{this.props.location.longitude} by {this.props.return.month}</Text>
+          <Text>You told {this.props.contact.firstName} that you would be back from {this.props.location.latitude},{this.props.location.longitude} by {this.props.return.month}</Text>
+          <Text>Seconds Remaining: {this.state.counter}</Text>
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={styles.submit}
-              onPress={() => this.set()}
+              onPress={console.log('hello')}
               activeOpacity={.8}>
               <Text style={styles.buttonText}>Start</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.remove}
-              onPress={() => this.remove()}
+              onPress={() => console.log('press')}
               activeOpacity={.8}>
               <Text style={styles.buttonText}>Add Time</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.remove}
-              onPress={() => this.remove()}
+              onPress={() => console.log('press')}
               activeOpacity={.8}>
               <Text style={styles.buttonText}>Cancel</Text>
             </TouchableOpacity>

@@ -8,6 +8,7 @@
     "flow": "flow; test $? -eq 0 -o $? -eq 2"
   },
   "dependencies": {
+    "countdown": "^2.6.0",
     "react": "15.4.2",
     "react-native": "0.41.2",
     "react-native-contacts": "^0.8.0",

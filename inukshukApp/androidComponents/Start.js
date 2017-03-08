@@ -2,44 +2,60 @@ import React, { Component, PropTypes } from 'react';
 import { View, Text, TouchableHighlight, ToolbarAndroid, StyleSheet, TextInput, AsyncStorage, Alert, Button, TouchableOpacity, ScrollView } from 'react-native';
 
 var nativeImageSource = require('nativeImageSource');
-import countdown from 'countdown';
+
+// To pad time
+var pad = "00"
 
 export default class Start extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      counter: null,
+      sunset: null,
     }
-    // this.set = this.set.bind(this);
-    // this.remove = this.remove.bind(this);
-    // this.tick = this.tick.bind(this);
-
+    this.getSunset = this.getSunset.bind(this);
   }
+
   componentDidMount() {
-    // timer.setInterval(this, 'tick', this.tick, 1000);
-    // var countd = countdown.countdown( new Date(2000, 0, 1) ).toString();
-    console.log(countdown);
+    this.getSunset();
   }
-  componentWillUnmount() {
-    // timer.clearInterval(this);
-  }
-  // tick() {
-  //   timer.requestAnimationFrame(this, 'tick', () => {
-  //     if (this.state.counter >= 10) return;
-  //     this.setState({counter: this.state.counter + 1});
-  //   });
-  // }
 
-  // set() {
-  //   this.props.set('return', this.state.return)
-  //   .then(this.props.callback(this.state.return))
-  //   .then(_navigator.pop());
-  // }
-  // remove() {
-  //   this.props.remove('return')
-  //   .then(this.props.callback(null))
-  //   .then(_navigator.pop());
-  // }
+  getSunset() {
+    let now = new Date();
+    let offset = now.getTimezoneOffset();
+    console.log(offset);
+    let lat = this.props.location.latitude;
+    let lon = this.props.location.longitude;
+    let url = 'http://api.sunrise-sunset.org/json?lat=' + lat + '&lng=' + lon + '&date=today';
+    console.log(url);
+    fetch(url)
+    .then((response) => response.json())
+    .then((responseJson) => {
+      console.log(responseJson.results.sunset);
+      let sunsetTimeArray = this.toTwentyFour(responseJson.results.sunset);
+      var sunsetDate = new Date(now.getFullYear(), now.getMonth(), now.getDay(), sunsetTimeArray[0], sunsetTimeArray[1], 0, 0);
+      sunsetDate.setMinutes(sunsetDate.getMinutes() - offset);
+      let hours = (sunsetDate.getHours()<10?'0':'') + sunsetDate.getHours();
+      let minutes = (sunsetDate.getMinutes()<10?'0':'') + sunsetDate.getMinutes();
+      this.setState({sunset: hours + ':' + minutes});
+    })
+     .catch((error) => {
+       Alert.alert('Can not reach sunset server');
+     });
+  }
+
+  // Return array of hours and minutes given a string formatted AM/PM time
+  toTwentyFour(time) {
+    var hours = Number(time.match(/^(\d+)/)[1]);
+    var minutes = Number(time.match(/:(\d+)/)[1]);
+    var AMPM = time.match(/\s(.*)$/)[1];
+    if(AMPM == "PM" && hours<12) hours = hours+12;
+    if(AMPM == "AM" && hours==12) hours = hours-12;
+    return [hours, minutes];
+  }
+
+  padTime(num) {
+    return pad.substring(0, pad.length - num.toString().length) + num.toString();
+  }
 
   render() {
     console.log(this.props);
@@ -56,7 +72,7 @@ export default class Start extends Component {
                         titleColor={'#FFFFFF'}/>
         <View style={styles.textContainer}>
           <Text>You told {this.props.contact.firstName} that you would be back from {this.props.location.latitude},{this.props.location.longitude} by {this.props.return.month}</Text>
-          <Text>Seconds Remaining: {this.state.counter}</Text>
+          <Text>{this.state.sunset}</Text>
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={styles.submit}

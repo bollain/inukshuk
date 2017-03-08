@@ -188,6 +188,8 @@ export default class TripSummary extends Component {
         ],
         { cancelable: false }
       )
+
+      // send notification to phone
     })
   }
 }

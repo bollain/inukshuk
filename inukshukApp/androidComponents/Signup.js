@@ -17,7 +17,7 @@ import {
 
 import inukshukApp from '../index.android';
 
-var localIp = '192.168.1.94';
+var localIp = '192.168.1.73';
 
 export default class SignUp extends Component {
     constructor(props) {

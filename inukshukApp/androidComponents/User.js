@@ -3,6 +3,8 @@ import { AppRegistry, ListView, Navigator, View, StyleSheet, Text, Button, Alert
 
 var nativeImageSource = require('nativeImageSource');
 
+var localIp = '192.168.1.73';
+
 export default class User extends Component {
   constructor(props){
     super(props);
@@ -27,7 +29,7 @@ export default class User extends Component {
   set() {
     this.props.set('user', JSON.stringify(this.state.user))
     .then(
-      fetch('http://' + localIp + ':8080//users', {
+      fetch('http://' + localIp + ':8080/users', {
         method: 'PUT',
         headers: {
             'Accept': 'application/json',

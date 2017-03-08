@@ -32,10 +32,10 @@ export default class EditStartedTrip extends Component {
       completion = true;
     }
 
-    Alert.alert();
+    Alert.alert(title, message);
    }
 
- execute() {
+ execute(ApiMethod) {
   fetch('http://192.168.1.73:8080/trip', {
     method: ApiMethod,
     headers: {

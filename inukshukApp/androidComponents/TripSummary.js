@@ -92,13 +92,7 @@ export default class TripSummary extends Component {
   navStart(){
     console.log('navstart');
     if (this.state.location != null && this.state.contact != null && this.state.return != null && this.state.note != null) {
-      this.props.navigator.push({
-        id: 'start',
-        location: this.state.location,
-        contact: this.state.contact,
-        return: this.state.return,
-        note: this.state.note,
-      });
+      this.startTrip();
     } else {
       Alert.alert('Please fill in all trip details before proceeding')
     }
@@ -335,12 +329,19 @@ export default class TripSummary extends Component {
         'Success!',
         'Your trip has been created!',
         [
-          {text: 'OK', onPress: () => Alert.alert('Start Page Under Development')},
+          // TODO: add trip id props for start page
+          {text: 'OK', onPress: this.props.navigator.push({
+            id: 'start',
+            location: this.state.location,
+            contact: this.state.contact,
+            return: this.state.return,
+            note: this.state.note,
+          })},
         ],
         { cancelable: false }
-      )
 
-      // send notification to phone
+        //TODO: Paul will add his logic of notifiaction here
+      )
     })
   }
 }

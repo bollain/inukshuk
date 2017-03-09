@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react';
-import { View, Text, Image, TouchableHighlight, ToolbarAndroid, StyleSheet, TextInput, AsyncStorage, Alert, Button, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, Image, TouchableHighlight, ToolbarAndroid, StyleSheet, TextInput, AsyncStorage, Alert, Button, TouchableOpacity, ScrollView, InteractionManager } from 'react-native';
+
+import Countdown from './Countdown';
 
 var nativeImageSource = require('nativeImageSource');
 var localIp = '192.168.1.94';
@@ -15,7 +17,6 @@ export default class Start extends Component {
       sunset: null,
       trip: this.props.trip,
       return: this.props.return,
-      timeLeft: 1,
       returnDate: new Date(returnTime.year, returnTime.month, returnTime.day, returnTime.hour, returnTime.minute, 0, 0),
       timer: {
         hours: 12,
@@ -28,17 +29,6 @@ export default class Start extends Component {
 
   componentWillMount() {
     this.getSunset();
-  }
-
-  componentDidMount() {
-    this.timer = setInterval(() => {
-      // console.log('hi');
-      this.setState({timeLeft: this.state.timeLeft + 1});
-    }, 1000);
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.timer);
   }
 
   getSunset() {
@@ -204,7 +194,9 @@ export default class Start extends Component {
               source={require('../img/ic_timer_black_24dp.png')}
             />
             <Text style={styles.textCenter}>Your trip will end in</Text>
-            <Text style={[styles.textCenter, {fontSize:20,fontWeight:'bold'}]}>{this.state.timeLeft}</Text>
+            <Text style={[styles.textCenter, {fontSize:20,fontWeight:'bold'}]}>
+              <Countdown endDate={this.state.returnDate} />
+            </Text>
           </View>
           <View style={{marginTop: 10, marginBottom: 20, alignItems: 'center',}}>
             <Image

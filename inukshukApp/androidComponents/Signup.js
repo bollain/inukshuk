@@ -12,12 +12,15 @@ import {
   Text,
   TextInput,
   View,
-  Navigator
+  Navigator,
+  ToolbarAndroid,
 } from 'react-native';
 
 import inukshukApp from '../index.android';
 
-var localIp = '192.168.1.73';
+var nativeImageSource = require('nativeImageSource');
+
+var localIp = '192.168.1.94';
 
 export default class SignUp extends Component {
     constructor(props) {
@@ -79,20 +82,30 @@ export default class SignUp extends Component {
     }
 
     render() {
-        return (
-        <View style = { {padding: 10}}>
-           <Text style={styles.title}> Sign Up </Text>
-           <TextInput placeholder = "Your user name" onChangeText={(text) => this.setState({userName: text})}/>
-           <TextInput placeholder = "Your first name" onChangeText={(text) => this.setState({fName: text})}/>
-           <TextInput placeholder = "Your last name" onChangeText={(text) => this.setState({lName: text})}/>
-           <TextInput placeholder = "Your email" onChangeText={(text) => this.setState({userEmail: text})}/>
-           <TextInput placeholder = "Your contact number" onChangeText={(text) => this.setState({phoneNumber: text})}/>
-           <Text style={styles.signupBotton} onPress={()=> this.execute()}>
-            Create Account </Text>
-           <Text style={[styles.signupBotton, styles.cancelBotton]} onPress={()=> _navigator.pop()}>
-            Back </Text>
+      return (
+        <View style={styles.container}>
+          <ToolbarAndroid style={styles.toolbar}
+                          title={this.props.title}
+                          navIcon={nativeImageSource({
+                            android: 'ic_arrow_back_white_24dp',
+                            width: 64,
+                            height: 64
+                          })}
+                          onIconClicked={this.props.navigator.pop}
+                          titleColor={'#FFFFFF'}/>
+          <View style={styles.textContainer}>
+             <TextInput placeholder = "Your user name" onChangeText={(text) => this.setState({userName: text})}/>
+             <TextInput placeholder = "Your first name" onChangeText={(text) => this.setState({fName: text})}/>
+             <TextInput placeholder = "Your last name" onChangeText={(text) => this.setState({lName: text})}/>
+             <TextInput placeholder = "Your email" onChangeText={(text) => this.setState({userEmail: text})}/>
+             <TextInput placeholder = "Your contact number" onChangeText={(text) => this.setState({phoneNumber: text})}/>
+             <Text style={styles.signupBotton} onPress={()=> this.execute()}>
+              Create Account </Text>
+             <Text style={[styles.signupBotton, styles.cancelBotton]} onPress={()=> _navigator.pop()}>
+              Back </Text>
+            </View>
         </View>
-        );
+      );
     }
 }
 
@@ -112,10 +125,17 @@ function handleErrors(response) {
 }
 
 const styles = StyleSheet.create({
-  title: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
+  container: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: 'flex-start',
+    backgroundColor: 'white',
+  },
+  toolbar: {
+    height: 60,
+    backgroundColor: '#00aaf1',
+  },
+  textContainer: {
+    margin: 10
   },
   signupBotton: {
     fontSize: 18,

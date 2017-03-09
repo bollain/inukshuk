@@ -108,7 +108,13 @@ export default class TripSummary extends Component {
   }
 
   startTrip(user, location, contact,returnTime, note) {
-    console.log(this.props.user);
+    //clean up this mess later
+    console.log(this.props.user)
+    console.log(this.props)
+    var ce = contact.emails[0].email
+    var tel = contact.phones[0].number
+    tel = tel.replace(/\D+/g, "")//Clean up yo phonenumber
+    var trigger = new Date(returnTime.year, returnTime.month, returnTime.day, returnTime.hour, returnTime.minute, 0,0)
     fetch('http://' + localIp + ':8080/trips', {
       method: 'POST',
       headers: {
@@ -116,16 +122,15 @@ export default class TripSummary extends Component {
           'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-          tripId: 0,
           userId: this.props.user._id,
-          returnTime: '2017-07-09T00:51:16.224Z',
-          contactEmail: 'nanstchen@gmail.com',
-          contactPhone: '7788334289',
+          returnTime: trigger,
+          contactEmail: ce,
+          contactPhone: tel,
           startingLocation: {
-            latitude: 49.2504,
-            longitude: -123.1094,
+            latitude: location.latitude,
+            longitude: location.longitude,
           },
-          note: "am all good!",
+          note: note,
           completed: false,
       })
     })

@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { View, Text, TouchableHighlight, ToolbarAndroid, StyleSheet, TextInput, AsyncStorage, Alert, Button, TouchableOpacity, ScrollView } from 'react-native';
 
 var nativeImageSource = require('nativeImageSource');
-var localIp = '192.168.1.94';
+var localIp = '128.189.242.29';
 
 export default class Start extends Component {
   constructor(props) {

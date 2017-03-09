@@ -74,37 +74,45 @@ export default class Login extends Component {
     }
 
     render() {
-      let logoImg =
-          { uri: 'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcS7z5gcSo96ms9T8Hy6x7Zm2dzYXpGMQaOpecvQORG1p78VYpxBxg'
-          };
       return (
       <View style = {{
         flex: 1,
         flexDirection: 'column',
         backgroundColor: 'white',
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'stretch'
         }}>
-        <Image
-          source={logoImg} style={{width: 193, height: 110, paddingBottom: 50}}/>
-        <TextInput
-          style={styles.textContainer}
-          placeholder="Email"
-          onChangeText={(text) => this.setState({username: text})}
-        />
-        <TextInput
-          style={styles.textContainer}
-          placeholder="Password"
-          onChangeText={(text) => this.setState({password: text})}
-        />
-        <Text style = {styles.button} onPress={()=> this.loginMock()}>
-            LOGIN
-        </Text>
-        <TouchableHighlight>
-          <Text style={[styles.button, styles.createAccount]} onPress={()=> this._navSignUp()}>
-              Don't have an account? Create one now
-           </Text>
-        </TouchableHighlight>
+        <Image source={require('../img/background.jpg')} style={{flex: 1, height: null, width: null}}>
+          <View>
+            <Text style={{fontSize: 32, fontWeight: 'bold', textAlign:'center', marginTop:80, marginBottom: 40}}>
+              Inukshuk
+            </Text>
+          </View>
+          <View style={{flex: 1, flexDirection: 'column', justifyContent: 'flex-end', marginBottom: 50}}>
+            <View style={styles.inputBox}>
+              <TextInput
+                style={styles.textContainer}
+                placeholder="Email"
+                onChangeText={(text) => this.setState({username: text})}
+              />
+            </View>
+            <View style={styles.inputBox}>
+              <TextInput
+                style={styles.textContainer}
+                placeholder="Password"
+                onChangeText={(text) => this.setState({password: text})}
+              />
+            </View>
+            <Text style = {styles.button} onPress={()=> this.loginMock()}>
+                LOGIN
+            </Text>
+            <TouchableHighlight>
+              <Text style={[styles.button, styles.createAccount]} onPress={()=> this._navSignUp()}>
+                  No account? Create one now
+               </Text>
+            </TouchableHighlight>
+          </View>
+        </Image>
       </View> );
     }
 }
@@ -122,6 +130,11 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     flexDirection: 'row',
     height: 40,
+  },
+  inputBox: {
+    backgroundColor: 'rgba(255,255,255,0.7)',
+    borderRadius: 5,
+    margin: 10,
   },
   textColored: {
     color: 'white',

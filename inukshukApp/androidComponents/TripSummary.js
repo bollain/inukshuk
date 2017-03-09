@@ -102,6 +102,18 @@ export default class TripSummary extends Component {
       callback: this.clearTrip,
     });
   }
+  // TODO remove test start
+  testStart(){
+    console.log('testStart');
+    this.props.navigator.push({
+      id: 'start',
+      location: this.state.location,
+      contact: this.state.contact,
+      return: this.state.return,
+      note: this.state.note,
+      callback: this.clearTrip,
+    });
+  }
   navUser(){
     this.props.get('user').then((response) => {
       console.log(response);
@@ -300,7 +312,7 @@ export default class TripSummary extends Component {
           <View style={styles.startContainer}>
             <TouchableOpacity
               style={styles.start}
-              onPress={this.start.bind(this)}
+              onPress={this.testStart.bind(this)}
               activeOpacity={.8}>
               <Text style={styles.startText}>Submit</Text>
             </TouchableOpacity>

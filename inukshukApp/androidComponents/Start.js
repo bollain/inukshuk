@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { View, Text, TouchableHighlight, ToolbarAndroid, StyleSheet, TextInput, AsyncStorage, Alert, Button, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, Image, TouchableHighlight, ToolbarAndroid, StyleSheet, TextInput, AsyncStorage, Alert, Button, TouchableOpacity, ScrollView } from 'react-native';
 
 var nativeImageSource = require('nativeImageSource');
 var localIp = '192.168.1.94';
@@ -10,10 +10,12 @@ var pad = "00"
 export default class Start extends Component {
   constructor(props) {
     super(props);
+    let returnTime = this.props.return;
     this.state = {
       sunset: null,
       trip: this.props.trip,
       return: this.props.return,
+      returnDate: new Date(returnTime.year, returnTime.month, returnTime.day, returnTime.hour, returnTime.minute, 0, 0),
       timer: {
         hours: 12,
         minutes: 10,
@@ -23,7 +25,7 @@ export default class Start extends Component {
     this.getSunset = this.getSunset.bind(this);
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.getSunset();
   }
 
@@ -162,6 +164,8 @@ export default class Start extends Component {
 
   render() {
     console.log(this.props);
+    let returnDate = this.state.returnDate.toDateString();
+    let returnTime = this.state.returnDate.toLocaleTimeString().substring(0,5);
     return (
       <View style={styles.container}>
         <ToolbarAndroid style={styles.toolbar}
@@ -174,8 +178,22 @@ export default class Start extends Component {
                         onIconClicked={this.props.navigator.pop}
                         titleColor={'#FFFFFF'}/>
         <View style={styles.textContainer}>
-          <Text>You told {this.props.contact.firstName} that you would be back from {this.props.location.latitude},{this.props.location.longitude} by {this.props.return.month}</Text>
-          <Text>{this.state.sunset}</Text>
+          <Text style={styles.textLeft}>
+            <Text>You told </Text>
+            <Text style={{fontStyle: 'italic'}}>{this.props.contact.firstName} </Text>
+            <Text>that you would be back from </Text>
+            <Text style={{fontStyle: 'italic'}}>{this.props.location.latitude},{this.props.location.longitude} </Text>
+            <Text>by </Text>
+            <Text style={{fontStyle: 'italic'}}>{returnTime} on {returnDate}</Text>
+          </Text>
+          <View style={{marginTop: 20, marginBottom: 20, alignItems: 'center',}}>
+            <Image
+              style={{opacity:0.6, marginBottom: 5}}
+              source={require('../img/ic_wb_sunny_black_24dp.png')}
+            />
+            <Text style={styles.textCenter}>Tonight the sun sets at</Text>
+            <Text style={[styles.textCenter, {fontSize:20,fontWeight:'bold'}]}>{this.state.sunset}</Text>
+          </View>
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={styles.submit}
@@ -230,6 +248,15 @@ const styles = StyleSheet.create({
    },
    textContainer: {
      justifyContent: 'flex-start',
+     margin: 10,
+   },
+   textLeft: {
+     fontSize: 16,
+     textAlign: 'left',
+   },
+   textCenter: {
+     fontSize: 16,
+     textAlign: 'center',
    },
    buttonContainer: {
      marginTop: 10,

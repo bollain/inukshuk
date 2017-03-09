@@ -3,7 +3,7 @@ import { View, ScrollView, Text, TouchableHighlight, ToolbarAndroid, StyleSheet,
 
 var nativeImageSource = require('nativeImageSource');
 
-var localIp = '28.189.242.138';
+var localIp = '192.168.1.73';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 const checkIcon = <Icon name="check-circle" size={24} color="green" />;
@@ -92,7 +92,7 @@ export default class TripSummary extends Component {
   navStart(){
     console.log('navstart');
     if (this.state.location != null && this.state.contact != null && this.state.return != null && this.state.note != null) {
-      this.startTrip();
+      this.startTrip(this.props.get('user'), this.state.location, this.state.contact, this.state.return, this.state.note);
     } else {
       Alert.alert('Please fill in all trip details before proceeding')
     }
@@ -107,7 +107,7 @@ export default class TripSummary extends Component {
     });
   }
 
-  startTrip() {
+  startTrip(user, location, contact,returnTime, note) {
     console.log(this.props.user);
     fetch('http://' + localIp + ':8080/trips', {
       method: 'POST',
@@ -132,13 +132,21 @@ export default class TripSummary extends Component {
     .then(handleErrors)
     .then(response => response.json())
     .then(function(responseJson) {
-      this.props.set('tripId', responseJson.tripId);
+      console.log(responseJson._id)
+      //this.props.set('tripId', responseJson._id);
       Alert.alert(
         'Success!',
         'Your trip has been created!',
         [
-          {text: 'OK', onPress: this.props.navigator.push({
-            id: 'start'})
+          {text: 'OK', onPress: _navigator.push({
+            id: 'start',
+            tripId: responseJson._id,
+            user: user,
+            location: location,
+            contact: contact,
+            return: returnTime,
+            note: note,
+            })
           },
         ],
         { cancelable: false }

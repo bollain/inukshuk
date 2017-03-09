@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { View, Text, TouchableHighlight, ToolbarAndroid, StyleSheet, TextInput, AsyncStorage, Alert, Button, TouchableOpacity, ScrollView } from 'react-native';
 
 var nativeImageSource = require('nativeImageSource');
-var localIp = '28.189.242.138';
+var localIp = '192.168.1.73';
 
 export default class Start extends Component {
   constructor(props) {
@@ -59,7 +59,7 @@ export default class Start extends Component {
       }
       // Double confirmation on API execution for deleting/completing trips
       Alert.alert(title, message, [
-         {text: 'OK', onPress: () => execute(ApiMethod, completion)},
+         {text: 'OK', onPress: () => this.execute(ApiMethod, completion)},
          {text: 'CANCEL', onPress: () => console.log('User regretted.')},
          ],
          {cancelable: false})
@@ -70,7 +70,21 @@ export default class Start extends Component {
   * param: method, and trip completion status
   **/
   execute(ApiMethod, completion) {
-    fetch('http://' + localIp + ':8080/trips/{' + this.state.tripId + '}', {
+  if (ApiMethod == 'DELETE')
+  {
+    fetch('http://' + localIp + ':8080/trips/' + this.state.tripId, {method: ApiMethod})
+     .then(handleErrors)
+     .then(Alert.alert(
+       'Trip deleted',
+       'deleted',
+       [{ text: 'OK', onPress: _navigator.push({id: 'tripSummary'})}]
+       ))
+     .catch(function(error) {
+       Alert.alert('No Cellular Service', 'Can not reach server');
+     });}
+  }
+  else {
+    fetch('http://' + localIp + ':8080/trips/', {
       method: ApiMethod,
       headers: {
           'Accept': 'application/json',
@@ -109,7 +123,7 @@ export default class Start extends Component {
      })
     .catch(function(error) {
       Alert.alert('No Cellular Service', 'Can not reach server');
-    });
+    });}
   }
 
   render() {
@@ -130,21 +144,21 @@ export default class Start extends Component {
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={styles.submit}
-              onPress={() => this.set()}
+              onPress={() => this.editTrip('completed')}
               activeOpacity={.8}>
-              <Text style={styles.buttonText}>Start</Text>
+              <Text style={styles.buttonText}>End Trip</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.remove}
               onPress={() => this.remove()}
               activeOpacity={.8}>
-              <Text style={styles.buttonText}>Add Time</Text>
+              <Text style={styles.buttonText}>Extend Trip</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.remove}
-              onPress={() => editTrip('cancel')}
+              onPress={() => this.editTrip('cancel')}
               activeOpacity={.8}>
-              <Text style={styles.buttonText}>Cancel</Text>
+              <Text style={styles.buttonText}>Cancel Trip</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -152,6 +166,21 @@ export default class Start extends Component {
     );
   }
 };
+
+function handleErrors(response) {
+    if (!response.ok) {
+      if (response.status == 400) {
+        throw Error("User not found");
+      }
+      else if (response.status == 404) {
+        throw Error("Invalid user");
+      }
+      else if (response.status == 403) {
+        throw Error("Forbidden: not access to server");
+      }
+    }
+    return response;
+}
 
 const styles = StyleSheet.create({
    container: {

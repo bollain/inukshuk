@@ -3,7 +3,7 @@ import { AppRegistry, ListView, Navigator, View, StyleSheet, Text, Button, Alert
 
 var nativeImageSource = require('nativeImageSource');
 
-var localIp = '28.189.242.138';
+var localIp = '128.189.242.138';
 
 export default class User extends Component {
   constructor(props){

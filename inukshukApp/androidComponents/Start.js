@@ -8,7 +8,7 @@ export default class Start extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      tripId: this.props.tripId,
+      trip: this.props.tripJson,
       return: this.props.return,
       timer: {
         hours: 12,
@@ -28,6 +28,13 @@ export default class Start extends Component {
     this.props.remove('return')
     .then(this.props.callback(null))
     .then(_navigator.pop());
+  }
+
+  //TODO: make the async storage have no values using callback with clearTrip in tripSummary.js
+  endStartPage() {
+    _navigator.push({
+      id: 'tripSummary',
+    })
   }
 
   /**
@@ -70,20 +77,23 @@ export default class Start extends Component {
   * param: method, and trip completion status
   **/
   execute(ApiMethod, completion) {
+
+  // trip deletion
   if (ApiMethod == 'DELETE')
   {
-    fetch('http://' + localIp + ':8080/trips/' + this.state.tripId, {method: ApiMethod})
+    fetch('http://' + localIp + ':8080/trips/' + this.state.trip._id, {method: ApiMethod})
      .then(handleErrors)
      .then(Alert.alert(
-       'Trip deleted',
-       'deleted',
-       [{ text: 'OK', onPress: _navigator.push({id: 'tripSummary'})}]
+       'Trip Cancelled',
+       'We also notified your contact about the cancellation',
+       [{ text: 'OK', onPress: this.endStartPage()}]
        ))
      .catch(function(error) {
-       Alert.alert('No Cellular Service', 'Can not reach server');
-     });}
+       Alert.alert('No Cellular Service', 'Can not reach server')})
   }
+  // trip modification
   else {
+    console.log(this.state.trip);
     fetch('http://' + localIp + ':8080/trips/', {
       method: ApiMethod,
       headers: {
@@ -91,39 +101,29 @@ export default class Start extends Component {
           'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        tripId: this.props.tripId,
-        userId: this.props.user._id,
-        returnTime: this.state.return,
-        contactEmail: this.props.contact.emails,
-        contactPhone: this.props.contact.phones,
+        tripId: this.state.trip._id,
+        userId: this.state.trip.userId,
+        returnTime: this.state.trip.returnTime,
+        contactEmail: this.state.trip.contactEmail,
+        contactPhone: this.state.trip.contactPhone,
         startingLocation: {
-           latitude: this.props.location.latitude,
-           longitude: this.props.location.longitude,
+           latitude: this.state.trip.startingLocation.coordinates[0],
+           longitude: this.state.trip.startingLocation.coordinates[1],
         },
-        note: this.props.note,
+        note: this.state.trip.note,
         completed: completion
       })
     })
     .then(handleErrors)
-    .then(responseJson => {
-      if (ApiMethod === 'DELETE' || (APIMethod === 'PUT' && completion) ) {
-        //reset async storage values
-        this.props.set('location', null);
-        this.props.set('return', null)
-        this.props.set('note', null);
-
-        // note: maybe we can keep the value and it will complete the default contact user story
-        this.props.set('contact', null);
-        _navigator.push({
-          id: 'tripSummary'})
-      }
-      else if (APIMethod === 'PUT' && !completion) {
-        this.props.set('return', this.state.return);
-        Alert.alert('Time extended by this much!')}
-     })
+    .then(
+      Alert.alert(
+       'Trip Completed',
+       'Good job!',
+       [{ text: 'OK', onPress: this.endStartPage()}])
+    )
     .catch(function(error) {
       Alert.alert('No Cellular Service', 'Can not reach server');
-    });}
+    })}
   }
 
   render() {
@@ -140,7 +140,10 @@ export default class Start extends Component {
                         onIconClicked={this.props.navigator.pop}
                         titleColor={'#FFFFFF'}/>
         <View style={styles.textContainer}>
-          <Text>You told {this.props.contact.firstName} that you would be back from {this.props.location.latitute},{this.props.location.longitude} by {this.props.return.month}</Text>
+          <Text>You told {this.props.contact.firstName} that you would be back from
+              latitude  {this.state.trip.startingLocation.coordinates[0]},
+              longitude  {this.state.trip.startingLocation.coordinates[1]}
+                 by {this.props.return.month}</Text>
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={styles.submit}
@@ -149,7 +152,7 @@ export default class Start extends Component {
               <Text style={styles.buttonText}>End Trip</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={styles.remove}
+              style={styles.extend}
               onPress={() => this.remove()}
               activeOpacity={.8}>
               <Text style={styles.buttonText}>Extend Trip</Text>
@@ -207,6 +210,10 @@ const styles = StyleSheet.create({
    },
    remove: {
      backgroundColor: 'red',
+     padding: 18,
+   },
+   extend: {
+     backgroundColor: 'blue',
      padding: 18,
    },
    buttonText: {

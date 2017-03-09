@@ -132,7 +132,6 @@ export default class TripSummary extends Component {
     .then(handleErrors)
     .then(response => response.json())
     .then(function(responseJson) {
-      console.log(responseJson._id)
       //this.props.set('tripId', responseJson._id);
       Alert.alert(
         'Success!',
@@ -140,7 +139,7 @@ export default class TripSummary extends Component {
         [
           {text: 'OK', onPress: _navigator.push({
             id: 'start',
-            tripId: responseJson._id,
+            tripJson: responseJson,
             user: user,
             location: location,
             contact: contact,

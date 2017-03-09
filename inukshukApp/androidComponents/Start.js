@@ -15,7 +15,7 @@ export default class Start extends Component {
       sunset: null,
       trip: this.props.trip,
       return: this.props.return,
-      timeLeft: '00:00',
+      timeLeft: 1,
       returnDate: new Date(returnTime.year, returnTime.month, returnTime.day, returnTime.hour, returnTime.minute, 0, 0),
       timer: {
         hours: 12,
@@ -28,6 +28,17 @@ export default class Start extends Component {
 
   componentWillMount() {
     this.getSunset();
+  }
+
+  componentDidMount() {
+    this.timer = setInterval(() => {
+      // console.log('hi');
+      this.setState({timeLeft: this.state.timeLeft + 1});
+    }, 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.timer);
   }
 
   getSunset() {

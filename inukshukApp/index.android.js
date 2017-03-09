@@ -190,6 +190,8 @@ class inukshukApp extends Component {
             get={this.get.bind(this)}
             set={this.set.bind(this)}
             remove={this.remove.bind(this)}
+            trip={route.trip}
+            callback={route.callback}
           />
         );
       case 'user':

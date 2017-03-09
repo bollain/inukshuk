@@ -3,6 +3,8 @@ import { AppRegistry, ListView, Navigator, View, StyleSheet, Text, Button, Alert
 
 var nativeImageSource = require('nativeImageSource');
 
+var localIp = '128.189.242.138';
+
 export default class User extends Component {
   constructor(props){
     super(props);
@@ -27,7 +29,7 @@ export default class User extends Component {
   set() {
     this.props.set('user', JSON.stringify(this.state.user))
     .then(
-      fetch('http://' + localIp + ':8080//users', {
+      fetch('http://' + localIp + ':8080/users', {
         method: 'PUT',
         headers: {
             'Accept': 'application/json',
@@ -98,14 +100,14 @@ export default class User extends Component {
     return(
       <View style = {styles.container}>
         <ToolbarAndroid style={styles.toolbar}
-                        title={this.props.title}
-                        navIcon={nativeImageSource({
-                          android: 'ic_arrow_back_white_24dp',
-                          width: 64,
-                          height: 64
-                        })}
-                        onIconClicked={this.props.navigator.pop}
-                        titleColor={'#FFFFFF'}/>
+          title={this.props.title}
+          navIcon={nativeImageSource({
+            android: 'ic_arrow_back_white_24dp',
+            width: 64,
+            height: 64
+          })}
+          onIconClicked={this.props.navigator.pop}
+          titleColor={'#FFFFFF'}/>
          <View style={styles.textContainer}>
            <Text style={styles.subTitle}> Username </Text>
            <Text style={styles.field}> {this.state.userName}</Text>

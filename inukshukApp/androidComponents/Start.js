@@ -2,13 +2,13 @@ import React, { Component, PropTypes } from 'react';
 import { View, Text, TouchableHighlight, ToolbarAndroid, StyleSheet, TextInput, AsyncStorage, Alert, Button, TouchableOpacity, ScrollView } from 'react-native';
 
 var nativeImageSource = require('nativeImageSource');
-var localIp = '192.168.1.73';
+var localIp = '192.168.1.94';
 
 export default class Start extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      trip: this.props.tripJson,
+      trip: this.props.trip,
       return: this.props.return,
       timer: {
         hours: 12,
@@ -31,14 +31,13 @@ export default class Start extends Component {
   }
 
   //TODO: make the async storage have no values using callback with clearTrip in tripSummary.js
-  endStartPage() {
-    _navigator.push({
-      id: 'tripSummary',
-    })
+  end() {
+    this.props.callback(false);
+    _navigator.pop();
   }
 
   /**
-  * Handles trip edition from start page.
+  * Handles trip editing from start page.
   * including trip completion, extension, and deletion
   **/
   editTrip(action) {
@@ -77,53 +76,53 @@ export default class Start extends Component {
   * param: method, and trip completion status
   **/
   execute(ApiMethod, completion) {
-
-  // trip deletion
-  if (ApiMethod == 'DELETE')
-  {
-    fetch('http://' + localIp + ':8080/trips/' + this.state.trip._id, {method: ApiMethod})
-     .then(handleErrors)
-     .then(Alert.alert(
-       'Trip Cancelled',
-       'We also notified your contact about the cancellation',
-       [{ text: 'OK', onPress: this.endStartPage()}]
-       ))
-     .catch(function(error) {
-       Alert.alert('No Cellular Service', 'Can not reach server')})
-  }
-  // trip modification
-  else {
-    console.log(this.state.trip);
-    fetch('http://' + localIp + ':8080/trips/', {
-      method: ApiMethod,
-      headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        tripId: this.state.trip._id,
-        userId: this.state.trip.userId,
-        returnTime: this.state.trip.returnTime,
-        contactEmail: this.state.trip.contactEmail,
-        contactPhone: this.state.trip.contactPhone,
-        startingLocation: {
-           latitude: this.state.trip.startingLocation.coordinates[0],
-           longitude: this.state.trip.startingLocation.coordinates[1],
+    // trip deletion
+    if (ApiMethod == 'DELETE')
+    {
+      fetch('http://' + localIp + ':8080/trips/' + this.state.trip._id, {method: ApiMethod})
+       .then(handleErrors)
+       .then(Alert.alert(
+         'Trip Cancelled',
+         'We also notified your contact about the cancellation',
+         [{ text: 'OK', onPress: this.end()}]
+         ))
+       .catch(function(error) {
+         Alert.alert('No Cellular Service', 'Can not reach server')})
+    }
+    // trip modification
+    else {
+      console.log(this.state.trip);
+      fetch('http://' + localIp + ':8080/trips/', {
+        method: ApiMethod,
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
         },
-        note: this.state.trip.note,
-        completed: completion
+        body: JSON.stringify({
+          tripId: this.state.trip._id,
+          userId: this.state.trip.userId,
+          returnTime: this.state.trip.returnTime,
+          contactEmail: this.state.trip.contactEmail,
+          contactPhone: this.state.trip.contactPhone,
+          startingLocation: {
+             latitude: this.state.trip.startingLocation.coordinates[0],
+             longitude: this.state.trip.startingLocation.coordinates[1],
+          },
+          note: this.state.trip.note,
+          completed: completion
+        })
       })
-    })
-    .then(handleErrors)
-    .then(
-      Alert.alert(
-       'Trip Completed',
-       'Good job!',
-       [{ text: 'OK', onPress: this.endStartPage()}])
-    )
-    .catch(function(error) {
-      Alert.alert('No Cellular Service', 'Can not reach server');
-    })}
+      .then(handleErrors)
+      .then(
+        Alert.alert(
+         'Trip Completed',
+         'Good job!',
+         [{ text: 'OK', onPress: this.end()}])
+      )
+      .catch(function(error) {
+        Alert.alert('No Cellular Service', 'Can not reach server');
+      });
+    }
   }
 
   render() {

@@ -3,7 +3,7 @@ import { View, ScrollView, Text, TouchableHighlight, ToolbarAndroid, StyleSheet,
 
 var nativeImageSource = require('nativeImageSource');
 
-var localIp = '192.168.1.73';
+var localIp = '192.168.1.94';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 const checkIcon = <Icon name="check-circle" size={24} color="green" />;
@@ -40,6 +40,7 @@ export default class TripSummary extends Component {
     this.setSummaryLocation = this.setSummaryLocation.bind(this);
     this.setSummaryReturn = this.setSummaryReturn.bind(this);
     this.setSummaryContact = this.setSummaryContact.bind(this);
+    this.clearTrip = this.clearTrip.bind(this);
   }
 
   componentDidMount() {
@@ -89,13 +90,17 @@ export default class TripSummary extends Component {
       });
     });
   }
-  navStart(){
+  navStart(tripJson){
     console.log('navstart');
-    if (this.state.location != null && this.state.contact != null && this.state.return != null && this.state.note != null) {
-      this.startTrip(this.props.get('user'), this.state.location, this.state.contact, this.state.return, this.state.note);
-    } else {
-      Alert.alert('Please fill in all trip details before proceeding')
-    }
+    this.props.navigator.push({
+      id: 'start',
+      location: this.state.location,
+      contact: this.state.contact,
+      return: this.state.return,
+      note: this.state.note,
+      trip: tripJson,
+      callback: this.clearTrip,
+    });
   }
   navUser(){
     this.props.get('user').then((response) => {
@@ -107,14 +112,24 @@ export default class TripSummary extends Component {
     });
   }
 
-  startTrip(user, location, contact,returnTime, note) {
-    //clean up this mess later
-    console.log(this.props.user)
-    console.log(this.props)
-    var ce = contact.emails[0].email
-    var tel = contact.phones[0].number
-    tel = tel.replace(/\D+/g, "")//Clean up yo phonenumber
-    var trigger = new Date(returnTime.year, returnTime.month, returnTime.day, returnTime.hour, returnTime.minute, 0,0)
+  start() {
+    console.log('navstart');
+    if (this.state.location != null && this.state.contact != null && this.state.return != null && this.state.note != null) {
+      this.sendTrip();
+    } else {
+      Alert.alert('Please fill in all trip details before proceeding');
+    }
+  }
+
+  // Send the trip details to the server
+  sendTrip() {
+    console.log(this.props.user);
+    console.log(this.props);
+    // TODO: server should take chosen email/number and not require both
+    var ce = (this.state.contact.emails.length > 0 ? this.state.contact.emails[0].email : 'ehauner@gmail.com');
+    var tel = (this.state.contact.phones.length > 0 ? this.state.contact.phones[0].number : '6046523447');
+    tel = tel.replace(/\D+/g, "");
+    var returnTime = new Date(this.state.return.year, this.state.return.month, this.state.return.day, this.state.return.hour, this.state.return.minute, 0,0);
     fetch('http://' + localIp + ':8080/trips', {
       method: 'POST',
       headers: {
@@ -122,45 +137,36 @@ export default class TripSummary extends Component {
           'Content-Type': 'application/json',
       },
       body: JSON.stringify({
+          tripId: 0,
           userId: this.props.user._id,
-          returnTime: trigger,
+          returnTime: returnTime,
           contactEmail: ce,
           contactPhone: tel,
           startingLocation: {
-            latitude: location.latitude,
-            longitude: location.longitude,
+            latitude: this.state.location.latitude,
+            longitude: this.state.location.longitude,
           },
-          note: note,
+          note: this.state.note,
           completed: false,
       })
     })
     .then(handleErrors)
     .then(response => response.json())
-    .then(function(responseJson) {
+    .then((responseJson) => {
       //this.props.set('tripId', responseJson._id);
       Alert.alert(
         'Success!',
         'Your trip has been created!',
         [
-          {text: 'OK', onPress: _navigator.push({
-            id: 'start',
-            tripJson: responseJson,
-            user: user,
-            location: location,
-            contact: contact,
-            return: returnTime,
-            note: note,
-            })
-          },
+          {text: 'OK', onPress: () => this.navStart(responseJson)},
         ],
         { cancelable: false }
-
-        //TODO: Paul will add his logic of notifiaction here
       )
     })
+    .catch((err) => console.error(err));
   }
 
-  clearTrip() {
+  clearTrip(showDialog) {
     this.props.multiRemove(['location','contact','return','note']).then((response => {
       this.setState({
         location: null,
@@ -169,7 +175,9 @@ export default class TripSummary extends Component {
         note: null,
       });
     }));
-    this.setModalVisible(!this.state.modalVisible);
+    if (showDialog) {
+      this.setModalVisible(!this.state.modalVisible);
+    }
   }
 
   setModalVisible(visible) {
@@ -292,7 +300,7 @@ export default class TripSummary extends Component {
           <View style={styles.startContainer}>
             <TouchableOpacity
               style={styles.start}
-              onPress={this.navStart.bind(this)}
+              onPress={this.start.bind(this)}
               activeOpacity={.8}>
               <Text style={styles.startText}>Submit</Text>
             </TouchableOpacity>
@@ -333,7 +341,7 @@ export default class TripSummary extends Component {
                 style={styles.modalOption}
                 underlayColor='#e6e6e6'
                 onPress={() => {
-                this.clearTrip()
+                this.clearTrip(true)
               }}>
                 <Text style={{fontSize: 16, textAlign: 'center'}}>Clear</Text>
               </TouchableHighlight>

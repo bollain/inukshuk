@@ -15,6 +15,7 @@ export default class Start extends Component {
       sunset: null,
       trip: this.props.trip,
       return: this.props.return,
+      timeLeft: '00:00',
       returnDate: new Date(returnTime.year, returnTime.month, returnTime.day, returnTime.hour, returnTime.minute, 0, 0),
       timer: {
         hours: 12,
@@ -186,33 +187,49 @@ export default class Start extends Component {
             <Text>by </Text>
             <Text style={{fontStyle: 'italic'}}>{returnTime} on {returnDate}</Text>
           </Text>
-          <View style={{marginTop: 20, marginBottom: 20, alignItems: 'center',}}>
+          <View style={{marginTop: 10, marginBottom: 20, alignItems: 'center',}}>
             <Image
-              style={{opacity:0.6, marginBottom: 5}}
+              style={{opacity:0.6, marginBottom: 5, width: 50, height:50}}
+              source={require('../img/ic_timer_black_24dp.png')}
+            />
+            <Text style={styles.textCenter}>Your trip will end in</Text>
+            <Text style={[styles.textCenter, {fontSize:20,fontWeight:'bold'}]}>{this.state.timeLeft}</Text>
+          </View>
+          <View style={{marginTop: 10, marginBottom: 20, alignItems: 'center',}}>
+            <Image
+              style={{opacity:0.6, marginBottom: 5, width: 50, height:25}}
               source={require('../img/ic_wb_sunny_black_24dp.png')}
             />
             <Text style={styles.textCenter}>Tonight the sun sets at</Text>
             <Text style={[styles.textCenter, {fontSize:20,fontWeight:'bold'}]}>{this.state.sunset}</Text>
           </View>
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              style={styles.submit}
-              onPress={() => this.editTrip('completed')}
-              activeOpacity={.8}>
-              <Text style={styles.buttonText}>End Trip</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.extend}
-              onPress={() => this.remove()}
-              activeOpacity={.8}>
-              <Text style={styles.buttonText}>Extend Trip</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.remove}
-              onPress={() => this.editTrip('cancel')}
-              activeOpacity={.8}>
-              <Text style={styles.buttonText}>Cancel Trip</Text>
-            </TouchableOpacity>
+        </View>
+        <View style={styles.buttonContainer}>
+          <View style={styles.buttons}>
+            <View style={styles.button}>
+              <TouchableOpacity
+                style={styles.submit}
+                onPress={() => this.editTrip('completed')}
+                activeOpacity={.8}>
+                <Text style={styles.buttonText}>End Trip</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.button}>
+              <TouchableOpacity
+                style={styles.extend}
+                onPress={() => this.remove()}
+                activeOpacity={.8}>
+                <Text style={styles.buttonText}>Extend Trip</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.button}>
+              <TouchableOpacity
+                style={styles.remove}
+                onPress={() => this.editTrip('cancel')}
+                activeOpacity={.8}>
+                <Text style={styles.buttonText}>Cancel Trip</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </View>
@@ -247,6 +264,7 @@ const styles = StyleSheet.create({
      backgroundColor: '#00aaf1',
    },
    textContainer: {
+     flex: 4,
      justifyContent: 'flex-start',
      margin: 10,
    },
@@ -259,9 +277,14 @@ const styles = StyleSheet.create({
      textAlign: 'center',
    },
    buttonContainer: {
-     marginTop: 10,
+     alignItems: 'flex-end',
+   },
+   buttons: {
      flexDirection: 'row',
-     justifyContent: 'center',
+   },
+   button: {
+     flex: 1,
+     alignItems: 'stretch',
    },
    submit: {
      backgroundColor: 'green',

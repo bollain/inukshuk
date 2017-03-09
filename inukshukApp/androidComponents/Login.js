@@ -15,7 +15,7 @@ import {
 
 import User from './User';
 
-var localIp = '192.168.1.94';
+var localIp = '128.189.242.87';
 
 export default class Login extends Component {
     constructor(props) {
@@ -58,7 +58,9 @@ export default class Login extends Component {
 
     // Assuming first user is created already (can be done through sign up)
     loginMock() {
+
       fetch('http://' + localIp + ':8080/users/87')
+
       .then(handleErrors)
       .then(response => response.json())
       .then(responseJson => {

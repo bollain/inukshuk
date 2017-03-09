@@ -4,7 +4,7 @@ import { View, Text, Image, TouchableHighlight, ToolbarAndroid, StyleSheet, Text
 import Countdown from './Countdown';
 
 var nativeImageSource = require('nativeImageSource');
-var localIp = '192.168.1.94';
+var localIp = '128.189.242.29';
 
 // To pad time
 var pad = "00"

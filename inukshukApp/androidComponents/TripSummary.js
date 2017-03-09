@@ -3,7 +3,7 @@ import { View, ScrollView, Text, TouchableHighlight, ToolbarAndroid, StyleSheet,
 
 var nativeImageSource = require('nativeImageSource');
 
-var localIp = '192.168.1.94';
+var localIp = '128.189.242.29';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 const checkIcon = <Icon name="check-circle" size={24} color="green" />;
@@ -99,6 +99,18 @@ export default class TripSummary extends Component {
       return: this.state.return,
       note: this.state.note,
       trip: tripJson,
+      callback: this.clearTrip,
+    });
+  }
+  // TODO remove test start
+  testStart(){
+    console.log('testStart');
+    this.props.navigator.push({
+      id: 'start',
+      location: this.state.location,
+      contact: this.state.contact,
+      return: this.state.return,
+      note: this.state.note,
       callback: this.clearTrip,
     });
   }

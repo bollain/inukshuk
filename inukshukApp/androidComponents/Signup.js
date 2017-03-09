@@ -18,9 +18,11 @@ import {
 
 import inukshukApp from '../index.android';
 
+
 var nativeImageSource = require('nativeImageSource');
 
-var localIp = '192.168.1.94';
+var localIp = '128.189.242.29';
+
 
 export default class SignUp extends Component {
     constructor(props) {

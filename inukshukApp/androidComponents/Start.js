@@ -171,13 +171,7 @@ export default class Start extends Component {
     return (
       <View style={styles.container}>
         <ToolbarAndroid style={styles.toolbar}
-                        title={this.props.title}
-                        navIcon={nativeImageSource({
-                          android: 'ic_arrow_back_white_24dp',
-                          width: 64,
-                          height: 64
-                        })}
-                        onIconClicked={this.props.navigator.pop}
+                        title='Trip'
                         titleColor={'#FFFFFF'}/>
         <View style={styles.textContainer}>
           <Text style={styles.textLeft}>

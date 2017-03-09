@@ -312,7 +312,7 @@ export default class TripSummary extends Component {
           <View style={styles.startContainer}>
             <TouchableOpacity
               style={styles.start}
-              onPress={this.testStart.bind(this)}
+              onPress={this.start.bind(this)}
               activeOpacity={.8}>
               <Text style={styles.startText}>Submit</Text>
             </TouchableOpacity>

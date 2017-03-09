@@ -32,7 +32,7 @@ export default class Login extends Component {
         })
     }
     login() {
-      fetch('http://" + localIp + ":8080/login', {
+      fetch('http://' + localIp + ':8080/login', {
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
@@ -58,7 +58,7 @@ export default class Login extends Component {
 
     // Assuming first user is created already (can be done through sign up)
     loginMock() {
-      fetch('http://' + localIp + ':8080/users/0')
+      fetch('http://' + localIp + ':8080/users/87')
       .then(handleErrors)
       .then(response => response.json())
       .then(responseJson => {
@@ -69,7 +69,7 @@ export default class Login extends Component {
         });
        })
        .catch(function(error) {
-         Alert.alert('Can not reach server');
+         Alert.alert('No Cellular Service', 'Cannot reach server');
        });
     }
 

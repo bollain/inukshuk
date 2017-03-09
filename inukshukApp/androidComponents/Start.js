@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { View, Text, TouchableHighlight, ToolbarAndroid, StyleSheet, TextInput, AsyncStorage, Alert, Button, TouchableOpacity, ScrollView } from 'react-native';
 
 var nativeImageSource = require('nativeImageSource');
+var localIp = '192.168.1.94';
 
 // To pad time
 var pad = "00"
@@ -11,6 +12,13 @@ export default class Start extends Component {
     super(props);
     this.state = {
       sunset: null,
+      trip: this.props.trip,
+      return: this.props.return,
+      timer: {
+        hours: 12,
+        minutes: 10,
+        seconds: 30,
+      },
     }
     this.getSunset = this.getSunset.bind(this);
   }
@@ -57,6 +65,101 @@ export default class Start extends Component {
     return pad.substring(0, pad.length - num.toString().length) + num.toString();
   }
 
+  //TODO: make the async storage have no values using callback with clearTrip in tripSummary.js
+  end() {
+    this.props.callback(false);
+    _navigator.pop();
+  }
+
+  /**
+  * Handles trip editing from start page.
+  * including trip completion, extension, and deletion
+  **/
+  editTrip(action) {
+    var ApiMethod = '';
+    var completion = false;
+    var title = '';
+    var message = '';
+
+    if (action === 'extend') {
+      ApiMethod = 'PUT';
+      //TODO: bring up modal for time to modify trip.return
+      execute(ApiMethod, completion)
+    }
+    else {
+      if (action === 'cancel') {
+          ApiMethod = 'DELETE';
+          title = 'Cancelling A Trip'
+          message = 'Are you sure you want to cancel the trip?'
+      }
+      else if (action === 'completed') {
+        ApiMethod = 'PUT';
+        completion = true;
+        title = 'Ending A Trip';
+        message = 'Are you sure you want to end this trip?'
+      }
+      // Double confirmation on API execution for deleting/completing trips
+      Alert.alert(title, message, [
+         {text: 'OK', onPress: () => this.execute(ApiMethod, completion)},
+         {text: 'CANCEL', onPress: () => console.log('User regretted.')},
+         ],
+         {cancelable: false})
+    }
+  }
+  /**
+  * API method call to server
+  * param: method, and trip completion status
+  **/
+  execute(ApiMethod, completion) {
+    // trip deletion
+    if (ApiMethod == 'DELETE')
+    {
+      fetch('http://' + localIp + ':8080/trips/' + this.state.trip._id, {method: ApiMethod})
+       .then(handleErrors)
+       .then(Alert.alert(
+         'Trip Cancelled',
+         'We also notified your contact about the cancellation',
+         [{ text: 'OK', onPress: this.end()}]
+         ))
+       .catch(function(error) {
+         Alert.alert('No Cellular Service', 'Can not reach server')})
+    }
+    // trip modification
+    else {
+      console.log(this.state.trip);
+      fetch('http://' + localIp + ':8080/trips/', {
+        method: ApiMethod,
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          tripId: this.state.trip._id,
+          userId: this.state.trip.userId,
+          returnTime: this.state.trip.returnTime,
+          contactEmail: this.state.trip.contactEmail,
+          contactPhone: this.state.trip.contactPhone,
+          startingLocation: {
+             latitude: this.state.trip.startingLocation.coordinates[0],
+             longitude: this.state.trip.startingLocation.coordinates[1],
+          },
+          note: this.state.trip.note,
+          completed: completion
+        })
+      })
+      .then(handleErrors)
+      .then(
+        Alert.alert(
+         'Trip Completed',
+         'Good job!',
+         [{ text: 'OK', onPress: this.end()}])
+      )
+      .catch(function(error) {
+        Alert.alert('No Cellular Service', 'Can not reach server');
+      });
+    }
+  }
+
   render() {
     console.log(this.props);
     return (
@@ -76,21 +179,21 @@ export default class Start extends Component {
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={styles.submit}
-              onPress={console.log('hello')}
+              onPress={() => this.editTrip('completed')}
               activeOpacity={.8}>
-              <Text style={styles.buttonText}>Start</Text>
+              <Text style={styles.buttonText}>End Trip</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.extend}
+              onPress={() => this.remove()}
+              activeOpacity={.8}>
+              <Text style={styles.buttonText}>Extend Trip</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.remove}
-              onPress={() => console.log('press')}
+              onPress={() => this.editTrip('cancel')}
               activeOpacity={.8}>
-              <Text style={styles.buttonText}>Add Time</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.remove}
-              onPress={() => console.log('press')}
-              activeOpacity={.8}>
-              <Text style={styles.buttonText}>Cancel</Text>
+              <Text style={styles.buttonText}>Cancel Trip</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -98,6 +201,21 @@ export default class Start extends Component {
     );
   }
 };
+
+function handleErrors(response) {
+    if (!response.ok) {
+      if (response.status == 400) {
+        throw Error("User not found");
+      }
+      else if (response.status == 404) {
+        throw Error("Invalid user");
+      }
+      else if (response.status == 403) {
+        throw Error("Forbidden: not access to server");
+      }
+    }
+    return response;
+}
 
 const styles = StyleSheet.create({
    container: {
@@ -124,6 +242,10 @@ const styles = StyleSheet.create({
    },
    remove: {
      backgroundColor: 'red',
+     padding: 18,
+   },
+   extend: {
+     backgroundColor: 'blue',
      padding: 18,
    },
    buttonText: {

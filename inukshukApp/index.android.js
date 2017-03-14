@@ -202,6 +202,7 @@ class inukshukApp extends Component {
             user={route.user}
             get={this.get}
             set={this.set}
+            callback={route.callback}
           />
         );
     }

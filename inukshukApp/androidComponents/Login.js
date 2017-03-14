@@ -13,11 +13,11 @@ import {
   Alert,
 } from 'react-native';
 
-import User from './User';
-
-var localIp = '128.189.242.87';
+// var api = require('../network/apiCalls.js');
+import { login, loginMock } from '../network/apiCalls.js';
 
 export default class Login extends Component {
+    // Constuct the component
     constructor(props) {
       super(props);
       this.state = {
@@ -26,54 +26,14 @@ export default class Login extends Component {
       };
     }
 
-    _navSignUp(){
-        this.props.navigator.push({
-            id: 'signup'
-        })
-    }
-    login() {
-      fetch('http://' + localIp + ':8080/login', {
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          userName: this.state.username,
-          password: this.state.password,
-        })
-      })
-      .then(handleErrors)
-      .then(response => response.json())
-      .then(responseJson => {
-        this.props.set('user', JSON.stringify(responseJson));
-        _navigator.push({
-          id: 'tripSummary',
-          user: responseJson
-        });
-       })
-      .catch(function(error) {
-        Alert.alert('Can not reach server');
+    // Navigate to the signup page
+    navSignUp(){
+      this.props.navigator.push({
+        id: 'signup'
       });
-   }
-
-    // Assuming first user is created already (can be done through sign up)
-    loginMock() {
-
-      fetch('http://' + localIp + ':8080/users/87')
-      .then(handleErrors)
-      .then(response => response.json())
-      .then(responseJson => {
-        this.props.set('user', JSON.stringify(responseJson));
-        _navigator.push({
-          id: 'tripSummary',
-          user: responseJson,
-        });
-       })
-       .catch(function(error) {
-         Alert.alert('No Cellular Service', 'Cannot reach server');
-       });
     }
 
+    // Render the login class to the screen
     render() {
       return (
       <View style = {{
@@ -104,11 +64,11 @@ export default class Login extends Component {
                 onChangeText={(text) => this.setState({password: text})}
               />
             </View>
-            <Text style = {styles.button} onPress={()=> this.loginMock()}>
+            <Text style = {styles.button} onPress={()=> loginMock(this)}>
                 LOGIN
             </Text>
             <TouchableHighlight>
-              <Text style={[styles.button, styles.createAccount]} onPress={()=> this._navSignUp()}>
+              <Text style={[styles.button, styles.createAccount]} onPress={()=> this.navSignUp()}>
                   No account? Create one now
                </Text>
             </TouchableHighlight>
@@ -116,14 +76,6 @@ export default class Login extends Component {
         </Image>
       </View> );
     }
-}
-
-function handleErrors(response) {
-
-  if (!response.ok) {
-    throw Error("Invalid user name and/or password");
-  }
-  return response;
 }
 
 const styles = StyleSheet.create({

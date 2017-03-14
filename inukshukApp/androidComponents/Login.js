@@ -1,20 +1,15 @@
 
 /** The splash login page **/
+
 import React, { Component } from 'react';
 import {
-  AppRegistry,
   StyleSheet,
   Image,
   Text,
   TextInput,
   View,
-  Navigator,
-  TouchableHighlight,
-  TouchableOpacity,
-  Alert,
+  TouchableOpacity
 } from 'react-native';
-
-// var api = require('../network/apiCalls.js');
 import { login, loginMock } from '../network/apiCalls.js';
 
 export default class Login extends Component {
@@ -30,7 +25,7 @@ export default class Login extends Component {
     // Navigate to the signup page
     navSignUp(){
       this.props.navigator.push({
-        id: 'signup'
+        id: 'signup',
       });
     }
 
@@ -123,7 +118,7 @@ const styles = StyleSheet.create({
   inputText: {
     alignSelf: 'stretch',
     flexDirection: 'row',
-    height: 40,
+    height: 45,
     fontSize: 16,
   },
   inputBox: {

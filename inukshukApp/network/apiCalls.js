@@ -2,12 +2,12 @@ import { Alert} from 'react-native';
 var localIp = '192.168.1.94';
 var mockUserId = 113;
 
-/* HANDLE ERRORS
-Handle any errors while communicating with the server
-REQUIRES: a response object
-MODIFIES: nothing
-RETURNS: the given response object
-*/
+/** HANDLE ERRORS
+* Handle any errors while communicating with the server
+* REQUIRES: a response object
+* MODIFIES: nothing
+* RETURNS: the given response object
+**/
 function handleErrors(response) {
   if (!response.ok) {
     throw Error("Problem connecting to server");
@@ -15,13 +15,13 @@ function handleErrors(response) {
   return response;
 }
 
-/* LOGIN
-Login to retrieve account information
-REQUIRES: a component, that a user has been created already
-(can be done through sign up)
-MODIFIES: navigator route (to trip summary page)
-RETURNS: nothing
-*/
+/** LOGIN
+* Login to retrieve account information
+* REQUIRES: a component, that a user has been created already
+* (can be done through sign up)
+* MODIFIES: navigator route (to trip summary page)
+* RETURNS: nothing
+**/
 export function login(comp) {
   console.log(comp.state);
   fetch('http://' + localIp + ':8080/login', {
@@ -48,13 +48,13 @@ export function login(comp) {
   });
 }
 
-/* LOGIN MOCK
-Login without checking credentials (for development/testing)
-REQUIRES: a component, that a user has been created already
-(can be done through sign up)
-MODIFIES: a navigator route (to trip summary page)
-RETURNS: nothing
-*/
+/** LOGIN MOCK
+* Login without checking credentials (for development/testing)
+* REQUIRES: a component, that a user has been created already
+* (can be done through sign up)
+* MODIFIES: a navigator route (to trip summary page)
+* RETURNS: nothing
+**/
 export function loginMock(comp) {
   console.log(comp.state);
   fetch('http://' + localIp + ':8080/users/' + mockUserId)
@@ -71,3 +71,47 @@ export function loginMock(comp) {
      Alert.alert('Cannot reach server');
    });
 }
+
+/** CREATE USER
+* Create a user on the inukshuk server with the given information
+* REQUIRES: a component with details in state
+* MODIFIES: the database of users on the inukshuk server
+* RETURNS: nothing
+**/
+export function createUser(comp) {
+  let user = {
+    id: 0,
+    userName: comp.state.userName,
+    firstName: comp.state.firstName,
+    lastName: comp.state.lastName,
+    email: comp.state.email,
+    phoneNumber: comp.state.phoneNumber,
+  };
+  fetch('http://' + localIp + ':8080/users', {
+    method: 'POST',
+    headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(user),
+  })
+  .then(handleErrors)
+  .then(response => response.json())
+  .then(function(responseJson) {
+    Alert.alert(
+      'Success!',
+      'Your account has been created.',
+      [
+        {text: 'OK',
+        onPress: () => comp.props.navigator.push({
+          id: 'tripSummary',
+          user: user,
+        })},
+      ],
+      { cancelable: false }
+    )
+  })
+  .catch(function(error) {
+     Alert.alert('Cannot reach server');
+   });
+ }

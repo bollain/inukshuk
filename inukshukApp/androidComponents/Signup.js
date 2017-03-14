@@ -7,123 +7,106 @@
 
 import React, { Component } from 'react';
 import {
-  Alert,
   StyleSheet,
   Text,
   TextInput,
   View,
-  Navigator,
   ToolbarAndroid,
+  TouchableOpacity,
+  ScrollView,
 } from 'react-native';
-
-import inukshukApp from '../index.android';
-
-
+import { createUser } from '../network/apiCalls.js';
 var nativeImageSource = require('nativeImageSource');
 
-var localIp = '192.168.1.94';
-
-
 export default class SignUp extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            userName: '',
-            fName: '',
-            lName: '',
-            userEmail: '',
-            phoneNumber: '',
-        };
-    }
-    /**
-    * POST /users
-    **/
-    async execute() {
-      fetch('http://' + localIp + ':8080/users', {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            id: 0,
-            userName: this.state.userName,
-            firstName: this.state.fName,
-            lastName: this.state.lName,
-            email: this.state.userEmail,
-            phoneNumber: this.state.phoneNumber,
-        })
-      })
-      .then(handleErrors)
-      .then(response => response.json())
-      .then(function(responseJson) {
-        Alert.alert(
-          'Success!',
-          'Your account has been created!',
-          [
-            {text: 'OK', onPress: () => _navigator.push({id: 'login'})},
-          ],
-          { cancelable: false }
-        )
-      })
-      .catch(function(error) {
-         Alert.alert( 'No Cellular Service', 'Cannot reach server',
-           [
-             {text: 'OK', onPress: () => console.log('OK Pressed')},
-           ],
-           { cancelable: false })
-       });
-       this.props.set('user', JSON.stringify({
-           id: 0,
-           userName: this.state.userName,
-           firstName: this.state.fName,
-           lastName: this.state.lName,
-           email: this.state.userEmail,
-           phoneNumber: this.state.phoneNumber,
-       }));
-    }
 
-    render() {
-      return (
-        <View style={styles.container}>
-          <ToolbarAndroid style={styles.toolbar}
-                          title={this.props.title}
-                          navIcon={nativeImageSource({
-                            android: 'ic_arrow_back_white_24dp',
-                            width: 64,
-                            height: 64
-                          })}
-                          onIconClicked={this.props.navigator.pop}
-                          titleColor={'#FFFFFF'}/>
-          <View style={styles.textContainer}>
-             <TextInput placeholder = "Your user name" onChangeText={(text) => this.setState({userName: text})}/>
-             <TextInput placeholder = "Your first name" onChangeText={(text) => this.setState({fName: text})}/>
-             <TextInput placeholder = "Your last name" onChangeText={(text) => this.setState({lName: text})}/>
-             <TextInput placeholder = "Your email" onChangeText={(text) => this.setState({userEmail: text})}/>
-             <TextInput placeholder = "Your contact number" onChangeText={(text) => this.setState({phoneNumber: text})}/>
-             <Text style={styles.signupBotton} onPress={()=> this.execute()}>
-              Create Account </Text>
-             <Text style={[styles.signupBotton, styles.cancelBotton]} onPress={()=> _navigator.pop()}>
-              Back </Text>
-            </View>
+  // Render the sign up class to the screen
+  render() {
+    return (
+      <View style={styles.container}>
+
+        {/* Android toolbar */}
+        <ToolbarAndroid style={styles.toolbar}
+                        title={this.props.title}
+                        navIcon={nativeImageSource({
+                          android: 'ic_arrow_back_white_24dp',
+                          width: 64,
+                          height: 64
+                        })}
+                        onIconClicked={this.props.navigator.pop}
+                        titleColor={'#FFFFFF'}/>
+
+        <ScrollView style={styles.textContainer}>
+
+          {/* User name input */}
+          <View style={styles.inputBox}>
+            <TextInput
+              style={styles.inputText}
+              placeholder = "Username"
+              onChangeText={(text) => this.setState({userName: text})}
+            />
+          </View>
+
+          {/* First name input */}
+          <View style={styles.inputBox}>
+            <TextInput
+              style={styles.inputText}
+              placeholder = "First name"
+              onChangeText={(text) => this.setState({firstName: text})}
+            />
+          </View>
+
+          {/* Last name input */}
+          <View style={styles.inputBox}>
+            <TextInput
+              style={styles.inputText}
+              placeholder = "Last name"
+              onChangeText={(text) => this.setState({lastName: text})}
+            />
+          </View>
+
+          {/* Email input */}
+          <View style={styles.inputBox}>
+            <TextInput
+              style={styles.inputText}
+              placeholder = "Email"
+              onChangeText={(text) => this.setState({email: text})}
+            />
+          </View>
+
+          {/* Phone number input */}
+          <View style={styles.inputBox}>
+            <TextInput
+              style={styles.inputText}
+              placeholder = "Phone number"
+              onChangeText={(text) => this.setState({phoneNumber: text})}
+            />
+          </View>
+
+          {/* Password */}
+          <View style={styles.inputBox}>
+            <TextInput
+              style={styles.inputText}
+              placeholder = "Password"
+              onChangeText={(text) => this.setState({password: text})}
+            />
+          </View>
+
+        </ScrollView>
+
+        {/* Create account button */}
+        <View style={styles.createContainer}>
+          <TouchableOpacity
+            style={styles.create}
+            onPress={()=> createUser(this)}
+            activeOpacity={.8}>
+            <Text style={styles.buttonText}>Create account</Text>
+          </TouchableOpacity>
         </View>
-      );
-    }
-}
 
-/**
-* handles POST /users if response != 200
-**/
-function handleErrors(response) {
-    if (!response.ok) {
-        if (response.status == 401) {
-            throw Error("Please enter valid email address and phone number");
-        }
-        else if (response.status == 422) {
-            throw Error("The email is already registered");
-        }
-    }
-    return response;
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -137,19 +120,36 @@ const styles = StyleSheet.create({
     backgroundColor: '#00aaf1',
   },
   textContainer: {
-    margin: 10
-  },
-  signupBotton: {
-    fontSize: 18,
     padding: 10,
-    borderWidth: 3,
-    borderColor: 'white',
-    backgroundColor: '#1e90ff',
-    borderRadius: 5,
-    alignSelf: 'stretch',
-
+    flex: 1,
   },
-  cancelBotton: {
-    backgroundColor: 'gainsboro',
-  }
+  inputBox: {
+    backgroundColor: '#e6e6e6',
+    borderRadius: 5,
+    marginBottom: 10,
+    paddingLeft: 8,
+    paddingRight: 8,
+    paddingTop: 6,
+    paddingBottom: 4,
+  },
+  inputText: {
+    alignSelf: 'stretch',
+    flexDirection: 'row',
+    fontSize: 16,
+    height: 45,
+  },
+  createContainer: {
+
+    alignItems: 'stretch',
+  },
+  create: {
+    backgroundColor: 'green',
+    padding: 18,
+  },
+  buttonText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'white',
+    textAlign: 'center'
+  },
 });

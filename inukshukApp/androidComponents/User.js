@@ -87,7 +87,7 @@ export default class User extends Component {
         <View style={styles.updateContainer}>
           <TouchableOpacity
             style={styles.update}
-            onPress={()=> updateUser(this)}
+            onPress={() => updateUser(this)}
             activeOpacity={.8}>
             <Text style={styles.buttonText}>Save changes</Text>
           </TouchableOpacity>

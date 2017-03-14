@@ -120,7 +120,7 @@ export function createUser(comp) {
  * Update user info on the inukshuk server
  * REQUIRES: a component with details in state
  * MODIFIES: the database of users on the inukshuk server
- * RETURNS: nothing
+ * RETURNS: true if success, else false
  **/
  export function updateUser(comp) {
    let user = {
@@ -154,8 +154,10 @@ export function createUser(comp) {
        { cancelable: false }
      )
    )
-   .catch(function(error) {
-      Alert.alert('Error', error.message);
-    })
-
+   .then(() => {
+       comp.props.set('user', JSON.stringify(user))
+       .catch((err) => console.error(err));
+     }
+   )
+   .catch((err) => Alert.alert('Error', err.message));
  }

@@ -115,3 +115,47 @@ export function createUser(comp) {
      Alert.alert('Cannot reach server');
    });
  }
+
+ /** UPDATE USER
+ * Update user info on the inukshuk server
+ * REQUIRES: a component with details in state
+ * MODIFIES: the database of users on the inukshuk server
+ * RETURNS: nothing
+ **/
+ export function updateUser(comp) {
+   let user = {
+     id: comp.state.id,
+     userName: comp.state.userName,
+     firstName: comp.state.firstName,
+     lastName: comp.state.lastName,
+     email: comp.state.email,
+     phoneNumber: comp.state.phoneNumber,
+   };
+   fetch('http://' + localIp + ':8080/users', {
+     method: 'PUT',
+     headers: {
+         'Accept': 'application/json',
+         'Content-Type': 'application/json',
+     },
+     body: JSON.stringify(user),
+   })
+   .then(handleErrors)
+   .then(
+     Alert.alert(
+       'Success!',
+       'Your account has been updated',
+       [
+         {text: 'OK', onPress: () => {
+           comp.props.callback(user)
+           .then(comp.props.navigator.pop())
+           .catch((err) => console.error(err));
+         }},
+       ],
+       { cancelable: false }
+     )
+   )
+   .catch(function(error) {
+      Alert.alert('Error', error.message);
+    })
+
+ }

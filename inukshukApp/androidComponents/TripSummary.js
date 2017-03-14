@@ -40,6 +40,7 @@ export default class TripSummary extends Component {
     this.setSummaryLocation = this.setSummaryLocation.bind(this);
     this.setSummaryReturn = this.setSummaryReturn.bind(this);
     this.setSummaryContact = this.setSummaryContact.bind(this);
+    this.setSummaryUser = this.setSummaryUser.bind(this);
     this.clearTrip = this.clearTrip.bind(this);
   }
 
@@ -120,6 +121,7 @@ export default class TripSummary extends Component {
       this.props.navigator.push({
         id: 'user',
         user: response,
+        callback: this.setSummaryUser,
       });
     });
   }

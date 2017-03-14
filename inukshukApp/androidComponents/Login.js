@@ -10,6 +10,7 @@ import {
   View,
   Navigator,
   TouchableHighlight,
+  TouchableOpacity,
   Alert,
 } from 'react-native';
 
@@ -36,42 +37,58 @@ export default class Login extends Component {
     // Render the login class to the screen
     render() {
       return (
-      <View style = {{
-        flex: 1,
-        flexDirection: 'column',
-        backgroundColor: 'white',
-        justifyContent: 'center',
-        alignItems: 'stretch'
-        }}>
-        <Image source={require('../img/background.jpg')} style={{flex: 1, height: null, width: null}}>
-          <View>
-            <Text style={{fontSize: 32, fontWeight: 'bold', textAlign:'center', marginTop:80, marginBottom: 40}}>
-              Inukshuk
-            </Text>
-          </View>
-          <View style={{flex: 1, flexDirection: 'column', justifyContent: 'flex-end', marginBottom: 50}}>
+      <View style = {styles.container}>
+
+        {/* Nice full-screen image */}
+        <Image source={require('../img/background.jpg')} style={styles.bannerImage}>
+
+          {/* Inukshuk title */}
+          <Text style={styles.title}>
+            Inukshuk
+          </Text>
+
+          <View style={styles.inputContainer}>
+
+            {/* Email input */}
             <View style={styles.inputBox}>
               <TextInput
-                style={styles.textContainer}
-                placeholder="Email"
+                style={styles.inputText}
+                underlineColorAndroid='rgba(0,0,0,0)'
+                placeholder='Email'
                 onChangeText={(text) => this.setState({username: text})}
               />
             </View>
+
+            {/* Password box */}
             <View style={styles.inputBox}>
               <TextInput
-                style={styles.textContainer}
-                placeholder="Password"
+                style={styles.inputText}
+                underlineColorAndroid='rgba(0,0,0,0)'
+                placeholder='Password'
                 onChangeText={(text) => this.setState({password: text})}
               />
             </View>
-            <Text style = {styles.button} onPress={()=> loginMock(this)}>
-                LOGIN
-            </Text>
-            <TouchableHighlight>
-              <Text style={[styles.button, styles.createAccount]} onPress={()=> this.navSignUp()}>
-                  No account? Create one now
-               </Text>
-            </TouchableHighlight>
+
+            {/* Sign in button */}
+            <View style={styles.signinContainer}>
+              <TouchableOpacity
+                style={styles.signin}
+                onPress={()=> loginMock(this)}
+                activeOpacity={.8}>
+                <Text style={styles.buttonText}>Sign in</Text>
+              </TouchableOpacity>
+            </View>
+
+            {/* Create account button */}
+            <View style={styles.createContainer}>
+              <TouchableOpacity
+                style={styles.create}
+                onPress={()=> this.navSignUp()}
+                activeOpacity={.8}>
+                <Text style={styles.buttonText}>Create an account</Text>
+              </TouchableOpacity>
+            </View>
+
           </View>
         </Image>
       </View> );
@@ -79,18 +96,46 @@ export default class Login extends Component {
 }
 
 const styles = StyleSheet.create({
-  textContainer: {
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    alignItems: 'stretch',
+  },
+  bannerImage: {
+    flex: 1,
+    height: null,
+    width: null,
+  },
+  title: {
+    fontSize: 50,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginTop: 40,
+    marginBottom: 40,
+  },
+  inputContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'flex-end',
+  },
+  inputText: {
     alignSelf: 'stretch',
     flexDirection: 'row',
     height: 40,
+    fontSize: 16,
   },
   inputBox: {
     backgroundColor: 'rgba(255,255,255,0.7)',
     borderRadius: 5,
-    margin: 10,
-  },
-  textColored: {
-    color: 'white',
+    marginLeft: 10,
+    marginRight: 10,
+    marginBottom: 10,
+    paddingLeft: 8,
+    paddingRight: 8,
+    paddingTop: 6,
+    paddingBottom: 4,
   },
   button: {
     fontSize: 18,
@@ -100,13 +145,31 @@ const styles = StyleSheet.create({
     padding: 10,
     alignSelf: 'stretch',
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 8,
-  },
   createAccount: {
     fontSize: 14,
     backgroundColor: '#1e90ff',
+  },
+  buttons: {
+    flexDirection: 'row',
+  },
+  signinContainer: {
+    alignItems: 'stretch'
+  },
+  signin: {
+    backgroundColor: 'green',
+    padding: 18,
+  },
+  createContainer: {
+    alignItems: 'stretch',
+  },
+  create: {
+    backgroundColor: '#1e90ff',
+    padding: 18,
+  },
+  buttonText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'white',
+    textAlign: 'center'
   },
 });

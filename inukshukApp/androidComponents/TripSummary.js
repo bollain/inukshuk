@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+
 import {
   View,
   ScrollView,
@@ -13,6 +14,9 @@ import {
   AsyncStorage,
   Modal
 } from 'react-native';
+
+import { postTrip } from '../scripts/apiCalls.js';
+
 import {
   storageGet,
   storageMultiGet,
@@ -20,12 +24,12 @@ import {
   storageMultiRemove,
   storageSet,
 } from '../scripts/localStorage.js';
-import { toMonth, padTime } from '../scripts/datesAndTimes.js'
+
+import { toMonth, padTime } from '../scripts/datesAndTimes.js';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+
 var nativeImageSource = require('nativeImageSource');
 
-var localIp = '192.168.1.94';
-
-import Icon from 'react-native-vector-icons/MaterialIcons';
 const checkIcon = <Icon name="check-circle" size={24} color="green" />;
 
 export default class TripSummary extends Component {
@@ -132,55 +136,10 @@ export default class TripSummary extends Component {
   start() {
     console.log('navstart');
     if (this.state.location != null && this.state.contact != null && this.state.return != null && this.state.note != null) {
-      this.sendTrip();
+      postTrip(this);
     } else {
       Alert.alert('Please fill in all trip details before proceeding');
     }
-  }
-
-  // Send the trip details to the server
-  sendTrip() {
-    console.log(this.props.user);
-    console.log(this.props);
-    // TODO: server should take chosen email/number and not require both
-    var ce = (this.state.contact.emails.length > 0 ? this.state.contact.emails[0].email : 'ehauner@gmail.com');
-    var tel = (this.state.contact.phones.length > 0 ? this.state.contact.phones[0].number : '6046523447');
-    tel = tel.replace(/\D+/g, "");
-    var returnTime = new Date(this.state.return.year, this.state.return.month, this.state.return.day, this.state.return.hour, this.state.return.minute, 0,0);
-    fetch('http://' + localIp + ':8080/trips', {
-      method: 'POST',
-      headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-          tripId: 0,
-          userId: this.props.user._id,
-          returnTime: returnTime,
-          contactEmail: ce,
-          contactPhone: tel,
-          startingLocation: {
-            latitude: this.state.location.latitude,
-            longitude: this.state.location.longitude,
-          },
-          note: this.state.note,
-          completed: false,
-      })
-    })
-    .then(handleErrors)
-    .then(response => response.json())
-    .then((responseJson) => {
-      //this.props.set('tripId', responseJson._id);
-      Alert.alert(
-        'Success!',
-        'Your trip has been created!',
-        [
-          {text: 'OK', onPress: () => this.navStart(responseJson)},
-        ],
-        { cancelable: false }
-      )
-    })
-    .catch((err) => console.error(err));
   }
 
   clearTrip(showDialog) {
@@ -373,15 +332,6 @@ export default class TripSummary extends Component {
       </View>
     );
   }
-}
-
-function handleErrors(response) {
-  if (!response.ok) {
-    if (response.status == 400) {
-      throw Error("Please log out and then try again");
-    }
-  }
-  return response;
 }
 
 const styles = StyleSheet.create({

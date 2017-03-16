@@ -82,7 +82,7 @@ export function loginMock(comp) {
 /** CREATE USER
 * Create a user on the inukshuk server with the given information
 * REQUIRES: a component with details in state
-* MODIFIES: the database of users on the inukshuk server
+* MODIFIES: the database of users on the inukshuk server, navigator route
 * RETURNS: nothing
 **/
 export function createUser(comp) {
@@ -126,8 +126,8 @@ export function createUser(comp) {
  /** UPDATE USER
  * Update user info on the inukshuk server
  * REQUIRES: a component with details in state
- * MODIFIES: the database of users on the inukshuk server
- * RETURNS: true if success, else false
+ * MODIFIES: the database of users on the inukshuk server, navigator route
+ * RETURNS: nothing
  **/
  export function updateUser(comp) {
    let user = {
@@ -167,4 +167,52 @@ export function createUser(comp) {
      }
    )
    .catch((err) => Alert.alert('Error', err.message));
+ }
+
+ /** POST TRIP
+ * Post a trip to inukshuk server
+ * REQUIRES: a component with details in state
+ * MODIFIES: the database of trips on the inukshuk server, navigator route
+ * RETURNS: nothing
+ **/
+ export function postTrip(comp) {
+   // TODO: server should take chosen email/number and not require both
+   var ce = (comp.state.contact.emails.length > 0 ? comp.state.contact.emails[0].email : 'ehauner@gmail.com');
+   var tel = (comp.state.contact.phones.length > 0 ? comp.state.contact.phones[0].number : '6046523447');
+   tel = tel.replace(/\D+/g, "");
+   var returnTime = new Date(comp.state.return.year, comp.state.return.month, comp.state.return.day, comp.state.return.hour, comp.state.return.minute, 0,0);
+   fetch('http://' + localIp + ':8080/trips', {
+     method: 'POST',
+     headers: {
+         'Accept': 'application/json',
+         'Content-Type': 'application/json',
+     },
+     body: JSON.stringify({
+         tripId: 0,
+         userId: comp.props.user._id,
+         returnTime: returnTime,
+         contactEmail: ce,
+         contactPhone: tel,
+         startingLocation: {
+           latitude: comp.state.location.latitude,
+           longitude: comp.state.location.longitude,
+         },
+         note: comp.state.note,
+         completed: false,
+     })
+   })
+   .then(handleErrors)
+   .then(response => response.json())
+   .then((responseJson) => {
+     //comp.props.set('tripId', responseJson._id);
+     Alert.alert(
+       'Success!',
+       'Your trip has been created!',
+       [
+         {text: 'OK', onPress: () => comp.navStart(responseJson)},
+       ],
+       { cancelable: false }
+     )
+   })
+   .catch((err) => console.error(err));
  }

@@ -1,13 +1,27 @@
 import React, { Component, PropTypes } from 'react';
-import { View, Text, Image, TouchableHighlight, ToolbarAndroid, StyleSheet, TextInput, AsyncStorage, Alert, Button, TouchableOpacity, ScrollView, InteractionManager } from 'react-native';
+import { View,
+  Text,
+  Image,
+  TouchableHighlight,
+  ToolbarAndroid,
+  StyleSheet,
+  TextInput,
+  AsyncStorage,
+  Alert,
+  Button,
+  TouchableOpacity,
+  ScrollView,
+  InteractionManager
+} from 'react-native';
+
+import { completeTrip, cancelTrip } from '../scripts/apiCalls.js';
+
+import { toMonth, toWeekday, padTime, toTwentyFour } from '../scripts/datesAndTimes.js'
 
 import Countdown from './Countdown';
 
 var nativeImageSource = require('nativeImageSource');
-var localIp = '128.189.242.29';
-
-// To pad time
-var pad = "00"
+var localIp = '192.168.1.94';
 
 export default class Start extends Component {
   constructor(props) {
@@ -18,11 +32,6 @@ export default class Start extends Component {
       trip: this.props.trip,
       return: this.props.return,
       returnDate: new Date(returnTime.year, returnTime.month, returnTime.day, returnTime.hour, returnTime.minute, 0, 0),
-      timer: {
-        hours: 12,
-        minutes: 10,
-        seconds: 30,
-      },
     }
     this.getSunset = this.getSunset.bind(this);
   }
@@ -43,7 +52,7 @@ export default class Start extends Component {
     .then((response) => response.json())
     .then((responseJson) => {
       console.log(responseJson.results.sunset);
-      let sunsetTimeArray = this.toTwentyFour(responseJson.results.sunset);
+      let sunsetTimeArray = toTwentyFour(responseJson.results.sunset);
       var sunsetDate = new Date(now.getFullYear(), now.getMonth(), now.getDay(), sunsetTimeArray[0], sunsetTimeArray[1], 0, 0);
       sunsetDate.setMinutes(sunsetDate.getMinutes() - offset);
       let hours = (sunsetDate.getHours()<10?'0':'') + sunsetDate.getHours();
@@ -55,113 +64,28 @@ export default class Start extends Component {
      });
   }
 
-  // Return array of hours and minutes given a string formatted AM/PM time
-  toTwentyFour(time) {
-    var hours = Number(time.match(/^(\d+)/)[1]);
-    var minutes = Number(time.match(/:(\d+)/)[1]);
-    var AMPM = time.match(/\s(.*)$/)[1];
-    if(AMPM == "PM" && hours<12) hours = hours+12;
-    if(AMPM == "AM" && hours==12) hours = hours-12;
-    return [hours, minutes];
+  // Confirm, then cancel trip
+  cancelTrip() {
+    Alert.alert(
+      'Are you sure you want to cancel your trip?',
+      'Your contact will be notified',
+      [
+        {text: 'No'},
+        {text: 'Cancel trip', onPress: () => cancelTrip(this)},
+      ],
+    );
   }
 
-  padTime(num) {
-    return pad.substring(0, pad.length - num.toString().length) + num.toString();
-  }
-
-  //TODO: make the async storage have no values using callback with clearTrip in tripSummary.js
-  end() {
-    this.props.callback(false);
-    _navigator.pop();
-  }
-
-  /**
-  * Handles trip editing from start page.
-  * including trip completion, extension, and deletion
-  **/
-  editTrip(action) {
-    var ApiMethod = '';
-    var completion = false;
-    var title = '';
-    var message = '';
-
-    if (action === 'extend') {
-      ApiMethod = 'PUT';
-      //TODO: bring up modal for time to modify trip.return
-      execute(ApiMethod, completion)
-    }
-    else {
-      if (action === 'cancel') {
-          ApiMethod = 'DELETE';
-          title = 'Cancelling A Trip'
-          message = 'Are you sure you want to cancel the trip?'
-      }
-      else if (action === 'completed') {
-        ApiMethod = 'PUT';
-        completion = true;
-        title = 'Ending A Trip';
-        message = 'Are you sure you want to end this trip?'
-      }
-      // Double confirmation on API execution for deleting/completing trips
-      Alert.alert(title, message, [
-         {text: 'OK', onPress: () => this.execute(ApiMethod, completion)},
-         {text: 'CANCEL', onPress: () => console.log('User regretted.')},
-         ],
-         {cancelable: false})
-    }
-  }
-  /**
-  * API method call to server
-  * param: method, and trip completion status
-  **/
-  execute(ApiMethod, completion) {
-    // trip deletion
-    if (ApiMethod == 'DELETE')
-    {
-      fetch('http://' + localIp + ':8080/trips/' + this.state.trip._id, {method: ApiMethod})
-       .then(handleErrors)
-       .then(Alert.alert(
-         'Trip Cancelled',
-         'We also notified your contact about the cancellation',
-         [{ text: 'OK', onPress: this.end()}]
-         ))
-       .catch(function(error) {
-         Alert.alert('No Cellular Service', 'Can not reach server')})
-    }
-    // trip modification
-    else {
-      console.log(this.state.trip);
-      fetch('http://' + localIp + ':8080/trips/', {
-        method: ApiMethod,
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          tripId: this.state.trip._id,
-          userId: this.state.trip.userId,
-          returnTime: this.state.trip.returnTime,
-          contactEmail: this.state.trip.contactEmail,
-          contactPhone: this.state.trip.contactPhone,
-          startingLocation: {
-             latitude: this.state.trip.startingLocation.coordinates[0],
-             longitude: this.state.trip.startingLocation.coordinates[1],
-          },
-          note: this.state.trip.note,
-          completed: completion
-        })
-      })
-      .then(handleErrors)
-      .then(
-        Alert.alert(
-         'Trip Completed',
-         'Good job!',
-         [{ text: 'OK', onPress: this.end()}])
-      )
-      .catch(function(error) {
-        Alert.alert('No Cellular Service', 'Can not reach server');
-      });
-    }
+  // Confirm, then complete trip
+  completeTrip() {
+    Alert.alert(
+      'Are you sure you want to complete your trip?',
+      'Your contact will be notified',
+      [
+        {text: 'No'},
+        {text: 'Complete trip', onPress: () => completeTrip(this)},
+      ],
+    );
   }
 
   render() {
@@ -206,9 +130,9 @@ export default class Start extends Component {
             <View style={styles.button}>
               <TouchableOpacity
                 style={styles.submit}
-                onPress={() => this.editTrip('completed')}
+                onPress={() => this.completeTrip()}
                 activeOpacity={.8}>
-                <Text style={styles.buttonText}>End Trip</Text>
+                <Text style={styles.buttonText}>Complete</Text>
               </TouchableOpacity>
             </View>
             <View style={styles.button}>
@@ -216,15 +140,15 @@ export default class Start extends Component {
                 style={styles.extend}
                 onPress={() => this.remove()}
                 activeOpacity={.8}>
-                <Text style={styles.buttonText}>Extend Trip</Text>
+                <Text style={styles.buttonText}>Extend</Text>
               </TouchableOpacity>
             </View>
             <View style={styles.button}>
               <TouchableOpacity
                 style={styles.remove}
-                onPress={() => this.editTrip('cancel')}
+                onPress={() => this.cancelTrip()}
                 activeOpacity={.8}>
-                <Text style={styles.buttonText}>Cancel Trip</Text>
+                <Text style={styles.buttonText}>Cancel</Text>
               </TouchableOpacity>
             </View>
           </View>

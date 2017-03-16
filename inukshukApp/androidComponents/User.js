@@ -12,7 +12,7 @@ import {
   ToolbarAndroid,
   TouchableOpacity,
 } from 'react-native';
-import { updateUser } from '../network/apiCalls.js';
+import { updateUser } from '../scripts/apiCalls.js';
 var nativeImageSource = require('nativeImageSource');
 
 export default class User extends Component {

@@ -1,29 +1,36 @@
 import React, { Component, PropTypes } from 'react';
-import { View, ScrollView, Text, TouchableHighlight, ToolbarAndroid, StyleSheet, Alert, Button, TouchableOpacity, Image, AsyncStorage, Modal } from 'react-native';
+
+import {
+  View,
+  ScrollView,
+  Text,
+  TouchableHighlight,
+  ToolbarAndroid,
+  StyleSheet,
+  Alert,
+  Button,
+  TouchableOpacity,
+  Image,
+  AsyncStorage,
+  Modal
+} from 'react-native';
+
+import { postTrip } from '../scripts/apiCalls.js';
+
+import {
+  storageGet,
+  storageMultiGet,
+  storageRemove,
+  storageMultiRemove,
+  storageSet,
+} from '../scripts/localStorage.js';
+
+import { toMonth, padTime } from '../scripts/datesAndTimes.js';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 var nativeImageSource = require('nativeImageSource');
 
-var localIp = '128.189.242.29';
-
-import Icon from 'react-native-vector-icons/MaterialIcons';
 const checkIcon = <Icon name="check-circle" size={24} color="green" />;
-
-var monthArray = new Array();
-monthArray[0] = "Jan";
-monthArray[1] = "Feb";
-monthArray[2] = "Mar";
-monthArray[3] = "Apr";
-monthArray[4] = "May";
-monthArray[5] = "Jun";
-monthArray[6] = "Jul";
-monthArray[7] = "Aug";
-monthArray[8] = "Sept";
-monthArray[9] = "Oct";
-monthArray[10] = "Nov";
-monthArray[11] = "Dec";
-
-// To pad time
-var pad = "00"
 
 export default class TripSummary extends Component {
   constructor(props) {
@@ -45,7 +52,7 @@ export default class TripSummary extends Component {
   }
 
   componentDidMount() {
-    this.props.multiGet(['location','contact','return','note']).then((response => {
+    storageMultiGet(['location','contact','return','note']).then((response => {
       this.setState({
         location: JSON.parse(response[0][1]),
         contact: JSON.parse(response[1][1]),
@@ -56,7 +63,7 @@ export default class TripSummary extends Component {
   }
 
   navLocation(){
-    this.props.get('location').then((response) => {
+    storageGet('location').then((response) => {
       this.props.navigator.push({
         id: 'location',
         location: response,
@@ -65,7 +72,7 @@ export default class TripSummary extends Component {
     });
   }
   navContacts(){
-    this.props.get('contact').then((response) => {
+    storageGet('contact').then((response) => {
       this.props.navigator.push({
         id: 'contact',
         contact: response,
@@ -74,7 +81,7 @@ export default class TripSummary extends Component {
     });
   }
   navReturn(){
-    this.props.get('return').then((response) => {
+    storageGet('return').then((response) => {
       this.props.navigator.push({
         id: 'return',
         return: response,
@@ -83,7 +90,7 @@ export default class TripSummary extends Component {
     });
   }
   navNotes(){
-    this.props.get('notes').then((response) => {
+    storageGet('note').then((response) => {
       this.props.navigator.push({
         id: 'note',
         note: response,
@@ -116,7 +123,7 @@ export default class TripSummary extends Component {
     });
   }
   navUser(){
-    this.props.get('user').then((response) => {
+    storageGet('user').then((response) => {
       console.log(response);
       this.props.navigator.push({
         id: 'user',
@@ -129,59 +136,14 @@ export default class TripSummary extends Component {
   start() {
     console.log('navstart');
     if (this.state.location != null && this.state.contact != null && this.state.return != null && this.state.note != null) {
-      this.sendTrip();
+      postTrip(this);
     } else {
       Alert.alert('Please fill in all trip details before proceeding');
     }
   }
 
-  // Send the trip details to the server
-  sendTrip() {
-    console.log(this.props.user);
-    console.log(this.props);
-    // TODO: server should take chosen email/number and not require both
-    var ce = (this.state.contact.emails.length > 0 ? this.state.contact.emails[0].email : 'ehauner@gmail.com');
-    var tel = (this.state.contact.phones.length > 0 ? this.state.contact.phones[0].number : '6046523447');
-    tel = tel.replace(/\D+/g, "");
-    var returnTime = new Date(this.state.return.year, this.state.return.month, this.state.return.day, this.state.return.hour, this.state.return.minute, 0,0);
-    fetch('http://' + localIp + ':8080/trips', {
-      method: 'POST',
-      headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-          tripId: 0,
-          userId: this.props.user._id,
-          returnTime: returnTime,
-          contactEmail: ce,
-          contactPhone: tel,
-          startingLocation: {
-            latitude: this.state.location.latitude,
-            longitude: this.state.location.longitude,
-          },
-          note: this.state.note,
-          completed: false,
-      })
-    })
-    .then(handleErrors)
-    .then(response => response.json())
-    .then((responseJson) => {
-      //this.props.set('tripId', responseJson._id);
-      Alert.alert(
-        'Success!',
-        'Your trip has been created!',
-        [
-          {text: 'OK', onPress: () => this.navStart(responseJson)},
-        ],
-        { cancelable: false }
-      )
-    })
-    .catch((err) => console.error(err));
-  }
-
   clearTrip(showDialog) {
-    this.props.multiRemove(['location','contact','return','note']).then((response => {
+    storageMultiRemove(['location','contact','return','note']).then((response => {
       this.setState({
         location: null,
         contact: null,
@@ -214,10 +176,6 @@ export default class TripSummary extends Component {
     await this.setState({return: JSON.parse(currentReturn)});
   }
 
-  padTime(num) {
-    return pad.substring(0, pad.length - num.toString().length) + num.toString();
-  }
-
   async setSummaryUser(currentUser) {
     await this.setState({user: currentUser});
   }
@@ -231,8 +189,8 @@ export default class TripSummary extends Component {
     let chosenLocationLon = (this.state.location != null ? this.state.location.longitude.toFixed(4) : null);
 
     let returnCheck = (this.state.return != null ? checkIcon : null);
-    let chosenReturnTime = (this.state.return != null ? this.padTime(this.state.return.hour) + ':' + this.padTime(this.state.return.minute) : null);
-    let chosenReturnDate = (this.state.return != null ? monthArray[this.state.return.month] + ' ' + this.state.return.day.toString() + ', ' : null);
+    let chosenReturnTime = (this.state.return != null ? padTime(this.state.return.hour) + ':' + padTime(this.state.return.minute) : null);
+    let chosenReturnDate = (this.state.return != null ? toMonth(this.state.return.month, true) + ' ' + this.state.return.day.toString() + ', ' : null);
 
     let chosenContact = (this.state.contact != null ? this.state.contact.firstName : null);
     let contactCheck = (this.state.contact != null ? checkIcon : null);
@@ -374,15 +332,6 @@ export default class TripSummary extends Component {
       </View>
     );
   }
-}
-
-function handleErrors(response) {
-  if (!response.ok) {
-    if (response.status == 400) {
-      throw Error("Please log out and then try again");
-    }
-  }
-  return response;
 }
 
 const styles = StyleSheet.create({

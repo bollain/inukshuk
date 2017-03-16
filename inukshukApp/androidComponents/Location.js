@@ -1,6 +1,23 @@
 import React, { Component, PropTypes } from 'react';
-import { View, Text, TouchableHighlight, ToolbarAndroid, StyleSheet, TouchableOpacity, Dimensions, Image, Button, Alert } from 'react-native';
-
+import {
+  View,
+  Text,
+  TouchableHighlight,
+  ToolbarAndroid,
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions,
+  Image,
+  Button,
+  Alert
+} from 'react-native';
+import {
+  storageGet,
+  storageMultiGet,
+  storageRemove,
+  storageMultiRemove,
+  storageSet,
+} from '../scripts/localStorage.js';
 var nativeImageSource = require('nativeImageSource');
 
 import MapView from 'react-native-maps';
@@ -46,12 +63,12 @@ export default class Location extends Component {
   }
 
   set() {
-    this.props.set('location', JSON.stringify(this.state.region))
+    storageSet('location', JSON.stringify(this.state.region))
     .then(this.props.callback(JSON.stringify(this.state.region)))
     .then(_navigator.pop());
   }
   remove() {
-    this.props.remove('location')
+    storageRemove('location')
     .then(this.props.callback(null))
     .then(_navigator.pop());
   }

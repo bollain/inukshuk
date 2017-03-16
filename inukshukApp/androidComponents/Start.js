@@ -13,6 +13,9 @@ import { View,
   ScrollView,
   InteractionManager
 } from 'react-native';
+
+import { completeTrip, cancelTrip } from '../scripts/apiCalls.js';
+
 import { toMonth, toWeekday, padTime, toTwentyFour } from '../scripts/datesAndTimes.js'
 
 import Countdown from './Countdown';
@@ -61,99 +64,28 @@ export default class Start extends Component {
      });
   }
 
-  // End trip, popback to trip summary and remove trip info
-  end() {
-    this.props.callback(false);
-    _navigator.pop();
+  // Confirm, then cancel trip
+  cancelTrip() {
+    Alert.alert(
+      'Are you sure you want to cancel your trip?',
+      'Your contact will be notified',
+      [
+        {text: 'No'},
+        {text: 'Cancel trip', onPress: () => cancelTrip(this)},
+      ],
+    );
   }
 
-  /**
-  * Handles trip editing from start page.
-  * including trip completion, extension, and deletion
-  **/
-  editTrip(action) {
-    var ApiMethod = '';
-    var completion = false;
-    var title = '';
-    var message = '';
-
-    if (action === 'extend') {
-      ApiMethod = 'PUT';
-      //TODO: bring up modal for time to modify trip.return
-      execute(ApiMethod, completion)
-    }
-    else {
-      if (action === 'cancel') {
-          ApiMethod = 'DELETE';
-          title = 'Cancelling A Trip'
-          message = 'Are you sure you want to cancel the trip?'
-      }
-      else if (action === 'completed') {
-        ApiMethod = 'PUT';
-        completion = true;
-        title = 'Ending A Trip';
-        message = 'Are you sure you want to end this trip?'
-      }
-      // Double confirmation on API execution for deleting/completing trips
-      Alert.alert(title, message, [
-         {text: 'OK', onPress: () => this.execute(ApiMethod, completion)},
-         {text: 'CANCEL', onPress: () => console.log('User regretted.')},
-         ],
-         {cancelable: false})
-    }
-  }
-  /**
-  * API method call to server
-  * param: method, and trip completion status
-  **/
-  execute(ApiMethod, completion) {
-    // trip deletion
-    if (ApiMethod == 'DELETE')
-    {
-      fetch('http://' + localIp + ':8080/trips/' + this.state.trip._id, {method: ApiMethod})
-       .then(handleErrors)
-       .then(Alert.alert(
-         'Trip Cancelled',
-         'We also notified your contact about the cancellation',
-         [{ text: 'OK', onPress: this.end()}]
-         ))
-       .catch(function(error) {
-         Alert.alert('No Cellular Service', 'Can not reach server')})
-    }
-    // trip modification
-    else {
-      console.log(this.state.trip);
-      fetch('http://' + localIp + ':8080/trips/', {
-        method: ApiMethod,
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          tripId: this.state.trip._id,
-          userId: this.state.trip.userId,
-          returnTime: this.state.trip.returnTime,
-          contactEmail: this.state.trip.contactEmail,
-          contactPhone: this.state.trip.contactPhone,
-          startingLocation: {
-             latitude: this.state.trip.startingLocation.coordinates[0],
-             longitude: this.state.trip.startingLocation.coordinates[1],
-          },
-          note: this.state.trip.note,
-          completed: completion
-        })
-      })
-      .then(handleErrors)
-      .then(
-        Alert.alert(
-         'Trip Completed',
-         'Good job!',
-         [{ text: 'OK', onPress: this.end()}])
-      )
-      .catch(function(error) {
-        Alert.alert('No Cellular Service', 'Can not reach server');
-      });
-    }
+  // Confirm, then complete trip
+  completeTrip() {
+    Alert.alert(
+      'Are you sure you want to complete your trip?',
+      'Your contact will be notified',
+      [
+        {text: 'No'},
+        {text: 'Complete trip', onPress: () => completeTrip(this)},
+      ],
+    );
   }
 
   render() {
@@ -198,9 +130,9 @@ export default class Start extends Component {
             <View style={styles.button}>
               <TouchableOpacity
                 style={styles.submit}
-                onPress={() => this.editTrip('completed')}
+                onPress={() => this.completeTrip()}
                 activeOpacity={.8}>
-                <Text style={styles.buttonText}>End Trip</Text>
+                <Text style={styles.buttonText}>Complete Trip</Text>
               </TouchableOpacity>
             </View>
             <View style={styles.button}>
@@ -214,7 +146,7 @@ export default class Start extends Component {
             <View style={styles.button}>
               <TouchableOpacity
                 style={styles.remove}
-                onPress={() => this.editTrip('cancel')}
+                onPress={() => this.cancelTrip()}
                 activeOpacity={.8}>
                 <Text style={styles.buttonText}>Cancel Trip</Text>
               </TouchableOpacity>

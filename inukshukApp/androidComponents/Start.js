@@ -132,7 +132,7 @@ export default class Start extends Component {
                 style={styles.submit}
                 onPress={() => this.completeTrip()}
                 activeOpacity={.8}>
-                <Text style={styles.buttonText}>Complete Trip</Text>
+                <Text style={styles.buttonText}>Complete</Text>
               </TouchableOpacity>
             </View>
             <View style={styles.button}>
@@ -140,7 +140,7 @@ export default class Start extends Component {
                 style={styles.extend}
                 onPress={() => this.remove()}
                 activeOpacity={.8}>
-                <Text style={styles.buttonText}>Extend Trip</Text>
+                <Text style={styles.buttonText}>Extend</Text>
               </TouchableOpacity>
             </View>
             <View style={styles.button}>
@@ -148,7 +148,7 @@ export default class Start extends Component {
                 style={styles.remove}
                 onPress={() => this.cancelTrip()}
                 activeOpacity={.8}>
-                <Text style={styles.buttonText}>Cancel Trip</Text>
+                <Text style={styles.buttonText}>Cancel</Text>
               </TouchableOpacity>
             </View>
           </View>

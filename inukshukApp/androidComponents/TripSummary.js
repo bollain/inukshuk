@@ -20,29 +20,13 @@ import {
   storageMultiRemove,
   storageSet,
 } from '../scripts/localStorage.js';
+import { toMonth, padTime } from '../scripts/datesAndTimes.js'
 var nativeImageSource = require('nativeImageSource');
 
-var localIp = '128.189.242.29';
+var localIp = '192.168.1.94';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 const checkIcon = <Icon name="check-circle" size={24} color="green" />;
-
-var monthArray = new Array();
-monthArray[0] = "Jan";
-monthArray[1] = "Feb";
-monthArray[2] = "Mar";
-monthArray[3] = "Apr";
-monthArray[4] = "May";
-monthArray[5] = "Jun";
-monthArray[6] = "Jul";
-monthArray[7] = "Aug";
-monthArray[8] = "Sept";
-monthArray[9] = "Oct";
-monthArray[10] = "Nov";
-monthArray[11] = "Dec";
-
-// To pad time
-var pad = "00"
 
 export default class TripSummary extends Component {
   constructor(props) {
@@ -233,10 +217,6 @@ export default class TripSummary extends Component {
     await this.setState({return: JSON.parse(currentReturn)});
   }
 
-  padTime(num) {
-    return pad.substring(0, pad.length - num.toString().length) + num.toString();
-  }
-
   async setSummaryUser(currentUser) {
     await this.setState({user: currentUser});
   }
@@ -250,8 +230,8 @@ export default class TripSummary extends Component {
     let chosenLocationLon = (this.state.location != null ? this.state.location.longitude.toFixed(4) : null);
 
     let returnCheck = (this.state.return != null ? checkIcon : null);
-    let chosenReturnTime = (this.state.return != null ? this.padTime(this.state.return.hour) + ':' + this.padTime(this.state.return.minute) : null);
-    let chosenReturnDate = (this.state.return != null ? monthArray[this.state.return.month] + ' ' + this.state.return.day.toString() + ', ' : null);
+    let chosenReturnTime = (this.state.return != null ? padTime(this.state.return.hour) + ':' + padTime(this.state.return.minute) : null);
+    let chosenReturnDate = (this.state.return != null ? toMonth(this.state.return.month, true) + ' ' + this.state.return.day.toString() + ', ' : null);
 
     let chosenContact = (this.state.contact != null ? this.state.contact.firstName : null);
     let contactCheck = (this.state.contact != null ? checkIcon : null);

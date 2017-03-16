@@ -1,13 +1,24 @@
 import React, { Component, PropTypes } from 'react';
-import { View, Text, Image, TouchableHighlight, ToolbarAndroid, StyleSheet, TextInput, AsyncStorage, Alert, Button, TouchableOpacity, ScrollView, InteractionManager } from 'react-native';
+import { View,
+  Text,
+  Image,
+  TouchableHighlight,
+  ToolbarAndroid,
+  StyleSheet,
+  TextInput,
+  AsyncStorage,
+  Alert,
+  Button,
+  TouchableOpacity,
+  ScrollView,
+  InteractionManager
+} from 'react-native';
+import { toMonth, toWeekday, padTime, toTwentyFour } from '../scripts/datesAndTimes.js'
 
 import Countdown from './Countdown';
 
 var nativeImageSource = require('nativeImageSource');
-var localIp = '128.189.242.29';
-
-// To pad time
-var pad = "00"
+var localIp = '192.168.1.94';
 
 export default class Start extends Component {
   constructor(props) {
@@ -38,7 +49,7 @@ export default class Start extends Component {
     .then((response) => response.json())
     .then((responseJson) => {
       console.log(responseJson.results.sunset);
-      let sunsetTimeArray = this.toTwentyFour(responseJson.results.sunset);
+      let sunsetTimeArray = toTwentyFour(responseJson.results.sunset);
       var sunsetDate = new Date(now.getFullYear(), now.getMonth(), now.getDay(), sunsetTimeArray[0], sunsetTimeArray[1], 0, 0);
       sunsetDate.setMinutes(sunsetDate.getMinutes() - offset);
       let hours = (sunsetDate.getHours()<10?'0':'') + sunsetDate.getHours();
@@ -50,21 +61,7 @@ export default class Start extends Component {
      });
   }
 
-  // Return array of hours and minutes given a string formatted AM/PM time
-  toTwentyFour(time) {
-    var hours = Number(time.match(/^(\d+)/)[1]);
-    var minutes = Number(time.match(/:(\d+)/)[1]);
-    var AMPM = time.match(/\s(.*)$/)[1];
-    if(AMPM == "PM" && hours<12) hours = hours+12;
-    if(AMPM == "AM" && hours==12) hours = hours-12;
-    return [hours, minutes];
-  }
-
-  padTime(num) {
-    return pad.substring(0, pad.length - num.toString().length) + num.toString();
-  }
-
-  //TODO: make the async storage have no values using callback with clearTrip in tripSummary.js
+  // End trip, popback to trip summary and remove trip info
   end() {
     this.props.callback(false);
     _navigator.pop();

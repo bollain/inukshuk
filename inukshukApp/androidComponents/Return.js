@@ -7,34 +7,9 @@ import {
   storageMultiRemove,
   storageSet,
 } from '../scripts/localStorage.js';
+import { toMonth, toWeekday, padTime } from '../scripts/datesAndTimes.js'
 
 var nativeImageSource = require('nativeImageSource');
-
-var weekdayArray = new Array(7);
-weekdayArray[0] = "Sunday";
-weekdayArray[1] = "Monday";
-weekdayArray[2] = "Tuesday";
-weekdayArray[3] = "Wednesday";
-weekdayArray[4] = "Thursday";
-weekdayArray[5] = "Friday";
-weekdayArray[6] = "Saturday";
-
-var monthArray = new Array();
-monthArray[0] = "January";
-monthArray[1] = "February";
-monthArray[2] = "March";
-monthArray[3] = "April";
-monthArray[4] = "May";
-monthArray[5] = "June";
-monthArray[6] = "July";
-monthArray[7] = "August";
-monthArray[8] = "September";
-monthArray[9] = "October";
-monthArray[10] = "November";
-monthArray[11] = "December";
-
-// To pad time
-var pad = "00"
 
 export default class Return extends Component {
   constructor(props) {
@@ -100,10 +75,6 @@ export default class Return extends Component {
     }
   }
 
-  padTime(num) {
-    return pad.substring(0, pad.length - num.toString().length) + num.toString();
-  }
-
   render() {
     return (
       <View style={styles.container}>
@@ -124,7 +95,7 @@ export default class Return extends Component {
             onPress={this.showDatePicker.bind(this)}>
             <View>
               <Text style={[styles.buttonText, styles.timeText]}>
-                {weekdayArray[this.state.dayOfWeek]} {monthArray[this.state.month]} {this.state.day}, {this.state.year}
+                {toWeekday(this.state.dayOfWeek, false)} {toMonth(this.state.month, false)} {this.state.day}, {this.state.year}
               </Text>
             </View>
           </TouchableHighlight>
@@ -135,7 +106,7 @@ export default class Return extends Component {
             onPress={this.showTimePicker.bind(this)}>
             <View>
               <Text style={[styles.buttonText, styles.timeText]}>
-                {this.padTime(this.state.hour)}:{this.padTime(this.state.minute)}
+                {padTime(this.state.hour)}:{padTime(this.state.minute)}
               </Text>
             </View>
           </TouchableHighlight>

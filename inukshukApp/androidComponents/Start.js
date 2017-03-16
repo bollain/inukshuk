@@ -18,11 +18,6 @@ export default class Start extends Component {
       trip: this.props.trip,
       return: this.props.return,
       returnDate: new Date(returnTime.year, returnTime.month, returnTime.day, returnTime.hour, returnTime.minute, 0, 0),
-      timer: {
-        hours: 12,
-        minutes: 10,
-        seconds: 30,
-      },
     }
     this.getSunset = this.getSunset.bind(this);
   }

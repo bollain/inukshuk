@@ -10,7 +10,7 @@ import {
   View,
   TouchableOpacity
 } from 'react-native';
-import { login, loginMock } from '../network/apiCalls.js';
+import { login, loginMock } from '../scripts/apiCalls.js';
 
 export default class Login extends Component {
     // Constuct the component

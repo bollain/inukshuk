@@ -1,5 +1,27 @@
 import React, { Component, PropTypes } from 'react';
-import { AppRegistry, ListView, Navigator, View, StyleSheet, Text, Image, Button, Alert, ScrollView, TouchableHighlight, TextInput, Modal, ToolbarAndroid } from 'react-native';
+import {
+  AppRegistry,
+  ListView,
+  Navigator,
+  View,
+  StyleSheet,
+  Text,
+  Image,
+  Button,
+  Alert,
+  ScrollView,
+  TouchableHighlight,
+  TextInput,
+  Modal,
+  ToolbarAndroid
+} from 'react-native';
+import {
+  storageGet,
+  storageMultiGet,
+  storageRemove,
+  storageMultiRemove,
+  storageSet,
+} from '../scripts/localStorage.js';
 
 import Contacts from 'react-native-contacts';
 const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -63,8 +85,8 @@ export default class Contact extends Component {
 
   set(address) {
     let chosenContact = JSON.stringify(this.state.chosenContact);
-    this.props.set('contact', chosenContact)
-    .then(this.props.set('contactAddress', address))
+    storageSet('contact', chosenContact)
+    .then(storageSet('contactAddress', address))
     .then(this.props.callback(chosenContact))
     .then(() => {
       this.setModalVisible(!this.state.modalVisible);

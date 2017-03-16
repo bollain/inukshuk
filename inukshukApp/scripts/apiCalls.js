@@ -1,6 +1,13 @@
 import { Alert} from 'react-native';
+import {
+  storageGet,
+  storageMultiGet,
+  storageRemove,
+  storageMultiRemove,
+  storageSet,
+} from './localStorage.js';
 var localIp = '192.168.1.94';
-var mockUserId = 113;
+var mockUserId = 129;
 
 /** HANDLE ERRORS
 * Handle any errors while communicating with the server
@@ -37,7 +44,7 @@ export function login(comp) {
   .then(handleErrors)
   .then(response => response.json())
   .then(responseJson => {
-    comp.props.set('user', JSON.stringify(responseJson));
+    storageSet('user', JSON.stringify(responseJson));
     comp.props.navigator.push({
       id: 'tripSummary',
       user: responseJson
@@ -61,7 +68,7 @@ export function loginMock(comp) {
   .then(handleErrors)
   .then(response => response.json())
   .then(responseJson => {
-    comp.props.set('user', JSON.stringify(responseJson));
+    storageSet('user', JSON.stringify(responseJson));
     comp.props.navigator.push({
       id: 'tripSummary',
       user: responseJson,
@@ -155,7 +162,7 @@ export function createUser(comp) {
      )
    )
    .then(() => {
-       comp.props.set('user', JSON.stringify(user))
+       storageSet('user', JSON.stringify(user))
        .catch((err) => console.error(err));
      }
    )

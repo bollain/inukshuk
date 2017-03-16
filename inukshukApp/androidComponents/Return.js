@@ -1,5 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import { View, Text, TouchableHighlight, ToolbarAndroid, StyleSheet, TouchableWithoutFeedback, DatePickerAndroid, TimePickerAndroid, TouchableOpacity } from 'react-native';
+import {
+  storageGet,
+  storageMultiGet,
+  storageRemove,
+  storageMultiRemove,
+  storageSet,
+} from '../scripts/localStorage.js';
 
 var nativeImageSource = require('nativeImageSource');
 
@@ -51,12 +58,12 @@ export default class Return extends Component {
   }
   set() {
     let currentReturn = JSON.stringify(this.state);
-    this.props.set('return', currentReturn)
+    storageSet('return', currentReturn)
     .then(this.props.callback(currentReturn))
     .then(_navigator.pop());
   }
   remove() {
-    this.props.remove('return')
+    storageRemove('return')
     .then(this.props.callback(null))
     .then(_navigator.pop());
   }

@@ -15,7 +15,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native';
-import { createUser } from '../network/apiCalls.js';
+import { createUser } from '../scripts/apiCalls.js';
 var nativeImageSource = require('nativeImageSource');
 
 export default class SignUp extends Component {

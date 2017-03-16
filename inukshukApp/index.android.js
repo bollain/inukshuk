@@ -4,8 +4,11 @@
  */
 
 import React, { Component } from 'react';
-import { AppRegistry, StyleSheet, Navigator, TouchableHighlight, Text, BackAndroid, AsyncStorage, Alert } from 'react-native';
-
+import {
+  AppRegistry,
+  Navigator,
+  BackAndroid,
+} from 'react-native';
 import TripSummary from './androidComponents/TripSummary'
 import Location from './androidComponents/Location';
 import Contact from './androidComponents/Contact';
@@ -28,62 +31,6 @@ class inukshukApp extends Component {
   constructor(props) {
     super(props);
     this.navigatorRenderScene = this.navigatorRenderScene.bind(this);
-    this.get = this.get.bind(this);
-    this.multiGet = this.multiGet.bind(this);
-    this.remove = this.remove.bind(this);
-    this.set = this.set.bind(this);
-  }
-
-  async get(key) {
-    try {
-      const response = await AsyncStorage.getItem(key);
-      console.log('get');
-      return response;
-    } catch (error) {
-      Alert.alert('Error getting ' + key);
-      console.error(error);
-    }
-  }
-
-  async multiGet(keys) {
-    try {
-      const response = await AsyncStorage.multiGet(keys);
-      console.log('multiget');
-      return response;
-    } catch (error) {
-      Alert.alert('Error getting ' + keys);
-      console.error(error);
-    }
-  }
-
-  async remove(key) {
-    try {
-      await AsyncStorage.removeItem(key);
-      console.log('remove');
-    } catch (error) {
-      Alert.alert('Error removing ' + key);
-      console.error(error);
-    }
-  }
-
-  async multiRemove(keys) {
-    try {
-      await AsyncStorage.multiRemove(keys);
-      console.log('multiremove');
-    } catch (error) {
-      Alert.alert('Error removing ' + keys);
-      console.error(error);
-    }
-  }
-
-  async set(key, value) {
-    try {
-      await AsyncStorage.setItem(key, value);
-      console.log('set');
-    } catch (error) {
-      Alert.alert('Error setting ' + key);
-      console.error(error);
-    }
   }
 
   render() {
@@ -104,10 +51,6 @@ class inukshukApp extends Component {
             navigator={navigator}
             title="Summary"
             user={route.user}
-            get={this.get.bind(this)}
-            multiGet={this.multiGet.bind(this)}
-            multiRemove={this.multiRemove.bind(this)}
-            set={this.set.bind(this)}
           />
         );
       case 'location':
@@ -116,9 +59,6 @@ class inukshukApp extends Component {
             navigator={navigator}
             title="Location"
             location={route.location}
-            get={this.get.bind(this)}
-            set={this.set.bind(this)}
-            remove={this.remove.bind(this)}
             callback={route.callback}
           />
         );
@@ -127,8 +67,6 @@ class inukshukApp extends Component {
         <Login
           navigator={navigator}
           title="Log in"
-          get={this.get.bind(this)}
-          set={this.set.bind(this)}
           callback={route.callback}
           />
         );
@@ -137,8 +75,6 @@ class inukshukApp extends Component {
           <SignUp
             navigator={navigator}
             title="Sign Up"
-            get={this.get.bind(this)}
-            set={this.set.bind(this)}
             callback={route.callback}
           />
       );
@@ -148,9 +84,6 @@ class inukshukApp extends Component {
             navigator={navigator}
             title="Contact"
             contact={route.contact}
-            get={this.get.bind(this)}
-            set={this.set.bind(this)}
-            remove={this.remove.bind(this)}
             callback={route.callback}
           />
         );
@@ -160,9 +93,6 @@ class inukshukApp extends Component {
             navigator={navigator}
             title="Return"
             return={route.return}
-            get={this.get.bind(this)}
-            set={this.set.bind(this)}
-            remove={this.remove.bind(this)}
             callback={route.callback}
           />
         );
@@ -172,9 +102,6 @@ class inukshukApp extends Component {
             navigator={navigator}
             title="Note"
             note={route.note}
-            get={this.get}
-            set={this.set}
-            remove={this.remove}
             callback={route.callback}
           />
         );
@@ -187,9 +114,6 @@ class inukshukApp extends Component {
             contact={route.contact}
             return={route.return}
             note={route.note}
-            get={this.get.bind(this)}
-            set={this.set.bind(this)}
-            remove={this.remove.bind(this)}
             trip={route.trip}
             callback={route.callback}
           />
@@ -200,8 +124,6 @@ class inukshukApp extends Component {
             navigator={navigator}
             title="Your Account"
             user={route.user}
-            get={this.get}
-            set={this.set}
             callback={route.callback}
           />
         );

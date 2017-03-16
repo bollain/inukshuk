@@ -1,6 +1,25 @@
 import React, { Component, PropTypes } from 'react';
-import { View, ScrollView, Text, TouchableHighlight, ToolbarAndroid, StyleSheet, Alert, Button, TouchableOpacity, Image, AsyncStorage, Modal } from 'react-native';
-
+import {
+  View,
+  ScrollView,
+  Text,
+  TouchableHighlight,
+  ToolbarAndroid,
+  StyleSheet,
+  Alert,
+  Button,
+  TouchableOpacity,
+  Image,
+  AsyncStorage,
+  Modal
+} from 'react-native';
+import {
+  storageGet,
+  storageMultiGet,
+  storageRemove,
+  storageMultiRemove,
+  storageSet,
+} from '../scripts/localStorage.js';
 var nativeImageSource = require('nativeImageSource');
 
 var localIp = '128.189.242.29';
@@ -45,7 +64,7 @@ export default class TripSummary extends Component {
   }
 
   componentDidMount() {
-    this.props.multiGet(['location','contact','return','note']).then((response => {
+    storageMultiGet(['location','contact','return','note']).then((response => {
       this.setState({
         location: JSON.parse(response[0][1]),
         contact: JSON.parse(response[1][1]),
@@ -56,7 +75,7 @@ export default class TripSummary extends Component {
   }
 
   navLocation(){
-    this.props.get('location').then((response) => {
+    storageGet('location').then((response) => {
       this.props.navigator.push({
         id: 'location',
         location: response,
@@ -65,7 +84,7 @@ export default class TripSummary extends Component {
     });
   }
   navContacts(){
-    this.props.get('contact').then((response) => {
+    storageGet('contact').then((response) => {
       this.props.navigator.push({
         id: 'contact',
         contact: response,
@@ -74,7 +93,7 @@ export default class TripSummary extends Component {
     });
   }
   navReturn(){
-    this.props.get('return').then((response) => {
+    storageGet('return').then((response) => {
       this.props.navigator.push({
         id: 'return',
         return: response,
@@ -83,7 +102,7 @@ export default class TripSummary extends Component {
     });
   }
   navNotes(){
-    this.props.get('notes').then((response) => {
+    storageGet('note').then((response) => {
       this.props.navigator.push({
         id: 'note',
         note: response,
@@ -116,7 +135,7 @@ export default class TripSummary extends Component {
     });
   }
   navUser(){
-    this.props.get('user').then((response) => {
+    storageGet('user').then((response) => {
       console.log(response);
       this.props.navigator.push({
         id: 'user',
@@ -181,7 +200,7 @@ export default class TripSummary extends Component {
   }
 
   clearTrip(showDialog) {
-    this.props.multiRemove(['location','contact','return','note']).then((response => {
+    storageMultiRemove(['location','contact','return','note']).then((response => {
       this.setState({
         location: null,
         contact: null,

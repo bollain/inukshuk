@@ -255,8 +255,8 @@ export function completeTrip(comp) {
   fetch('http://' + localIp + ':8080/trips/', {
     method: 'PUT',
     headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({
       tripId: comp.state.trip._id,
@@ -274,7 +274,41 @@ export function completeTrip(comp) {
       }}]
     )
   )
-.catch(function(error) {
-  Alert.alert('Can not reach server');
-});
+  .catch(function(error) {
+    Alert.alert('Can not reach server');
+  });
+}
+
+/** EXTEND TRIP
+* Extend a trip on the inukshuk server
+* REQUIRES: a component with details in state, including a Javascript date
+* MODIFIES: the database of trips on the inukshuk server, navigator route
+* RETURNS: nothing
+**/
+export function extendTrip(comp) {
+  fetch('http://' + localIp + ':8080/trips/', {
+    method: 'PUT',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      tripId: comp.state.newReturnTime,
+      completed: true
+    })
+  })
+  .then(handleErrors)
+  .then(
+    Alert.alert(
+      'Trip Extended to ' + comp.state.newReturnTime.toDateString() + ' at ' + comp.state.newReturnTime.toLocaleTimeString().substring(0,5),
+      'We also notified your contact of this change',
+      [{ text: 'OK', onPress: () => {
+        comp.props.callback(false);
+        _navigator.pop();
+      }}]
+    )
+  )
+  .catch(function(error) {
+    Alert.alert('Can not reach server');
+  });
 }

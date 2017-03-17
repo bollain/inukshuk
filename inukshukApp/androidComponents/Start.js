@@ -21,7 +21,6 @@ import { toMonth, toWeekday, padTime, toTwentyFour } from '../scripts/datesAndTi
 import Countdown from './Countdown';
 
 var nativeImageSource = require('nativeImageSource');
-var localIp = '192.168.1.94';
 
 export default class Start extends Component {
   constructor(props) {
@@ -32,12 +31,26 @@ export default class Start extends Component {
       trip: this.props.trip,
       return: this.props.return,
       returnDate: new Date(returnTime.year, returnTime.month, returnTime.day, returnTime.hour, returnTime.minute, 0, 0),
+      newReturnTime: null,
     }
     this.getSunset = this.getSunset.bind(this);
   }
 
   componentWillMount() {
     this.getSunset();
+  }
+
+  async showTimePicker() {
+    try {
+      const {action, minute, hour} = await TimePickerAndroid.open({hour: this.state.hour, minute: this.state.minute});
+      if (action === TimePickerAndroid.timeSetAction) {
+        this.setState({
+          newReturnTime: newReturnTime,
+        });
+      }
+    } catch ({code, message}) {
+      console.warn('Error setting time: ', message);
+    }
   }
 
   getSunset() {
@@ -84,6 +97,24 @@ export default class Start extends Component {
       [
         {text: 'No'},
         {text: 'Complete trip', onPress: () => completeTrip(this)},
+      ],
+    );
+  }
+
+  // Confirm, then extend the trip
+  extendTrip() {
+    Alert.alert(
+      'Are you sure you want to complete your trip?',
+      'Your contact will be notified',
+      [
+        {text: 'No'},
+        {text: 'Complete trip', onPress: () => {
+          this.showTimePicker()
+          .then(
+            extendTrip(comp);
+          )
+          .catch((err) => console.error(err));
+        }},
       ],
     );
   }
@@ -138,7 +169,7 @@ export default class Start extends Component {
             <View style={styles.button}>
               <TouchableOpacity
                 style={styles.extend}
-                onPress={() => this.remove()}
+                onPress={() => this.extendTrip()}
                 activeOpacity={.8}>
                 <Text style={styles.buttonText}>Extend</Text>
               </TouchableOpacity>

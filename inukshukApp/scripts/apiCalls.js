@@ -7,7 +7,7 @@ import {
   storageSet,
 } from './localStorage.js';
 var localIp = '192.168.1.94';
-var mockUserId = 129;
+var mockUserId = 154;
 
 /** HANDLE ERRORS
 * Handle any errors while communicating with the server
@@ -255,8 +255,8 @@ export function completeTrip(comp) {
   fetch('http://' + localIp + ':8080/trips/', {
     method: 'PUT',
     headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({
       tripId: comp.state.trip._id,
@@ -274,7 +274,37 @@ export function completeTrip(comp) {
       }}]
     )
   )
-.catch(function(error) {
-  Alert.alert('Can not reach server');
-});
+  .catch(function(error) {
+    Alert.alert('Can not reach server');
+  });
+}
+
+/** EXTEND TRIP
+* Extend a trip on the inukshuk server
+* REQUIRES: a component with details in state, including a Javascript date
+* MODIFIES: the database of trips on the inukshuk server, navigator route
+* RETURNS: nothing
+**/
+export function extendTrip(comp) {
+  fetch('http://' + localIp + ':8080/trips/', {
+    method: 'PUT',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      tripId: comp.state.trip._id,
+      returnTime: comp.state.newReturnDate,
+    })
+  })
+  .then(handleErrors)
+  .then(
+    Alert.alert(
+      'Trip Extended to ' + comp.state.newReturnDate.toDateString() + ' at ' + comp.state.newReturnDate.toLocaleTimeString().substring(0,5),
+      'We also notified your contact of this change',
+    )
+  )
+  .catch(function(error) {
+    Alert.alert('Can not reach server');
+  });
 }

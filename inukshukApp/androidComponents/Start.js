@@ -17,9 +17,10 @@ import { View,
 
 import { completeTrip, cancelTrip, extendTrip } from '../scripts/apiCalls.js';
 
-import { toMonth, toWeekday, padTime, toTwentyFour } from '../scripts/datesAndTimes.js'
+import { toMonth, toWeekday, padTime } from '../scripts/datesAndTimes.js';
 
 import Countdown from './Countdown';
+import Sunset from './Sunset';
 
 var nativeImageSource = require('nativeImageSource');
 
@@ -34,35 +35,6 @@ export default class Start extends Component {
       returnDate: new Date(returnTime.year, returnTime.month, returnTime.day, returnTime.hour, returnTime.minute, 0, 0),
       newReturnDate: this.props.return,
     }
-    this.getSunset = this.getSunset.bind(this);
-  }
-
-  componentWillMount() {
-    this.getSunset();
-  }
-
-  getSunset() {
-    let now = new Date();
-    let offset = now.getTimezoneOffset();
-    console.log(offset);
-    let lat = this.props.location.latitude;
-    let lon = this.props.location.longitude;
-    let url = 'http://api.sunrise-sunset.org/json?lat=' + lat + '&lng=' + lon + '&date=today';
-    console.log(url);
-    fetch(url)
-    .then((response) => response.json())
-    .then((responseJson) => {
-      console.log(responseJson.results.sunset);
-      let sunsetTimeArray = toTwentyFour(responseJson.results.sunset);
-      var sunsetDate = new Date(now.getFullYear(), now.getMonth(), now.getDay(), sunsetTimeArray[0], sunsetTimeArray[1], 0, 0);
-      sunsetDate.setMinutes(sunsetDate.getMinutes() - offset);
-      let hours = (sunsetDate.getHours()<10?'0':'') + sunsetDate.getHours();
-      let minutes = (sunsetDate.getMinutes()<10?'0':'') + sunsetDate.getMinutes();
-      this.setState({sunset: hours + ':' + minutes});
-    })
-     .catch((error) => {
-       Alert.alert('Can not reach sunset server');
-     });
   }
 
   // Confirm, then cancel trip
@@ -166,7 +138,9 @@ export default class Start extends Component {
               source={require('../img/ic_wb_sunny_black_24dp.png')}
             />
             <Text style={styles.textCenter}>Tonight the sun sets at</Text>
-            <Text style={[styles.textCenter, {fontSize:20,fontWeight:'bold'}]}>{this.state.sunset}</Text>
+            <Text style={[styles.textCenter, {fontSize:20,fontWeight:'bold'}]}>
+              <Sunset location={this.props.location} />
+            </Text>
           </View>
         </View>
         <View style={styles.buttonContainer}>
@@ -201,21 +175,6 @@ export default class Start extends Component {
     );
   }
 };
-
-function handleErrors(response) {
-    if (!response.ok) {
-      if (response.status == 400) {
-        throw Error("User not found");
-      }
-      else if (response.status == 404) {
-        throw Error("Invalid user");
-      }
-      else if (response.status == 403) {
-        throw Error("Forbidden: not access to server");
-      }
-    }
-    return response;
-}
 
 const styles = StyleSheet.create({
    container: {

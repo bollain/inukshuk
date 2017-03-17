@@ -11,10 +11,11 @@ import { View,
   Button,
   TouchableOpacity,
   ScrollView,
-  InteractionManager
+  InteractionManager,
+  TimePickerAndroid,
 } from 'react-native';
 
-import { completeTrip, cancelTrip } from '../scripts/apiCalls.js';
+import { completeTrip, cancelTrip, extendTrip } from '../scripts/apiCalls.js';
 
 import { toMonth, toWeekday, padTime, toTwentyFour } from '../scripts/datesAndTimes.js'
 
@@ -31,26 +32,13 @@ export default class Start extends Component {
       trip: this.props.trip,
       return: this.props.return,
       returnDate: new Date(returnTime.year, returnTime.month, returnTime.day, returnTime.hour, returnTime.minute, 0, 0),
-      newReturnTime: null,
+      newReturnDate: this.props.return,
     }
     this.getSunset = this.getSunset.bind(this);
   }
 
   componentWillMount() {
     this.getSunset();
-  }
-
-  async showTimePicker() {
-    try {
-      const {action, minute, hour} = await TimePickerAndroid.open({hour: this.state.hour, minute: this.state.minute});
-      if (action === TimePickerAndroid.timeSetAction) {
-        this.setState({
-          newReturnTime: newReturnTime,
-        });
-      }
-    } catch ({code, message}) {
-      console.warn('Error setting time: ', message);
-    }
   }
 
   getSunset() {
@@ -103,20 +91,45 @@ export default class Start extends Component {
 
   // Confirm, then extend the trip
   extendTrip() {
-    Alert.alert(
-      'Are you sure you want to complete your trip?',
-      'Your contact will be notified',
-      [
-        {text: 'No'},
-        {text: 'Complete trip', onPress: () => {
-          this.showTimePicker()
-          .then(
-            extendTrip(comp);
-          )
-          .catch((err) => console.error(err));
-        }},
-      ],
-    );
+    this.showTimePicker()
+    .then(() => {
+      Alert.alert(
+        'Are you sure you want to extend your trip?',
+        'Your contact will be notified that you plan to return on ' + this.state.newReturnDate.toDateString() + ' at ' + this.state.newReturnDate.toLocaleTimeString().substring(0,5),
+        [
+          {text: 'No'},
+          {text: 'Extend trip', onPress: () => {
+            extendTrip(this);
+            let returnTime = this.state.return;
+            returnTime.hour = this.state.newReturnDate.getHours();
+            returnTime.minute = this.state.newReturnDate.getMinutes();
+            this.setState({
+              returnDate: this.state.newReturnDate,
+              return: returnTime,
+            })
+          }},
+        ],
+      );
+    })
+  }
+
+  // Select new return time
+  async showTimePicker() {
+    try {
+      const {action, minute, hour} = await TimePickerAndroid.open(
+        {hour: this.state.return.hour, minute: this.state.return.minute}
+      );
+      if (action === TimePickerAndroid.timeSetAction) {
+        this.setState({
+          newReturnDate: new Date(
+            this.state.return.year, this.state.return.month,
+            this.state.return.day, hour, minute, 0, 0
+          ),
+        });
+      }
+    } catch ({code, message}) {
+      console.warn('Error setting time: ', message);
+    }
   }
 
   render() {

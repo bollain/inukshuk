@@ -7,7 +7,7 @@ import {
   storageSet,
 } from './localStorage.js';
 var localIp = '192.168.1.94';
-var mockUserId = 129;
+var mockUserId = 154;
 
 /** HANDLE ERRORS
 * Handle any errors while communicating with the server
@@ -293,19 +293,15 @@ export function extendTrip(comp) {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      tripId: comp.state.newReturnTime,
-      completed: true
+      tripId: comp.state.trip._id,
+      returnTime: comp.state.newReturnDate,
     })
   })
   .then(handleErrors)
   .then(
     Alert.alert(
-      'Trip Extended to ' + comp.state.newReturnTime.toDateString() + ' at ' + comp.state.newReturnTime.toLocaleTimeString().substring(0,5),
+      'Trip Extended to ' + comp.state.newReturnDate.toDateString() + ' at ' + comp.state.newReturnDate.toLocaleTimeString().substring(0,5),
       'We also notified your contact of this change',
-      [{ text: 'OK', onPress: () => {
-        comp.props.callback(false);
-        _navigator.pop();
-      }}]
     )
   )
   .catch(function(error) {

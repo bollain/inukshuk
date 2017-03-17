@@ -13,7 +13,6 @@ exports.createUser = function (args, res, next) {
    **/
   var params = args.User.value
   var newUser = {
-    userName: params.userName,
     firstName: params.firstName,
     lastName: params.lastName,
     phoneNumber: params.phoneNumber
@@ -24,10 +23,10 @@ exports.createUser = function (args, res, next) {
       if (err) {
         if (!err.errors) {
         // duplicate user name
-          console.log('duplicate user name or email')
+          console.log('duplicate user email')
           res.statusCode = 401
           res.statusMessage = 'Bad request'
-          res.end('userName already exists')
+          res.end('email already exists')
           return
         }
         if (err.errors.email) {
@@ -90,7 +89,6 @@ exports.updateUser = function (args, res, next) {
    * user User User with updated info
    * returns user
    **/
-   // For now we only update phone numbers... no emails
   var params = args.user.value
   var userId = params.id
   var phoneNumber = params.phoneNumber

@@ -21,7 +21,6 @@ describe('Users', () => {
   describe('/POST user', () => {
     it('it should create a User', (done) => {
       let newUser = {
-        userName: 'Miguelito85',
         firstName: 'Miguelito',
         lastName: 'Lopez',
         phoneNumber: '+17785583029',
@@ -44,7 +43,6 @@ describe('Users', () => {
   describe('/POST user', () => {
     it('it should NOT create user a with invald email', (done) => {
       let newUser = {
-        userName: 'Miguelito85',
         firstName: 'Miguelito',
         lastName: 'Lopez',
         phoneNumber: '+17785583029',
@@ -64,7 +62,6 @@ describe('Users', () => {
   describe('/POST user', () => {
     it('it should NOT create a with an invalid phoneNumber', (done) => {
       let newUser = {
-        userName: 'Miguelito85',
         firstName: 'Miguelito',
         lastName: 'Lopez',
         phoneNumber: '911',
@@ -82,45 +79,8 @@ describe('Users', () => {
   })
 
   describe('/POST user', () => {
-    it('it should NOT create a user when userName exists', (done) => {
-      let newUser = {
-        userName: 'Miguelito85',
-        firstName: 'Miguelito',
-        lastName: 'Lopez',
-        phoneNumber: '7785583029',
-        email: 'bollain@gmail.com'
-      }
-      chai.request(index)
-            .post('/users')
-            .send(newUser)
-            .end((err, res) => {
-              res.should.have.status(200)
-              if (err) {}
-            })
-
-      let duplicateUser = {
-        userName: 'Miguelito85',
-        firstName: 'Mike',
-        lastName: 'Lopez',
-        phoneNumber: '7785583029',
-        email: 'mikey@gmail.com'
-      }
-
-      chai.request(index)
-            .post('/users')
-            .send(duplicateUser)
-            .end((err, res) => {
-              res.should.have.status(401)
-              if (err) {}
-              done()
-            })
-    })
-  })
-
-  describe('/POST user', () => {
     it('it should NOT create a user when email exists', (done) => {
       let existingUser = new User({
-        userName: 'papaJohn',
         firstName: 'Papa',
         lastName: 'John',
         phoneNumber: '7785583029',
@@ -128,7 +88,6 @@ describe('Users', () => {
       })
       existingUser.save((err, user) => {
         let duplicateUser = {
-          userName: 'Miguelito85',
           firstName: 'Mike',
           lastName: 'Lopez',
           phoneNumber: '7785584040',
@@ -151,7 +110,6 @@ describe('Users', () => {
   describe('/PUT user', () => {
     it('it should update a user phone correctly', (done) => {
       let existingUser = new User({
-        userName: 'papaJohn',
         firstName: 'Papa',
         lastName: 'John',
         phoneNumber: '7785583029',
@@ -160,7 +118,6 @@ describe('Users', () => {
       existingUser.save((err, user) => {
         let update = {
           id: user._id,
-          userName: 'papaJohn',
           firstName: 'Papa',
           lastName: 'John',
           phoneNumber: '7785564040',
@@ -182,7 +139,6 @@ describe('Users', () => {
   describe('/PUT user', () => {
     it('it should update a user\'s email', (done) => {
       let existingUser = new User({
-        userName: 'papaJohn',
         firstName: 'Papa',
         lastName: 'John',
         phoneNumber: '7785583029',
@@ -191,7 +147,6 @@ describe('Users', () => {
       existingUser.save((err, user) => {
         let update = {
           id: user._id,
-          userName: 'papaJohn',
           firstName: 'Papa',
           lastName: 'John',
           phoneNumber: '7785583029',
@@ -219,7 +174,6 @@ describe('Users', () => {
   describe('/PUT user', () => {
     it('it should not update with an invalid email', (done) => {
       let existingUser = new User({
-        userName: 'papaJohn',
         firstName: 'Papa',
         lastName: 'John',
         phoneNumber: '7785583029',
@@ -228,7 +182,6 @@ describe('Users', () => {
       existingUser.save((err, user) => {
         let update = {
           id: user._id,
-          userName: 'papaJohn',
           firstName: 'Papa',
           lastName: 'John',
           phoneNumber: '7785583029',
@@ -250,7 +203,6 @@ describe('Users', () => {
   describe('/PUT user', () => {
     it('it should not update with an invalid phoneNumber', (done) => {
       let existingUser = new User({
-        userName: 'papaJohn',
         firstName: 'Papa',
         lastName: 'John',
         phoneNumber: '7785583029',
@@ -259,7 +211,6 @@ describe('Users', () => {
       existingUser.save((err, user) => {
         let update = {
           id: user._id,
-          userName: 'papaJohn',
           firstName: 'Papa',
           lastName: 'John',
           phoneNumber: '69',
@@ -282,7 +233,6 @@ describe('Users', () => {
     it('it should not update with a non existing user ID', (done) => {
       let fakeUser = {
         id: 69,
-        userName: 'papaJohn',
         firstName: 'Papa',
         lastName: 'John',
         phoneNumber: '7785583029',
@@ -302,7 +252,6 @@ describe('Users', () => {
   describe('/PUT user', () => {
     it('should not update with email that already exists', (done) => {
       let firstUser = new User({
-        userName: 'papaJohn',
         firstName: 'Papa',
         lastName: 'John',
         phoneNumber: '7785583029',
@@ -313,7 +262,6 @@ describe('Users', () => {
           // Do nothing with user
         if (user) {}
         let secondUser = new User({
-          userName: 'miguelito',
           firstName: 'Miguel',
           lastName: 'Lopez',
           phoneNumber: '7785584040',
@@ -322,7 +270,6 @@ describe('Users', () => {
         secondUser.save((err, user) => {
           let update = {
             id: user._id,
-            userName: 'miguelito',
             firstName: 'Miguel',
             lastName: 'Lopez',
             phoneNumber: '7785584040',
@@ -346,7 +293,6 @@ describe('Users', () => {
   describe('/GET user', () => {
     it('it should get an existing user', (done) => {
       let existingUser = new User({
-        userName: 'papaJohn',
         firstName: 'Papa',
         lastName: 'John',
         phoneNumber: '7785583029',
@@ -358,7 +304,6 @@ describe('Users', () => {
             .get('/users/' + user._id)
             .end((err, res) => {
               res.should.have.status(200)
-              res.body.should.have.property('userName').eql('papaJohn')
               res.body.should.have.property('firstName').eql('Papa')
               res.body.should.have.property('lastName').eql('John')
               res.body.should.have.property('phoneNumber').eql('7785583029')
@@ -374,7 +319,6 @@ describe('Users', () => {
   describe('/DELETE user', () => {
     it('it should delete a user', (done) => {
       let existingUser = new User({
-        userName: 'papaJohn',
         firstName: 'Papa',
         lastName: 'John',
         phoneNumber: '7785583029',

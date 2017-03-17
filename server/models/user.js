@@ -23,7 +23,6 @@ var validateEmail = function (email) {
 }
 
 var userSchema = new Schema({
-  userName: {type: String, required: true, unique: true},
   firstName: {type: String, required: true},
   lastName: {type: String, required: true},
   email: {

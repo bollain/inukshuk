@@ -11,17 +11,18 @@ import { View,
   Button,
   TouchableOpacity,
   ScrollView,
-  InteractionManager
+  InteractionManager,
+  TimePickerAndroid,
 } from 'react-native';
 
-import { completeTrip, cancelTrip } from '../scripts/apiCalls.js';
+import { completeTrip, cancelTrip, extendTrip } from '../scripts/apiCalls.js';
 
-import { toMonth, toWeekday, padTime, toTwentyFour } from '../scripts/datesAndTimes.js'
+import { toMonth, toWeekday, padTime } from '../scripts/datesAndTimes.js';
 
 import Countdown from './Countdown';
+import Sunset from './Sunset';
 
 var nativeImageSource = require('nativeImageSource');
-var localIp = '192.168.1.94';
 
 export default class Start extends Component {
   constructor(props) {
@@ -32,36 +33,8 @@ export default class Start extends Component {
       trip: this.props.trip,
       return: this.props.return,
       returnDate: new Date(returnTime.year, returnTime.month, returnTime.day, returnTime.hour, returnTime.minute, 0, 0),
+      newReturnDate: this.props.return,
     }
-    this.getSunset = this.getSunset.bind(this);
-  }
-
-  componentWillMount() {
-    this.getSunset();
-  }
-
-  getSunset() {
-    let now = new Date();
-    let offset = now.getTimezoneOffset();
-    console.log(offset);
-    let lat = this.props.location.latitude;
-    let lon = this.props.location.longitude;
-    let url = 'http://api.sunrise-sunset.org/json?lat=' + lat + '&lng=' + lon + '&date=today';
-    console.log(url);
-    fetch(url)
-    .then((response) => response.json())
-    .then((responseJson) => {
-      console.log(responseJson.results.sunset);
-      let sunsetTimeArray = toTwentyFour(responseJson.results.sunset);
-      var sunsetDate = new Date(now.getFullYear(), now.getMonth(), now.getDay(), sunsetTimeArray[0], sunsetTimeArray[1], 0, 0);
-      sunsetDate.setMinutes(sunsetDate.getMinutes() - offset);
-      let hours = (sunsetDate.getHours()<10?'0':'') + sunsetDate.getHours();
-      let minutes = (sunsetDate.getMinutes()<10?'0':'') + sunsetDate.getMinutes();
-      this.setState({sunset: hours + ':' + minutes});
-    })
-     .catch((error) => {
-       Alert.alert('Can not reach sunset server');
-     });
   }
 
   // Confirm, then cancel trip
@@ -86,6 +59,49 @@ export default class Start extends Component {
         {text: 'Complete trip', onPress: () => completeTrip(this)},
       ],
     );
+  }
+
+  // Confirm, then extend the trip
+  extendTrip() {
+    this.showTimePicker()
+    .then(() => {
+      Alert.alert(
+        'Are you sure you want to extend your trip?',
+        'Your contact will be notified that you plan to return on ' + this.state.newReturnDate.toDateString() + ' at ' + this.state.newReturnDate.toLocaleTimeString().substring(0,5),
+        [
+          {text: 'No'},
+          {text: 'Extend trip', onPress: () => {
+            extendTrip(this);
+            let returnTime = this.state.return;
+            returnTime.hour = this.state.newReturnDate.getHours();
+            returnTime.minute = this.state.newReturnDate.getMinutes();
+            this.setState({
+              returnDate: this.state.newReturnDate,
+              return: returnTime,
+            })
+          }},
+        ],
+      );
+    })
+  }
+
+  // Select new return time
+  async showTimePicker() {
+    try {
+      const {action, minute, hour} = await TimePickerAndroid.open(
+        {hour: this.state.return.hour, minute: this.state.return.minute}
+      );
+      if (action === TimePickerAndroid.timeSetAction) {
+        this.setState({
+          newReturnDate: new Date(
+            this.state.return.year, this.state.return.month,
+            this.state.return.day, hour, minute, 0, 0
+          ),
+        });
+      }
+    } catch ({code, message}) {
+      console.warn('Error setting time: ', message);
+    }
   }
 
   render() {
@@ -122,7 +138,9 @@ export default class Start extends Component {
               source={require('../img/ic_wb_sunny_black_24dp.png')}
             />
             <Text style={styles.textCenter}>Tonight the sun sets at</Text>
-            <Text style={[styles.textCenter, {fontSize:20,fontWeight:'bold'}]}>{this.state.sunset}</Text>
+            <Text style={[styles.textCenter, {fontSize:20,fontWeight:'bold'}]}>
+              <Sunset location={this.props.location} />
+            </Text>
           </View>
         </View>
         <View style={styles.buttonContainer}>
@@ -138,7 +156,7 @@ export default class Start extends Component {
             <View style={styles.button}>
               <TouchableOpacity
                 style={styles.extend}
-                onPress={() => this.remove()}
+                onPress={() => this.extendTrip()}
                 activeOpacity={.8}>
                 <Text style={styles.buttonText}>Extend</Text>
               </TouchableOpacity>
@@ -157,21 +175,6 @@ export default class Start extends Component {
     );
   }
 };
-
-function handleErrors(response) {
-    if (!response.ok) {
-      if (response.status == 400) {
-        throw Error("User not found");
-      }
-      else if (response.status == 404) {
-        throw Error("Invalid user");
-      }
-      else if (response.status == 403) {
-        throw Error("Forbidden: not access to server");
-      }
-    }
-    return response;
-}
 
 const styles = StyleSheet.create({
    container: {

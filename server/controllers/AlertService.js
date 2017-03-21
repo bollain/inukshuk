@@ -14,19 +14,21 @@ var transporter = nodemailer.createTransport({
   }
 })
 
-module.exports.confirmEmergencyContactSMS = function (contactPhone, user) {
+module.exports.confirmEmergencyContactSMS = function (trip, user) {
   var messageForContact = 'You have been chosen as an emergency contact for ' +
-                          user.firstName + ', who is going on a hike. 🏃 We\'ll let you know ' +
+                          user.firstName + ', who is going on a hike. 🏃 ' +
+                          'They are planning to return at ' + trip.returnTime + ' We\'ll let you know ' +
                           'when they return'
   var messageForUser = 'We have sent a message to your emergency contact letting them know ' +
                       'you are going on a hike. Have fun!😀'
-  twilioClient.sendSms(contactPhone, messageForContact)
+  twilioClient.sendSms(trip.contactPhone, messageForContact)
   twilioClient.sendSms(user.phoneNumber, messageForUser)
 }
 
 module.exports.createSMSAlert = function (alertId, phoneNumber, triggerTime) {
   // var testNumber = '+17785583029';
-  var message = 'Your friend is in the woods'
+  var message = 'Your friend has not checked in from the hike! Please try and contact' +
+                ' them. If you can\'t consider reaching out to search and rescue.'
   console.log('Scheduling text')
   var job = scheduler.scheduleJob(alertId, triggerTime, function () {
     console.log('Triggering!')
@@ -106,8 +108,14 @@ module.exports.cancelAlert = function (alertId) {
 }
 
 module.exports.sendReturnedSafeSMS = function (phoneNumber) {
-  var safeMessage = 'Your friend has checked in back from his hike!'
+  var safeMessage = 'Your friend has checked in back from the hike!'
   twilioClient.sendSms(phoneNumber, safeMessage)
+}
+
+module.exports.updateEmergencyContact = function (trip) {
+  var message = 'We just wanted to let you know your friend has extended' +
+                    ' their trip. Their new return time is ' + trip.returnTime
+  twilioClient.sendSms(trip.contactPhone, message)
 }
 
 module.exports.sendReturnedSafeEmail = function (emailAddress) {

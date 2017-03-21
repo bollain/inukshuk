@@ -155,7 +155,7 @@ exports.updateTrip = function (args, res, next) {
         }
         // If trip is completed cancel your
         // alerts
-        if (trip.completed) {
+        if (params.completed) {
           console.log('Trip completed, cancelling alerts!')
           cancelAlerts(trip._id)
           createReturnedSafelyAlerts(trip.contactPhone, trip.contactEmail)
@@ -175,7 +175,7 @@ exports.updateTrip = function (args, res, next) {
 }
 
 var confirmEmergencyContact = function (trip, user) {
-  AlertService.confirmEmergencyContactSMS(trip.contactPhone, user)
+  AlertService.confirmEmergencyContactSMS(trip, user)
 }
 
 var scheduleAlerts = function (trip) {
@@ -200,6 +200,13 @@ var updateAlerts = function (trip) {
   cancelAlerts(trip._id)
   // Then reschedule them!
   scheduleAlerts(trip)
+  // Let your buddy know!
+  updateEmergencyContact(trip)
+}
+
+// Updating emergency contact with new return time
+var updateEmergencyContact = function (trip) {
+  AlertService.updateEmergencyContact(trip)
 }
 
 // Cancel scheduled alerts for a trip

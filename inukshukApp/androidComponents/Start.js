@@ -21,6 +21,7 @@ import { toMonth, toWeekday, padTime } from '../scripts/datesAndTimes.js';
 
 import Countdown from './Countdown';
 import Sunset from './Sunset';
+import Breadcrumbs from './Breadcrumbs';
 
 var nativeImageSource = require('nativeImageSource');
 
@@ -142,6 +143,7 @@ export default class Start extends Component {
               <Sunset location={this.props.location} />
             </Text>
           </View>
+          <Breadcrumbs trip={this.props.trip._id}/>
         </View>
         <View style={styles.buttonContainer}>
           <View style={styles.buttons}>

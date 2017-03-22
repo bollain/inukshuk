@@ -6,8 +6,8 @@ import {
   storageMultiRemove,
   storageSet,
 } from './localStorage.js';
-var localIp = '192.168.1.94';
-var mockUserId = 154;
+var localIp = '192.168.1.90';
+var mockUserId = 180;
 
 /** HANDLE ERRORS
 * Handle any errors while communicating with the server
@@ -306,5 +306,37 @@ export function extendTrip(comp) {
   )
   .catch(function(error) {
     Alert.alert('Can not reach server');
+  });
+}
+
+/** THROW CRUMBS
+* Add breadcrumbs to the database
+* REQUIRES: a component with details in state, including breadcrumbs lat/lng
+* MODIFIES: the database of trips on the inukshuk server, the local store of
+* unposted breadcrumbs
+* RETURNS: nothing
+**/
+export function throwCrumbs(comp) {
+  fetch('http://' + localIp + ':8080/trips/' + comp.props.tripId + 'breadcrumbs/', {
+    method: 'PUT',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      tripId: 0,
+      breadcrumbs: comp.state.breadcrumbs,
+    })
+  })
+  .then(handleErrors)
+  .then(
+    // Clear the local storage of breadcrumbs and increment count of crumbs sent
+    comp.setState({
+      numSent: comp.state.numSent + comp.state.breadcrumbs.length,
+      breadcrumbs: [],
+    })
+  )
+  .catch(function(error) {
+    Alert.alert('Error posting breadcrumbs to the server');
   });
 }

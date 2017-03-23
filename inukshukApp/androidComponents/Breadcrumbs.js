@@ -80,13 +80,14 @@ function dropCrumb() {
     console.log(breadcrumbsArr);
     console.log("throwing crumbs")
   })
-  // Clear the local storage of breadcrumbs and increment count of crumbs sent
+  // Increment count of crumbs sent
   .then(() => {
     return new Promise((resolve, reject) => {
       numSent = numSent + breadcrumbsArr.length;
       resolve();
     })
   })
+  // Clear the local storage of breadcrumbs
   .then(() => {
     return new Promise((resolve, reject) => {
       // breadcrumbs = [];

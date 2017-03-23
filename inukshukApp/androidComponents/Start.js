@@ -44,8 +44,24 @@ export default class Start extends Component {
       'Your contact will be notified',
       [
         {text: 'No'},
-        {text: 'Cancel trip', onPress: () => cancelTrip(this)},
-      ],
+        {text: 'Cancel trip', onPress: () => {
+          cancelTrip(this.props.trip._id)
+          .then(
+            Alert.alert(
+              'Trip Cancelled',
+              'We also notified your contact about the cancellation',
+              [{ text: 'OK', onPress: () => {
+                this.props.callback(false);
+                _navigator.pop();
+              }}]
+            )
+          )
+          .catch((err) => {
+            console.error(err)
+            Alert.alert(err);
+          });
+        }}
+      ]
     );
   }
 
@@ -68,7 +84,10 @@ export default class Start extends Component {
               }}]
             )
           )
-          .catch((err) => console.error(err));
+          .catch((err) => {
+            console.error(err)
+            Alert.alert(err);
+          });
         }}
       ]
     );

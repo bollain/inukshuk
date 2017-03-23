@@ -225,24 +225,17 @@ export function postTrip(comp) {
 * MODIFIES: the database of trips on the inukshuk server, navigator route
 * RETURNS: nothing
 **/
-export function cancelTrip(comp) {
-  fetch('http://' + localIp + ':8080/trips/' + comp.state.trip._id, {
-    method: 'DELETE',
+export function cancelTrip(tripId) {
+  return new Promise((resolve, reject) => {
+    fetch('http://' + localIp + ':8080/trips/' + tripId, {
+      method: 'DELETE',
+    })
+    .then(handleErrors)
+    .then(() => resolve())
+    .catch(function(error) {
+      reject('Can not reach server');
+    });
   })
-  .then(handleErrors)
-  .then(
-    Alert.alert(
-      'Trip Cancelled',
-      'We also notified your contact about the cancellation',
-      [{ text: 'OK', onPress: () => {
-        comp.props.callback(false);
-        _navigator.pop();
-      }}]
-    )
-  )
-  .catch(function(error) {
-    Alert.alert('Can not reach server');
-  });
 }
 
 /** COMPLETE TRIP
@@ -267,7 +260,6 @@ export async function completeTrip(tripId) {
     .then(handleErrors)
     .then(() => resolve())
     .catch(function(error) {
-      Alert.alert('Can not reach server');
       reject('Can not reach server');
     })
   })

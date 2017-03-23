@@ -56,8 +56,21 @@ export default class Start extends Component {
       'Your contact will be notified',
       [
         {text: 'No'},
-        {text: 'Complete trip', onPress: () => completeTrip(this)},
-      ],
+        {text: 'Complete trip', onPress: () => {
+          completeTrip(this.props.trip._id)
+          .then(
+            Alert.alert(
+              'Trip Completed',
+              'We notified your contact that you returned safely',
+              [{ text: 'OK', onPress: () => {
+                this.props.callback(false);
+                _navigator.pop();
+              }}]
+            )
+          )
+          .catch((err) => console.error(err));
+        }}
+      ]
     );
   }
 

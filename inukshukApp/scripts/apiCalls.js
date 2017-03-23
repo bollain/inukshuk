@@ -6,8 +6,8 @@ import {
   storageMultiRemove,
   storageSet,
 } from './localStorage.js';
-var localIp = '192.168.1.94';
-var mockUserId = 154;
+var localIp = '192.168.1.90';
+var mockUserId = 201;
 
 /** HANDLE ERRORS
 * Handle any errors while communicating with the server
@@ -246,37 +246,31 @@ export function cancelTrip(comp) {
 }
 
 /** COMPLETE TRIP
-* Complete a trip on the inukshuk server
-* REQUIRES: a component with details in state
-* MODIFIES: the database of trips on the inukshuk server, navigator route
+* Completes a trip on the inukshuk server
+* REQUIRES: a trip id
+* MODIFIES: the database of trips on the inukshuk server
 * RETURNS: nothing
 **/
-export function completeTrip(comp) {
-  fetch('http://' + localIp + ':8080/trips/', {
-    method: 'PUT',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      tripId: comp.state.trip._id,
-      completed: true
+export async function completeTrip(tripId) {
+  return new Promise((resolve, reject) => {
+    fetch('http://' + localIp + ':8080/trips/', {
+      method: 'PUT',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        tripId: tripId,
+        completed: true
+      })
+    })
+    .then(handleErrors)
+    .then(() => resolve())
+    .catch(function(error) {
+      Alert.alert('Can not reach server');
+      reject('Can not reach server');
     })
   })
-  .then(handleErrors)
-  .then(
-    Alert.alert(
-      'Trip Completed',
-      'We also notified your contact that you are safe',
-      [{ text: 'OK', onPress: () => {
-        comp.props.callback(false);
-        _navigator.pop();
-      }}]
-    )
-  )
-  .catch(function(error) {
-    Alert.alert('Can not reach server');
-  });
 }
 
 /** EXTEND TRIP

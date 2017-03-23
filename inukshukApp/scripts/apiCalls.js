@@ -271,26 +271,23 @@ export async function completeTrip(tripId) {
 * MODIFIES: the database of trips on the inukshuk server, navigator route
 * RETURNS: nothing
 **/
-export function extendTrip(comp) {
-  fetch('http://' + localIp + ':8080/trips/', {
-    method: 'PUT',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      tripId: comp.state.trip._id,
-      returnTime: comp.state.newReturnDate,
+export function extendTrip(tripId, newReturnDate) {
+  return new Promise((resolve, reject) => {
+    fetch('http://' + localIp + ':8080/trips/', {
+      method: 'PUT',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        tripId: tripId,
+        returnTime: newReturnDate,
+      })
     })
+    .then(handleErrors)
+    .then(() => resolve())
+    .catch(function(error) {
+      reject('Can not reach server');
+    });
   })
-  .then(handleErrors)
-  .then(
-    Alert.alert(
-      'Trip Extended to ' + comp.state.newReturnDate.toDateString() + ' at ' + comp.state.newReturnDate.toLocaleTimeString().substring(0,5),
-      'We also notified your contact of this change',
-    )
-  )
-  .catch(function(error) {
-    Alert.alert('Can not reach server');
-  });
 }

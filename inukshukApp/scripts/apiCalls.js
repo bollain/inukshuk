@@ -7,7 +7,7 @@ import {
   storageSet,
 } from './localStorage.js';
 var localIp = '192.168.1.90';
-var mockUserId = 180;
+var mockUserId = 201;
 
 /** HANDLE ERRORS
 * Handle any errors while communicating with the server

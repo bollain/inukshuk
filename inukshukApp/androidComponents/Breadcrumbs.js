@@ -1,6 +1,26 @@
 import React, { Component, PropTypes } from 'react';
 import { View, Text, Alert, InteractionManager } from 'react-native';
 import { throwCrumbs } from '../scripts/apiCalls.js';
+import BackgroundJob from 'react-native-background-job';
+
+var lat = 36.7201600;
+var lng = -4.4203400;
+
+const backgroundJob = {
+  jobKey: "myJob",
+  job: () => fetchSunset()
+};
+
+function fetchSunset() {
+  fetch('http://api.sunrise-sunset.org/json?lat=' + lat + '&lng=' + lng)
+  .then((response) => response.json())
+  .then((jsonResponse) => {
+    console.log(JSON.stringify(jsonResponse))
+  })
+  .catch((err) => console.error(err))
+}
+
+BackgroundJob.register(backgroundJob);
 
 export default class Breadcrumbs extends Component {
   constructor(props) {
@@ -12,6 +32,14 @@ export default class Breadcrumbs extends Component {
   }
 
   componentDidMount() {
+    var backgroundSchedule = {
+      jobKey: "myJob",
+      timeout: 10000,
+      period: 1000,
+    }
+
+    BackgroundJob.schedule(backgroundSchedule);
+
     InteractionManager.runAfterInteractions(() => {
       this.timer = setInterval(() => {
         this.dropCrumb()
@@ -21,6 +49,7 @@ export default class Breadcrumbs extends Component {
 
   componentWillUnmount() {
     clearInterval(this.timer);
+    BackgroundJob.cancel({jobKey: 'myJob'});
   }
 
   dropCrumb() {

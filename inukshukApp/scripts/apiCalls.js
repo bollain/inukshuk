@@ -6,6 +6,8 @@ import {
   storageMultiRemove,
   storageSet,
 } from './localStorage.js';
+import BackgroundJob from 'react-native-background-job';
+
 var localIp = '192.168.1.90';
 var mockUserId = 201;
 
@@ -235,6 +237,7 @@ export function cancelTrip(comp) {
       'Trip Cancelled',
       'We also notified your contact about the cancellation',
       [{ text: 'OK', onPress: () => {
+        BackgroundJob.cancel({jobKey: 'breadcrumbs'});
         comp.props.callback(false);
         _navigator.pop();
       }}]
@@ -269,6 +272,7 @@ export function completeTrip(comp) {
       'Trip Completed',
       'We also notified your contact that you are safe',
       [{ text: 'OK', onPress: () => {
+        BackgroundJob.cancel({jobKey: 'breadcrumbs'});
         comp.props.callback(false);
         _navigator.pop();
       }}]
@@ -329,13 +333,6 @@ export function throwCrumbs(comp) {
     })
   })
   .then(handleErrors)
-  .then(
-    // Clear the local storage of breadcrumbs and increment count of crumbs sent
-    comp.setState({
-      numSent: comp.state.numSent + comp.state.breadcrumbs.length,
-      breadcrumbs: [],
-    })
-  )
   .catch(function(error) {
     Alert.alert('Error posting breadcrumbs to the server');
   });

@@ -6,8 +6,8 @@ import {
   storageMultiRemove,
   storageSet,
 } from './localStorage.js';
-var localIp = '192.168.1.94';
-var mockUserId = 154;
+var localIp = '192.168.1.90';
+var mockUserId = 201;
 
 /** HANDLE ERRORS
 * Handle any errors while communicating with the server
@@ -225,58 +225,44 @@ export function postTrip(comp) {
 * MODIFIES: the database of trips on the inukshuk server, navigator route
 * RETURNS: nothing
 **/
-export function cancelTrip(comp) {
-  fetch('http://' + localIp + ':8080/trips/' + comp.state.trip._id, {
-    method: 'DELETE',
+export function cancelTrip(tripId) {
+  return new Promise((resolve, reject) => {
+    fetch('http://' + localIp + ':8080/trips/' + tripId, {
+      method: 'DELETE',
+    })
+    .then(handleErrors)
+    .then(() => resolve())
+    .catch(function(error) {
+      reject('Can not reach server');
+    });
   })
-  .then(handleErrors)
-  .then(
-    Alert.alert(
-      'Trip Cancelled',
-      'We also notified your contact about the cancellation',
-      [{ text: 'OK', onPress: () => {
-        comp.props.callback(false);
-        _navigator.pop();
-      }}]
-    )
-  )
-  .catch(function(error) {
-    Alert.alert('Can not reach server');
-  });
 }
 
 /** COMPLETE TRIP
-* Complete a trip on the inukshuk server
-* REQUIRES: a component with details in state
-* MODIFIES: the database of trips on the inukshuk server, navigator route
+* Completes a trip on the inukshuk server
+* REQUIRES: a trip id
+* MODIFIES: the database of trips on the inukshuk server
 * RETURNS: nothing
 **/
-export function completeTrip(comp) {
-  fetch('http://' + localIp + ':8080/trips/', {
-    method: 'PUT',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      tripId: comp.state.trip._id,
-      completed: true
+export async function completeTrip(tripId) {
+  return new Promise((resolve, reject) => {
+    fetch('http://' + localIp + ':8080/trips/', {
+      method: 'PUT',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        tripId: tripId,
+        completed: true
+      })
+    })
+    .then(handleErrors)
+    .then(() => resolve())
+    .catch(function(error) {
+      reject('Can not reach server');
     })
   })
-  .then(handleErrors)
-  .then(
-    Alert.alert(
-      'Trip Completed',
-      'We also notified your contact that you are safe',
-      [{ text: 'OK', onPress: () => {
-        comp.props.callback(false);
-        _navigator.pop();
-      }}]
-    )
-  )
-  .catch(function(error) {
-    Alert.alert('Can not reach server');
-  });
 }
 
 /** EXTEND TRIP
@@ -285,26 +271,23 @@ export function completeTrip(comp) {
 * MODIFIES: the database of trips on the inukshuk server, navigator route
 * RETURNS: nothing
 **/
-export function extendTrip(comp) {
-  fetch('http://' + localIp + ':8080/trips/', {
-    method: 'PUT',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      tripId: comp.state.trip._id,
-      returnTime: comp.state.newReturnDate,
+export function extendTrip(tripId, newReturnDate) {
+  return new Promise((resolve, reject) => {
+    fetch('http://' + localIp + ':8080/trips/', {
+      method: 'PUT',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        tripId: tripId,
+        returnTime: newReturnDate,
+      })
     })
+    .then(handleErrors)
+    .then(() => resolve())
+    .catch(function(error) {
+      reject('Can not reach server');
+    });
   })
-  .then(handleErrors)
-  .then(
-    Alert.alert(
-      'Trip Extended to ' + comp.state.newReturnDate.toDateString() + ' at ' + comp.state.newReturnDate.toLocaleTimeString().substring(0,5),
-      'We also notified your contact of this change',
-    )
-  )
-  .catch(function(error) {
-    Alert.alert('Can not reach server');
-  });
 }

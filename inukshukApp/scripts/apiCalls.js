@@ -7,7 +7,7 @@ import {
   storageSet,
 } from './localStorage.js';
 var localIp = '192.168.1.90';
-var mockUserId = 201;
+var mockUserId = 222;
 
 /** HANDLE ERRORS
 * Handle any errors while communicating with the server
@@ -29,30 +29,27 @@ function handleErrors(response) {
 * MODIFIES: navigator route (to trip summary page)
 * RETURNS: nothing
 **/
-export function login(comp) {
-  console.log(comp.state);
-  fetch('http://' + localIp + ':8080/login', {
-    headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      userName: comp.state.username,
-      password: comp.state.password,
+export function login(username, password) {
+  return new Promise((resolve, reject) => {
+    fetch('http://' + localIp + ':8080/login', {
+      headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        userName: username,
+        password: password,
+      })
     })
-  })
-  .then(handleErrors)
-  .then(response => response.json())
-  .then(responseJson => {
-    storageSet('user', JSON.stringify(responseJson));
-    comp.props.navigator.push({
-      id: 'tripSummary',
-      user: responseJson
+    .then(handleErrors)
+    .then(response => response.json())
+    .then(responseJson => {
+      resolve(responseJson);
+    })
+    .catch((error) => {
+      reject("Can not reach server")
     });
-   })
-  .catch(function(error) {
-    Alert.alert('Can not reach server');
-  });
+  })
 }
 
 /** LOGIN MOCK
@@ -62,21 +59,18 @@ export function login(comp) {
 * MODIFIES: a navigator route (to trip summary page)
 * RETURNS: nothing
 **/
-export function loginMock(comp) {
-  console.log(comp.state);
-  fetch('http://' + localIp + ':8080/users/' + mockUserId)
-  .then(handleErrors)
-  .then(response => response.json())
-  .then(responseJson => {
-    storageSet('user', JSON.stringify(responseJson));
-    comp.props.navigator.push({
-      id: 'tripSummary',
-      user: responseJson,
-    });
-   })
-   .catch(function(error) {
-     Alert.alert('Cannot reach server');
-   });
+export function loginMock(username, password) {
+  return new Promise((resolve, reject) => {
+    fetch('http://' + localIp + ':8080/users/' + mockUserId)
+    .then(handleErrors)
+    .then(response => response.json())
+    .then(responseJson => {
+      resolve(responseJson);
+     })
+     .catch((error) => {
+       reject("Can not reach server")
+     });
+  })
 }
 
 /** CREATE USER

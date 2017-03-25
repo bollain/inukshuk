@@ -11,6 +11,7 @@ import {
   TextInput,
   ToolbarAndroid,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import { updateUser } from '../scripts/apiCalls.js';
 var nativeImageSource = require('nativeImageSource');
@@ -29,6 +30,38 @@ export default class User extends Component {
       email: jsonUser.email,
       phoneNumber: jsonUser.phoneNumber,
     }
+  }
+
+  // Update the user on the Inukshuk server
+  updateUser() {
+    updateUser({id: this.state.id,
+                firstName: this.state.firstName,
+                lastName: this.state.lastName,
+                email: this.state.email,
+                phoneNumber: this.state.phoneNumber})
+    .then((responseJson) => {
+      storageSet('user', responseJson)
+      .then(() => {
+        Alert.alert(
+          'Success!',
+          'Your account has been updated',
+          [
+            {text: 'OK', onPress: () => {
+              this.props.callback(responseJson)
+              .then(this.props.navigator.pop())
+              .catch((err) => console.error(err));
+            }},
+          ],
+          { cancelable: false }
+        )
+      })
+      .catch((error) => {
+        Alert.alert(error);
+      });
+    })
+    .catch((error) => {
+      Alert.alert(error);
+    });
   }
 
   // Render the user component to the screen
@@ -82,7 +115,7 @@ export default class User extends Component {
         <View style={styles.updateContainer}>
           <TouchableOpacity
             style={styles.update}
-            onPress={() => updateUser(this)}
+            onPress={() => this.updateUser()}
             activeOpacity={.8}>
             <Text style={styles.buttonText}>Save changes</Text>
           </TouchableOpacity>

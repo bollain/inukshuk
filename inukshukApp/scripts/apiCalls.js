@@ -7,7 +7,7 @@ import {
   storageSet,
 } from './localStorage.js';
 var localIp = '192.168.1.90';
-var mockUserId = 222;
+var mockUserId = 235;
 
 /** HANDLE ERRORS
 * Handle any errors while communicating with the server
@@ -103,48 +103,30 @@ export function createUser(user) {
 
 /** UPDATE USER
 * Update user info on the inukshuk server
-* REQUIRES: a component with details in state
-* MODIFIES: the database of users on the inukshuk server, navigator route
-* RETURNS: nothing
+* REQUIRES: user object with id, username, firstName, lastName, email and
+* phoneNumber
+* MODIFIES: the database of users on the inukshuk server
+* RETURNS: JSON response or error message
 **/
-export function updateUser(comp) {
-  let user = {
-    id: comp.state.id,
-    userName: comp.state.userName,
-    firstName: comp.state.firstName,
-    lastName: comp.state.lastName,
-    email: comp.state.email,
-    phoneNumber: comp.state.phoneNumber,
-  };
-  fetch('http://' + localIp + ':8080/users', {
-    method: 'PUT',
-    headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(user),
+export function updateUser(user) {
+  return new Promise((resolve, reject) => {
+    fetch('http://' + localIp + ':8080/users', {
+      method: 'PUT',
+      headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(user),
+    })
+    .then(handleErrors)
+    .then(response => response.json())
+    .then((responseJson) => {
+      resolve(responseJson);
+    })
+    .catch((error) => {
+      reject('Can not reach server')
+    });
   })
-  .then(handleErrors)
-  .then(
-    Alert.alert(
-      'Success!',
-      'Your account has been updated',
-      [
-        {text: 'OK', onPress: () => {
-          comp.props.callback(user)
-          .then(comp.props.navigator.pop())
-          .catch((err) => console.error(err));
-        }},
-      ],
-      { cancelable: false }
-    )
-  )
-  .then(() => {
-      storageSet('user', JSON.stringify(user))
-      .catch((err) => console.error(err));
-    }
-  )
-  .catch((err) => Alert.alert('Error', err.message));
 }
 
  /** POST TRIP

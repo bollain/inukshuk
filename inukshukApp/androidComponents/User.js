@@ -14,6 +14,7 @@ import {
   Alert,
 } from 'react-native';
 import { updateUser } from '../scripts/apiCalls.js';
+import { storageSet } from '../scripts/localStorage.js';
 var nativeImageSource = require('nativeImageSource');
 
 export default class User extends Component {
@@ -40,24 +41,19 @@ export default class User extends Component {
                 email: this.state.email,
                 phoneNumber: this.state.phoneNumber})
     .then((responseJson) => {
-      storageSet('user', responseJson)
-      .then(() => {
-        Alert.alert(
-          'Success!',
-          'Your account has been updated',
-          [
-            {text: 'OK', onPress: () => {
-              this.props.callback(responseJson)
-              .then(this.props.navigator.pop())
-              .catch((err) => console.error(err));
-            }},
-          ],
-          { cancelable: false }
-        )
-      })
-      .catch((error) => {
-        Alert.alert(error);
-      });
+      storageSet('user', JSON.stringify(responseJson));
+      Alert.alert(
+        'Success!',
+        'Your account has been updated',
+        [
+          {text: 'OK', onPress: () => {
+            this.props.callback(responseJson)
+            .then(this.props.navigator.pop())
+            .catch((err) => console.error(err));
+          }},
+        ],
+        { cancelable: false }
+      )
     })
     .catch((error) => {
       Alert.alert(error);

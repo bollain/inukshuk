@@ -24,7 +24,6 @@ export default class User extends Component {
     console.log(jsonUser);
     this.state = {
       id: jsonUser._id,
-      userName: jsonUser.userName,
       firstName: jsonUser.firstName,
       lastName: jsonUser.lastName,
       email: jsonUser.email,
@@ -50,10 +49,6 @@ export default class User extends Component {
           titleColor={'#FFFFFF'}/>
 
         <View style={styles.textContainer}>
-
-          {/* Username */}
-          <Text style={styles.fieldHeader}> Username </Text>
-          <Text style={styles.field}> {this.state.userName}</Text>
 
           {/* First name */}
           <Text style={styles.fieldHeader}> First Name </Text>

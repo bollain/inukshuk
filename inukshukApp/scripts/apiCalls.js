@@ -26,8 +26,8 @@ function handleErrors(response) {
 * Login to retrieve account information
 * REQUIRES: a component, that a user has been created already
 * (can be done through sign up)
-* MODIFIES: navigator route (to trip summary page)
-* RETURNS: nothing
+* MODIFIES: the database of users on the inukshuk server
+* RETURNS: JSON response or an error message
 **/
 export function login(username, password) {
   return new Promise((resolve, reject) => {
@@ -56,8 +56,8 @@ export function login(username, password) {
 * Login without checking credentials (for development/testing)
 * REQUIRES: a component, that a user has been created already
 * (can be done through sign up)
-* MODIFIES: a navigator route (to trip summary page)
-* RETURNS: nothing
+* MODIFIES: the database of users on the inukshuk server
+* RETURNS: JSON response or an error message
 **/
 export function loginMock(username, password) {
   return new Promise((resolve, reject) => {
@@ -75,48 +75,30 @@ export function loginMock(username, password) {
 
 /** CREATE USER
 * Create a user on the inukshuk server with the given information
-* REQUIRES: a component with details in state
-* MODIFIES: the database of users on the inukshuk server, navigator route
-* RETURNS: nothing
+* REQUIRES: user object with username, firstName, lastName, email and
+* phoneNumber
+* MODIFIES: the database of users on the inukshuk server
+* RETURNS: JSON response or error message
 **/
-export function createUser(comp) {
-  let user = {
-    id: 0,
-    userName: comp.state.userName,
-    firstName: comp.state.firstName,
-    lastName: comp.state.lastName,
-    email: comp.state.email,
-    phoneNumber: comp.state.phoneNumber,
-  };
-  fetch('http://' + localIp + ':8080/users', {
-    method: 'POST',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(user),
+export function createUser(user) {
+  return new Promise((resolve, reject) => {
+    fetch('http://' + localIp + ':8080/users', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(user),
+    })
+    .then(handleErrors)
+    .then(response => response.json())
+    .then((responseJson) => {
+      resolve(responseJson);
+    })
+    .catch((error) => {
+      reject('Can not reach server')
+    });
   })
-  .then(handleErrors)
-  .then(response => response.json())
-  .then(function(responseJson) {
-    Alert.alert(
-      'Success!',
-      'Your account has been created.',
-      [
-        {
-          text: 'OK',
-          onPress: () => comp.props.navigator.push({
-            id: 'tripSummary',
-            user: user,
-          })
-        },
-      ],
-      { cancelable: false }
-    )
-  })
-  .catch(function(error) {
-    Alert.alert('Cannot reach server');
-  });
 }
 
 /** UPDATE USER

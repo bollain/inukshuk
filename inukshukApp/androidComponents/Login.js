@@ -8,7 +8,8 @@ import {
   Text,
   TextInput,
   View,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert
 } from 'react-native';
 import { storageSet } from '../scripts/localStorage.js';
 import { login, loginMock } from '../scripts/apiCalls.js';

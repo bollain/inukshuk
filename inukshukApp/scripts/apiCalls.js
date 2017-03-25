@@ -7,7 +7,7 @@ import {
   storageSet,
 } from './localStorage.js';
 var localIp = '192.168.1.90';
-var mockUserId = 235;
+var mockUserId = 230;
 
 /** HANDLE ERRORS
 * Handle any errors while communicating with the server
@@ -131,50 +131,29 @@ export function updateUser(user) {
 
  /** POST TRIP
  * Post a trip to inukshuk server
- * REQUIRES: a component with details in state
- * MODIFIES: the database of trips on the inukshuk server, navigator route
- * RETURNS: nothing
+ * REQUIRES: a trip object with location, contact, return, note
+ * MODIFIES: the database of trips on the inukshuk server
+ * RETURNS: JSON response or error message
  **/
-export function postTrip(comp) {
-  // TODO: server should take chosen email/number and not require both
-  var ce = (comp.state.contact.emails.length > 0 ? comp.state.contact.emails[0].email : 'ehauner@gmail.com');
-  var tel = (comp.state.contact.phones.length > 0 ? comp.state.contact.phones[0].number : '6046523447');
-  tel = tel.replace(/\D+/g, "");
-  var returnTime = new Date(comp.state.return.year, comp.state.return.month, comp.state.return.day, comp.state.return.hour, comp.state.return.minute, 0,0);
-  fetch('http://' + localIp + ':8080/trips', {
-    method: 'POST',
-    headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-        tripId: 0,
-        userId: comp.props.user._id,
-        returnTime: returnTime,
-        contactEmail: ce,
-        contactPhone: tel,
-        startingLocation: {
-          latitude: comp.state.location.latitude,
-          longitude: comp.state.location.longitude,
-        },
-        note: comp.state.note,
-        completed: false,
+export function postTrip(trip) {
+  return new Promise((resolve, reject) => {
+    fetch('http://' + localIp + ':8080/trips', {
+      method: 'POST',
+      headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(trip)
     })
+    .then(handleErrors)
+    .then(response => response.json())
+    .then((responseJson) => {
+      resolve(responseJson)
+    })
+    .catch((error) => {
+      reject('Can not reach server')
+    });
   })
-  .then(handleErrors)
-  .then(response => response.json())
-  .then((responseJson) => {
-    //comp.props.set('tripId', responseJson._id);
-    Alert.alert(
-      'Success!',
-      'Your trip has been created!',
-      [
-        {text: 'OK', onPress: () => comp.navStart(responseJson)},
-      ],
-      { cancelable: false }
-    );
-  })
-  .catch((err) => console.error(err));
 }
 
 /** CANCEL TRIP

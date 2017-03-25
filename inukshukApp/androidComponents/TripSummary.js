@@ -133,10 +133,38 @@ export default class TripSummary extends Component {
     });
   }
 
+  // Post the trip to the server
   start() {
     console.log('navstart');
     if (this.state.location != null && this.state.contact != null && this.state.return != null && this.state.note != null) {
-      postTrip(this);
+      // TODO: server should take chosen email/number and not require both
+      var ce = (this.state.contact.emails.length > 0 ? this.state.contact.emails[0].email : 'ehauner@gmail.com');
+      var tel = (this.state.contact.phones.length > 0 ? this.state.contact.phones[0].number : '6046523447');
+      tel = tel.replace(/\D+/g, "");
+      var returnTime = new Date(this.state.return.year, this.state.return.month, this.state.return.day, this.state.return.hour, this.state.return.minute, 0,0);
+      postTrip({
+        userId: this.props.user._id,
+        returnTime: returnTime,
+        contactEmail: ce,
+        contactPhone: tel,
+        startingLocation: {
+          latitude: this.state.location.latitude,
+          longitude: this.state.location.longitude,
+        },
+        note: this.state.note,
+        completed: false,
+      })
+      .then((responseJson) => {
+        Alert.alert(
+          'Success!',
+          'Your trip has been created!',
+          [
+            {text: 'OK', onPress: () => this.navStart(responseJson)},
+          ],
+          { cancelable: false }
+        )
+      })
+      .catch((error) => Alert.alert(error));
     } else {
       Alert.alert('Please fill in all trip details before proceeding');
     }

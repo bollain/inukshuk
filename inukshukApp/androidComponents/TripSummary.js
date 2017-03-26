@@ -39,6 +39,7 @@ export default class TripSummary extends Component {
     super(props);
     this.state = {
       tripName: null,
+      savedName: false,
       startLocation: null,
       endLocation: null,
       contact: null,
@@ -58,13 +59,15 @@ export default class TripSummary extends Component {
   }
 
   componentDidMount() {
-    storageMultiGet(['startLocation', 'endLocation', 'contact','return','note']).then((response => {
+    storageMultiGet(['tripName', 'startLocation', 'endLocation', 'contact','return','note']).then((response => {
       this.setState({
-        startLocation: JSON.parse(response[0][1]),
-        endLocation: JSON.parse(response[1][1]),
-        contact: JSON.parse(response[2][1]),
-        return: JSON.parse(response[3][1]),
-        note: response[4][1],
+        tripName: response[0][1],
+        savedName: (response[0][1] != null ? true : false),
+        startLocation: JSON.parse(response[1][1]),
+        endLocation: JSON.parse(response[2][1]),
+        contact: JSON.parse(response[3][1]),
+        return: JSON.parse(response[4][1]),
+        note: response[5][1],
       });
     }));
   }
@@ -204,8 +207,10 @@ export default class TripSummary extends Component {
   }
 
   clearTrip(showDialog) {
-    storageMultiRemove(['startLocation','endLocation','contact','return','note']).then((response => {
+    storageMultiRemove(['tripName','startLocation','endLocation','contact','return','note']).then((response => {
       this.setState({
+        tripName: null,
+        savedName: false,
         startLocation: null,
         endLocation: null,
         contact: null,
@@ -246,14 +251,27 @@ export default class TripSummary extends Component {
     await this.setState({user: currentUser});
   }
 
+  saveTripName() {
+    if (this.state.tripName != null && this.state.tripName.length > 0) {
+      storageSet('tripName', this.state.tripName)
+      .then(() => {
+        this.setState({
+          savedName: true,
+        })
+      })
+    } else {
+      storageRemove('tripName')
+      .then(() => {
+        this.setState({
+          savedName: false,
+        })
+      })
+    }
+  }
+
   render() {
     // Set check values if details have been provided
-    let tripNameCheck = null;
-    if (this.state.tripName != null) {
-      if (this.state.tripName.length > 0) {
-        tripNameCheck = checkIcon;
-      }
-    }
+    let tripNameCheck = (this.state.savedName ? checkIcon : null);
 
     let noteCheck = (this.state.note != null ? checkIcon : null);
 
@@ -290,7 +308,8 @@ export default class TripSummary extends Component {
                 placeholder={'Give your trip a name'}
                 defaultValue={this.state.tripName}
                 autoCapitalize={'words'}
-                onChangeText={(text) => this.setState({tripName: text})}/>
+                onChangeText={(text) => this.setState({tripName: text})}
+                onEndEditing={() => this.saveTripName()}/>
               <View style={{marginTop: 10}}>
                 {tripNameCheck}
               </View>

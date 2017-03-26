@@ -44,8 +44,24 @@ export default class Start extends Component {
       'Your contact will be notified',
       [
         {text: 'No'},
-        {text: 'Cancel trip', onPress: () => cancelTrip(this)},
-      ],
+        {text: 'Cancel trip', onPress: () => {
+          cancelTrip(this.props.trip._id)
+          .then(
+            Alert.alert(
+              'Trip Cancelled',
+              'We also notified your contact about the cancellation',
+              [{ text: 'OK', onPress: () => {
+                this.props.callback(false);
+                _navigator.pop();
+              }}]
+            )
+          )
+          .catch((err) => {
+            console.error(err)
+            Alert.alert(err);
+          });
+        }}
+      ]
     );
   }
 
@@ -56,8 +72,24 @@ export default class Start extends Component {
       'Your contact will be notified',
       [
         {text: 'No'},
-        {text: 'Complete trip', onPress: () => completeTrip(this)},
-      ],
+        {text: 'Complete trip', onPress: () => {
+          completeTrip(this.props.trip._id)
+          .then(
+            Alert.alert(
+              'Trip Completed',
+              'We notified your contact that you returned safely',
+              [{ text: 'OK', onPress: () => {
+                this.props.callback(false);
+                _navigator.pop();
+              }}]
+            )
+          )
+          .catch((err) => {
+            console.error(err)
+            Alert.alert(err);
+          });
+        }}
+      ]
     );
   }
 
@@ -71,18 +103,32 @@ export default class Start extends Component {
         [
           {text: 'No'},
           {text: 'Extend trip', onPress: () => {
-            extendTrip(this);
-            let returnTime = this.state.return;
-            returnTime.hour = this.state.newReturnDate.getHours();
-            returnTime.minute = this.state.newReturnDate.getMinutes();
-            this.setState({
-              returnDate: this.state.newReturnDate,
-              return: returnTime,
+            extendTrip(this.props.trip._id, this.state.newReturnDate)
+            .then(() => {
+              let returnTime = this.state.return;
+              returnTime.hour = this.state.newReturnDate.getHours();
+              returnTime.minute = this.state.newReturnDate.getMinutes();
+              this.setState({
+                returnDate: this.state.newReturnDate,
+                return: returnTime,
+              });
+              Alert.alert(
+                'Trip Extended to ' + this.state.newReturnDate.toDateString() + ' at ' + this.state.newReturnDate.toLocaleTimeString().substring(0,5),
+                'We also notified your contact of this change',
+              )
             })
+            .catch((err) => {
+              console.error(err)
+              Alert.alert(err);
+            });
           }},
-        ],
+        ]
       );
     })
+    .catch((err) => {
+      console.error(err)
+      Alert.alert(err);
+    });
   }
 
   // Select new return time

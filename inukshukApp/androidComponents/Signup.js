@@ -14,11 +14,64 @@ import {
   ToolbarAndroid,
   TouchableOpacity,
   ScrollView,
+  Alert,
 } from 'react-native';
 import { createUser } from '../scripts/apiCalls.js';
+import { storageSet } from '../scripts/localStorage.js';
 var nativeImageSource = require('nativeImageSource');
 
 export default class SignUp extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      userName: null,
+      firstName: null,
+      lastName: null,
+      email: null,
+      phoneNumber: null,
+      password: null
+    }
+  }
+
+  // Send info for new user to the server
+  createUser() {
+    let state = this.state;
+    if (state.firstName != null &&
+        state.lastName != null &&
+        state.email != null &&
+        state.phoneNumber != null &&
+        state.password != null) {
+      createUser({firstName: state.firstName,
+                  lastName: state.lastName,
+                  email: state.email,
+                  phoneNumber: state.phoneNumber})
+      .then((responseJson) => {
+        console.log(responseJson);
+        storageSet('user', JSON.stringify(responseJson));
+        Alert.alert(
+          'Success!',
+          'Your account has been created.',
+          [
+            {
+              text: 'OK',
+              onPress: () => this.props.navigator.push({
+                id: 'tripSummary',
+                user: responseJson,
+              })
+            },
+          ],
+          { cancelable: false }
+        )
+      })
+      .catch((err) => {
+        Alert.alert(err);
+      });
+    } else {
+      Alert.alert('Don\'t be shy',
+                  'You must complete every field to make an account')
+    }
+  }
 
   // Render the sign up class to the screen
   render() {
@@ -37,15 +90,6 @@ export default class SignUp extends Component {
                         titleColor={'#FFFFFF'}/>
 
         <ScrollView style={styles.textContainer}>
-
-          {/* User name input */}
-          <View style={styles.inputBox}>
-            <TextInput
-              style={styles.inputText}
-              placeholder = "Username"
-              onChangeText={(text) => this.setState({userName: text})}
-            />
-          </View>
 
           {/* First name input */}
           <View style={styles.inputBox}>
@@ -98,7 +142,7 @@ export default class SignUp extends Component {
         <View style={styles.createContainer}>
           <TouchableOpacity
             style={styles.create}
-            onPress={()=> createUser(this)}
+            onPress={()=> this.createUser()}
             activeOpacity={.8}>
             <Text style={styles.buttonText}>Create account</Text>
           </TouchableOpacity>

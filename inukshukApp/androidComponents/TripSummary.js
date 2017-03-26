@@ -37,7 +37,9 @@ export default class TripSummary extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      location: null,
+      tripName: null,
+      locationStart: null,
+      locationEnd: null,
       contact: null,
       return: null,
       note: null,
@@ -211,6 +213,13 @@ export default class TripSummary extends Component {
 
   render() {
     // Set check values if details have been provided
+    let tripNameCheck = null;
+    if (this.state.tripName != null) {
+      if (this.state.tripName.length > 0) {
+        tripNameCheck = checkIcon;
+      }
+    }
+
     let noteCheck = (this.state.note != null ? checkIcon : null);
 
     let locationCheck = (this.state.location != null ? checkIcon : null);
@@ -243,6 +252,9 @@ export default class TripSummary extends Component {
                 defaultValue={this.state.tripName}
                 autoCapitalize={'words'}
                 onChangeText={(text) => this.setState({tripName: text})}/>
+              <View style={{marginTop: 10}}>
+                {tripNameCheck}
+              </View>
             </View>
             <TouchableHighlight
                 style = {[styles.tripDetail, styles.firstTripDetail]}
@@ -458,8 +470,8 @@ const styles = StyleSheet.create({
      borderBottomWidth: 1,
    },
    inputText: {
+     flex: 1,
      alignSelf: 'stretch',
-     flexDirection: 'row',
      height: 45,
      fontSize: 16,
    },
@@ -471,5 +483,8 @@ const styles = StyleSheet.create({
      paddingRight: 8,
      paddingTop: 6,
      paddingBottom: 4,
+     flexDirection: 'row',
+     justifyContent: 'space-between',
+     alignItems: 'stretch'
    },
 });

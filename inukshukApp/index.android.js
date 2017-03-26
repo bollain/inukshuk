@@ -120,7 +120,10 @@ class inukshukApp extends Component {
           <Start
             navigator={navigator}
             title="Start"
-            location={route.location}
+            tripId={route.tripId}
+            tripName={route.tripName}
+            startLocation={route.startLocation}
+            endLocation={route.endLocation}
             contact={route.contact}
             return={route.return}
             note={route.note}

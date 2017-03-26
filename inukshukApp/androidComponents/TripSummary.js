@@ -121,6 +121,8 @@ export default class TripSummary extends Component {
     console.log('navstart');
     this.props.navigator.push({
       id: 'start',
+      tripId: 0,
+      tripName: this.state.tripName,
       startLocation: this.state.startLocation,
       endLocation: this.state.endLocation,
       contact: this.state.contact,
@@ -135,6 +137,8 @@ export default class TripSummary extends Component {
     console.log('testStart');
     this.props.navigator.push({
       id: 'start',
+      tripId: 0,
+      tripName: this.state.tripName,
       startLocation: this.state.startLocation,
       endLocation: this.state.endLocation,
       contact: this.state.contact,
@@ -157,12 +161,14 @@ export default class TripSummary extends Component {
   // Post the trip to the server
   start() {
     console.log('navstart');
-    if ((this.state.startLocation != null &&
+    if ((this.state.tripName &&
+         this.state.startLocation != null &&
          this.state.contact != null &&
          this.state.return != null &&
          this.state.note != null &&
          !this.state.destIsStart) ||
-        (this.state.startLocation != null &&
+        (this.state.tripName != null &&
+         this.state.startLocation != null &&
          this.state.contact != null &&
          this.state.return != null &&
          this.state.note != null &&
@@ -406,7 +412,7 @@ export default class TripSummary extends Component {
           <View style={styles.startContainer}>
             <TouchableOpacity
               style={styles.start}
-              onPress={this.start.bind(this)}
+              onPress={this.testStart.bind(this)}
               activeOpacity={.8}>
               <Text style={styles.startText}>Submit</Text>
             </TouchableOpacity>

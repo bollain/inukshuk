@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
-import { View,
+import {
+  View,
   Text,
   Image,
   TouchableHighlight,
@@ -13,6 +14,7 @@ import { View,
   ScrollView,
   InteractionManager,
   TimePickerAndroid,
+  Linking,
 } from 'react-native';
 
 import { completeTrip, cancelTrip, extendTrip } from '../scripts/apiCalls.js';
@@ -46,7 +48,7 @@ export default class Start extends Component {
       [
         {text: 'No'},
         {text: 'Cancel trip', onPress: () => {
-          cancelTrip(this.props.trip._id)
+          cancelTrip(this.props.tripId)
           .then(
             Alert.alert(
               'Trip Cancelled',
@@ -74,7 +76,7 @@ export default class Start extends Component {
       [
         {text: 'No'},
         {text: 'Complete trip', onPress: () => {
-          completeTrip(this.props.trip._id)
+          completeTrip(this.props.tripId)
           .then(
             Alert.alert(
               'Trip Completed',
@@ -104,7 +106,7 @@ export default class Start extends Component {
         [
           {text: 'No'},
           {text: 'Extend trip', onPress: () => {
-            extendTrip(this.props.trip._id, this.state.newReturnDate)
+            extendTrip(this.props.tripId, this.state.newReturnDate)
             .then(() => {
               let returnTime = this.state.return;
               returnTime.hour = this.state.newReturnDate.getHours();
@@ -151,22 +153,49 @@ export default class Start extends Component {
     }
   }
 
+  // Open a map url
+  openMap(geoUrl) {
+    Linking.canOpenURL(geoUrl).then(supported => {
+      if (supported) {
+        Linking.openURL(geoUrl);
+      } else {
+        console.log('Don\'t know how to open URI: ' + geoUrl);
+      }
+    });
+  }
+
   render() {
     console.log(this.props);
     let returnDate = this.state.returnDate.toDateString();
     let returnTime = this.state.returnDate.toLocaleTimeString().substring(0,5);
+    let startGeoUrl = 'geo:' + this.props.startLocation.latitude + ',' + this.props.startLocation.longitude + '?q=' + this.props.startLocation.latitude + ',' + this.props.startLocation.longitude + '(Start)';
+    let endGeoUrl = 'geo:' + this.props.endLocation.latitude + ',' + this.props.endLocation.longitude + '?q=' + this.props.endLocation.latitude + ',' + this.props.endLocation.longitude + '(End)';
     return (
       <View style={styles.container}>
         <ToolbarAndroid style={styles.toolbar}
-                        title='Trip'
+                        title={this.props.tripName}
                         titleColor={'#FFFFFF'}/>
         <View style={styles.textContainer}>
           <Text style={styles.textLeft}>
             <Text>You told </Text>
             <Text style={{fontStyle: 'italic'}}>{this.props.contact.firstName} </Text>
-            <Text>that you would be back from </Text>
-            <Text style={{fontStyle: 'italic'}}>{this.props.location.latitude},{this.props.location.longitude} </Text>
-            <Text>by </Text>
+            <Text>that you would arrive at </Text>
+            <Text
+              style={{fontStyle: 'italic', color: '#00aaf1'}}
+              onPress={() => this.openMap(endGeoUrl)}>
+              <Text>
+                {this.props.endLocation.latitude.toFixed(6)}, {this.props.endLocation.longitude.toFixed(6)}
+              </Text>
+            </Text>
+            <Text> from </Text>
+            <Text
+              style={{fontStyle: 'italic', color: '#00aaf1'}}
+              onPress={() => this.openMap(startGeoUrl)}>
+              <Text>
+                {this.props.startLocation.latitude.toFixed(6)}, {this.props.startLocation.longitude.toFixed(6)}
+              </Text>
+            </Text>
+            <Text> by </Text>
             <Text style={{fontStyle: 'italic'}}>{returnTime} on {returnDate}</Text>
           </Text>
           <View style={{marginTop: 10, marginBottom: 20, alignItems: 'center',}}>
@@ -186,10 +215,10 @@ export default class Start extends Component {
             />
             <Text style={styles.textCenter}>Tonight the sun sets at</Text>
             <Text style={[styles.textCenter, {fontSize:20,fontWeight:'bold'}]}>
-              <Sunset location={this.props.location} />
+              <Sunset location={this.props.startLocation} />
             </Text>
           </View>
-          <Breadcrumbs trip={this.props.trip._id}/>
+          <Breadcrumbs trip={this.props.tripId}/>
         </View>
         <View style={styles.buttonContainer}>
           <View style={styles.buttons}>
@@ -243,6 +272,7 @@ const styles = StyleSheet.create({
    textLeft: {
      fontSize: 16,
      textAlign: 'left',
+     marginBottom: 20,
    },
    textCenter: {
      fontSize: 16,

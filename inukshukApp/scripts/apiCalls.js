@@ -6,15 +6,9 @@ import {
   storageMultiRemove,
   storageSet,
 } from './localStorage.js';
-<<<<<<< HEAD
-import BackgroundJob from 'react-native-background-job';
 
 var localIp = '192.168.1.90';
 var mockUserId = 201;
-=======
-var localIp = '192.168.1.90';
-var mockUserId = 230;
->>>>>>> 2032ab5585237037b2cdb5eeeae638c78a6aed26
 
 /** HANDLE ERRORS
 * Handle any errors while communicating with the server
@@ -180,24 +174,6 @@ export function cancelTrip(tripId) {
       reject('Can not reach server');
     });
   })
-<<<<<<< HEAD
-  .then(handleErrors)
-  .then(
-    Alert.alert(
-      'Trip Cancelled',
-      'We also notified your contact about the cancellation',
-      [{ text: 'OK', onPress: () => {
-        BackgroundJob.cancel({jobKey: 'breadcrumbs'});
-        comp.props.callback(false);
-        _navigator.pop();
-      }}]
-    )
-  )
-  .catch(function(error) {
-    Alert.alert('Can not reach server');
-  });
-=======
->>>>>>> 2032ab5585237037b2cdb5eeeae638c78a6aed26
 }
 
 /** COMPLETE TRIP
@@ -225,24 +201,6 @@ export async function completeTrip(tripId) {
       reject('Can not reach server');
     })
   })
-<<<<<<< HEAD
-  .then(handleErrors)
-  .then(
-    Alert.alert(
-      'Trip Completed',
-      'We also notified your contact that you are safe',
-      [{ text: 'OK', onPress: () => {
-        BackgroundJob.cancel({jobKey: 'breadcrumbs'});
-        comp.props.callback(false);
-        _navigator.pop();
-      }}]
-    )
-  )
-  .catch(function(error) {
-    Alert.alert('Can not reach server');
-  });
-=======
->>>>>>> 2032ab5585237037b2cdb5eeeae638c78a6aed26
 }
 
 /** EXTEND TRIP

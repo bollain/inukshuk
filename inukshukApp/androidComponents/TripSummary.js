@@ -172,6 +172,7 @@ export default class TripSummary extends Component {
       var returnTime = new Date(this.state.return.year, this.state.return.month, this.state.return.day, this.state.return.hour, this.state.return.minute, 0,0);
       postTrip({
         userId: this.props.user._id,
+        tripName: this.state.tripName,
         returnTime: returnTime,
         contactEmail: ce,
         contactPhone: tel,

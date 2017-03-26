@@ -66,6 +66,7 @@ export default class Login extends Component {
                 style={styles.inputText}
                 underlineColorAndroid='rgba(0,0,0,0)'
                 placeholder='Email'
+                keyboardType={'email-address'}
                 onChangeText={(text) => this.setState({username: text})}
               />
             </View>

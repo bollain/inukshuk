@@ -96,6 +96,7 @@ export default class SignUp extends Component {
               <TextInput
                 style={styles.inputText}
                 placeholder = "First name"
+                autoCapitalize={'words'}
                 onChangeText={(text) => this.setState({firstName: text})}
               />
             </View>
@@ -105,6 +106,7 @@ export default class SignUp extends Component {
               <TextInput
                 style={styles.inputText}
                 placeholder = "Last name"
+                autoCapitalize={'words'}
                 onChangeText={(text) => this.setState({lastName: text})}
               />
             </View>
@@ -114,6 +116,7 @@ export default class SignUp extends Component {
               <TextInput
                 style={styles.inputText}
                 placeholder = "Email"
+                keyboardType={'email-address'}
                 onChangeText={(text) => this.setState({email: text})}
               />
             </View>
@@ -123,6 +126,7 @@ export default class SignUp extends Component {
               <TextInput
                 style={styles.inputText}
                 placeholder = "Phone number"
+                keyboardType={'phone-pad'}
                 onChangeText={(text) => this.setState({phoneNumber: text})}
               />
             </View>

@@ -8,7 +8,7 @@ import {
 } from './localStorage.js';
 
 var localIp = '192.168.1.90';
-var mockUserId = 201;
+var mockUserId = 246;
 
 /** HANDLE ERRORS
 * Handle any errors while communicating with the server
@@ -44,11 +44,11 @@ export function login(username, password) {
     })
     .then(handleErrors)
     .then(response => response.json())
-    .then(responseJson => {
+    .then((responseJson) => {
       resolve(responseJson);
     })
     .catch((error) => {
-      reject("Can not reach server")
+      reject('Can not reach server')
     });
   })
 }
@@ -65,12 +65,12 @@ export function loginMock(username, password) {
     fetch('http://' + localIp + ':8080/users/' + mockUserId)
     .then(handleErrors)
     .then(response => response.json())
-    .then(responseJson => {
+    .then((responseJson) => {
       resolve(responseJson);
-     })
-     .catch((error) => {
-       reject("Can not reach server")
-     });
+    })
+    .catch((error) => {
+      reject('Can not reach server')
+    });
   })
 }
 

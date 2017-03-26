@@ -12,7 +12,8 @@ import {
   TouchableOpacity,
   Image,
   AsyncStorage,
-  Modal
+  Modal,
+  TextInput,
 } from 'react-native';
 
 import { postTrip } from '../scripts/apiCalls.js';
@@ -235,12 +236,34 @@ export default class TripSummary extends Component {
 
         <View style={styles.tripDetailsContainer}>
           <ScrollView>
+            <View style={styles.inputBox}>
+              <TextInput
+                style={styles.inputText}
+                placeholder={'Give your trip a name'}
+                defaultValue={this.state.tripName}
+                autoCapitalize={'words'}
+                onChangeText={(text) => this.setState({tripName: text})}/>
+            </View>
+            <TouchableHighlight
+                style = {[styles.tripDetail, styles.firstTripDetail]}
+                underlayColor='#e6e6e6'
+                onPress={this.navLocation.bind(this)}>
+              <View style = {styles.innerDetail}>
+                <Text style={styles.tripDetailText}>Where will it start?</Text>
+                <View style = {styles.chosenValues}>
+                  <Text style={styles.chosenValuesText}>
+                    {chosenLocationLat}{chosenLocationLon}
+                  </Text>
+                  {locationCheck}
+                </View>
+              </View>
+            </TouchableHighlight>
             <TouchableHighlight
                 style = {styles.tripDetail}
                 underlayColor='#e6e6e6'
                 onPress={this.navLocation.bind(this)}>
               <View style = {styles.innerDetail}>
-                <Text style={styles.tripDetailText}>Where are you going?</Text>
+                <Text style={styles.tripDetailText}>Where will it end?</Text>
                 <View style = {styles.chosenValues}>
                   <Text style={styles.chosenValuesText}>
                     {chosenLocationLat}{chosenLocationLon}
@@ -282,7 +305,7 @@ export default class TripSummary extends Component {
                 underlayColor='#e6e6e6'
                 onPress={this.navNotes.bind(this)}>
                 <View style = {styles.innerDetail}>
-                  <Text style={styles.tripDetailText}>What more should your contact know?</Text>
+                  <Text style={styles.tripDetailText}>What else should your contact know?</Text>
                   {noteCheck}
                 </View>
             </TouchableHighlight>
@@ -383,6 +406,10 @@ const styles = StyleSheet.create({
      borderBottomWidth: 2,
      borderBottomColor: '#e6e6e6'
    },
+   firstTripDetail: {
+     borderTopWidth: 2,
+     borderTopColor: '#e6e6e6'
+   },
    tripDetailText: {
      fontSize: 16,
      marginRight: 10,
@@ -429,5 +456,20 @@ const styles = StyleSheet.create({
      padding: 15,
      borderBottomColor: '#e6e6e6',
      borderBottomWidth: 1,
-   }
+   },
+   inputText: {
+     alignSelf: 'stretch',
+     flexDirection: 'row',
+     height: 45,
+     fontSize: 16,
+   },
+   inputBox: {
+     backgroundColor: '#e6e6e6',
+     borderRadius: 5,
+     margin: 10,
+     paddingLeft: 8,
+     paddingRight: 8,
+     paddingTop: 6,
+     paddingBottom: 4,
+   },
 });

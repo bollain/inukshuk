@@ -37,11 +37,11 @@ export default class Login extends Component {
         storageSet('user', JSON.stringify(responseJson));
         this.props.navigator.push({
           id: 'tripSummary',
-          user: responseJson,
+          user: JSON.stringify(responseJson),
         });
       })
-      .catch((err) => {
-        Alert.alert('Cannot reach server');
+      .catch((error) => {
+        Alert.alert(error);
       });
     }
 

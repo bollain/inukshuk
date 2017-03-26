@@ -14,6 +14,7 @@ import {
   AsyncStorage,
   Modal,
   TextInput,
+  Switch
 } from 'react-native';
 
 import { postTrip } from '../scripts/apiCalls.js';
@@ -44,6 +45,7 @@ export default class TripSummary extends Component {
       return: null,
       note: null,
       modalVisible: false,
+      destIsStart: true,
     };
     console.log('constructing summary')
     this.setSummaryNote = this.setSummaryNote.bind(this);
@@ -257,7 +259,7 @@ export default class TripSummary extends Component {
               </View>
             </View>
             <TouchableHighlight
-                style = {[styles.tripDetail, styles.firstTripDetail]}
+                style = {[styles.tripDetailLocation, styles.firstTripDetail]}
                 underlayColor='#e6e6e6'
                 onPress={this.navLocation.bind(this)}>
               <View style = {styles.innerDetail}>
@@ -270,22 +272,35 @@ export default class TripSummary extends Component {
                 </View>
               </View>
             </TouchableHighlight>
-            <TouchableHighlight
-                style = {styles.tripDetail}
-                underlayColor='#e6e6e6'
-                onPress={this.navLocation.bind(this)}>
-              <View style = {styles.innerDetail}>
-                <Text style={styles.tripDetailText}>Where will it end?</Text>
-                <View style = {styles.chosenValues}>
-                  <Text style={styles.chosenValuesText}>
-                    {chosenLocationLat}{chosenLocationLon}
-                  </Text>
-                  {locationCheck}
+            <View style={styles.innerDetail}>
+              <Text style={{marginLeft: 18, marginTop: 12, marginBottom: 8}}>
+                The trip will end {this.state.destIsStart ? 'where it started' : 'somewhere else'}
+              </Text>
+              <Switch
+                style={{margin: 8, marginRight:17}}
+                onValueChange={(value) => this.setState({destIsStart: value})}
+                value={this.state.destIsStart} />
+            </View>
+            {this.state.destIsStart ?
+              null
+              :
+              <TouchableHighlight
+                  style={styles.tripDetailLocation}
+                  underlayColor='#e6e6e6'
+                  onPress={this.navLocation.bind(this)}>
+                <View style = {styles.innerDetail}>
+                  <Text style={styles.tripDetailText}>Where will it end?</Text>
+                  <View style = {styles.chosenValues}>
+                    <Text style={styles.chosenValuesText}>
+                      {chosenLocationLat}{chosenLocationLon}
+                    </Text>
+                    {locationCheck}
+                  </View>
                 </View>
-              </View>
-            </TouchableHighlight>
+              </TouchableHighlight>
+            }
             <TouchableHighlight
-                style = {styles.tripDetail}
+                style = {[styles.tripDetail, styles.firstTripDetail]}
                 underlayColor='#e6e6e6'
                 onPress={this.navContacts.bind(this)}>
               <View style = {styles.innerDetail}>
@@ -417,6 +432,9 @@ const styles = StyleSheet.create({
      padding: 18,
      borderBottomWidth: 2,
      borderBottomColor: '#e6e6e6'
+   },
+   tripDetailLocation: {
+     padding: 18,
    },
    firstTripDetail: {
      borderTopWidth: 2,

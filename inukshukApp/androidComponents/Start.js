@@ -40,6 +40,14 @@ export default class Start extends Component {
     }
   }
 
+  // Clean up before leaving the start page. Clear the breadcrumbs job if it is
+  // ongoing, clear the trip details and pop the navigator
+  leaveStart() {
+    BackgroundJob.cancel({jobKey: 'breadcrumbs'});
+    this.props.callback(false);
+    _navigator.pop();
+  }
+
   // Confirm, then cancel trip
   cancelTrip() {
     Alert.alert(
@@ -53,10 +61,7 @@ export default class Start extends Component {
             Alert.alert(
               'Trip Cancelled',
               'We also notified your contact about the cancellation',
-              [{ text: 'OK', onPress: () => {
-                this.props.callback(false);
-                _navigator.pop();
-              }}]
+              [{ text: 'OK', onPress: () => this.leaveStart()}]
             )
           )
           .catch((err) => {
@@ -81,10 +86,7 @@ export default class Start extends Component {
             Alert.alert(
               'Trip Completed',
               'We notified your contact that you returned safely',
-              [{ text: 'OK', onPress: () => {
-                this.props.callback(false);
-                _navigator.pop();
-              }}]
+              [{ text: 'OK', onPress: () => this.leaveStart()}]
             )
           )
           .catch((err) => {
@@ -175,51 +177,60 @@ export default class Start extends Component {
         <ToolbarAndroid style={styles.toolbar}
                         title={this.props.tripName}
                         titleColor={'#FFFFFF'}/>
-        <View style={styles.textContainer}>
-          <Text style={styles.textLeft}>
-            <Text>You told </Text>
-            <Text style={{fontStyle: 'italic'}}>{this.props.contact.firstName} </Text>
-            <Text>that you would arrive at </Text>
-            <Text
-              style={{fontStyle: 'italic', color: '#00aaf1'}}
-              onPress={() => this.openMap(endGeoUrl)}>
-              <Text>
-                {this.props.endLocation.latitude.toFixed(6)}, {this.props.endLocation.longitude.toFixed(6)}
+        <ScrollView>
+          <View style={styles.textContainer}>
+            <Text style={styles.textLeft}>
+              <Text>You told </Text>
+              <Text style={{fontStyle: 'italic'}}>{this.props.contact.firstName} </Text>
+              <Text>that you would arrive at </Text>
+              <Text
+                style={{fontStyle: 'italic', color: '#00aaf1'}}
+                onPress={() => this.openMap(endGeoUrl)}>
+                <Text>
+                  {this.props.endLocation.latitude.toFixed(6)}, {this.props.endLocation.longitude.toFixed(6)}
+                </Text>
               </Text>
-            </Text>
-            <Text> from </Text>
-            <Text
-              style={{fontStyle: 'italic', color: '#00aaf1'}}
-              onPress={() => this.openMap(startGeoUrl)}>
-              <Text>
-                {this.props.startLocation.latitude.toFixed(6)}, {this.props.startLocation.longitude.toFixed(6)}
+              <Text> from </Text>
+              <Text
+                style={{fontStyle: 'italic', color: '#00aaf1'}}
+                onPress={() => this.openMap(startGeoUrl)}>
+                <Text>
+                  {this.props.startLocation.latitude.toFixed(6)}, {this.props.startLocation.longitude.toFixed(6)}
+                </Text>
               </Text>
+              <Text> by </Text>
+              <Text style={{fontStyle: 'italic'}}>{returnTime} on {returnDate}</Text>
             </Text>
-            <Text> by </Text>
-            <Text style={{fontStyle: 'italic'}}>{returnTime} on {returnDate}</Text>
-          </Text>
-          <View style={{marginTop: 10, marginBottom: 20, alignItems: 'center',}}>
-            <Image
-              style={{opacity:0.6, marginBottom: 5, width: 50, height:50}}
-              source={require('../img/ic_timer_black_24dp.png')}
-            />
-            <Text style={styles.textCenter}>Your trip will end in</Text>
-            <Text style={[styles.textCenter, {fontSize:20,fontWeight:'bold'}]}>
-              <Countdown endDate={this.state.returnDate} />
-            </Text>
+            <View style={{marginTop: 10, alignItems: 'center',}}>
+              <Image
+                style={{opacity:0.6, marginBottom: 2, width: 50, height:50}}
+                source={require('../img/ic_timer_black_24dp.png')}
+              />
+              <Text style={styles.textCenter}>Your trip will end in</Text>
+              <Text style={[styles.textCenter, {fontSize:20,fontWeight:'bold'}]}>
+                <Countdown endDate={this.state.returnDate} />
+              </Text>
+            </View>
+            <View style={{marginTop: 10, alignItems: 'center',}}>
+              <Image
+                style={{opacity:0.6, marginBottom: 2, width: 50, height:25}}
+                source={require('../img/ic_wb_sunny_black_24dp.png')}
+              />
+              <Text style={styles.textCenter}>Tonight the sun sets at</Text>
+              <Text style={[styles.textCenter, {fontSize:20,fontWeight:'bold'}]}>
+                <Sunset location={this.props.startLocation} />
+              </Text>
+            </View>
+            <View style={{marginTop: 10, alignItems: 'center',}}>
+              <Image
+                style={{opacity:0.6, marginBottom: 2, width: 50, height:50}}
+                source={require('../img/ic_location_on_black_24dp.png')}
+              />
+              <Text style={styles.textCenter}>Automatically send your location every 10 minutes</Text>
+              <Breadcrumbs trip={this.props.tripId}/>
+            </View>
           </View>
-          <View style={{marginTop: 10, marginBottom: 20, alignItems: 'center',}}>
-            <Image
-              style={{opacity:0.6, marginBottom: 5, width: 50, height:25}}
-              source={require('../img/ic_wb_sunny_black_24dp.png')}
-            />
-            <Text style={styles.textCenter}>Tonight the sun sets at</Text>
-            <Text style={[styles.textCenter, {fontSize:20,fontWeight:'bold'}]}>
-              <Sunset location={this.props.startLocation} />
-            </Text>
-          </View>
-          <Breadcrumbs trip={this.props.tripId}/>
-        </View>
+        </ScrollView>
         <View style={styles.buttonContainer}>
           <View style={styles.buttons}>
             <View style={styles.button}>
@@ -272,7 +283,6 @@ const styles = StyleSheet.create({
    textLeft: {
      fontSize: 16,
      textAlign: 'left',
-     marginBottom: 20,
    },
    textCenter: {
      fontSize: 16,

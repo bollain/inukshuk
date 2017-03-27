@@ -11,6 +11,7 @@
     "countdown": "^2.6.0",
     "react": "15.4.2",
     "react-native": "0.41.2",
+    "react-native-background-job": "^1.1.2",
     "react-native-contacts": "^0.8.0",
     "react-native-google-places": "^2.0.8",
     "react-native-google-places-autocomplete": "^1.2.7",

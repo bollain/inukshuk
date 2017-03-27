@@ -6,8 +6,9 @@ import {
   storageMultiRemove,
   storageSet,
 } from './localStorage.js';
+
 var localIp = '192.168.1.90';
-var mockUserId = 230;
+var mockUserId = 257;
 
 /** HANDLE ERRORS
 * Handle any errors while communicating with the server
@@ -17,6 +18,7 @@ var mockUserId = 230;
 **/
 function handleErrors(response) {
   if (!response.ok) {
+    console.error(response);
     throw Error("Problem connecting to server");
   }
   return response;
@@ -43,11 +45,11 @@ export function login(username, password) {
     })
     .then(handleErrors)
     .then(response => response.json())
-    .then(responseJson => {
+    .then((responseJson) => {
       resolve(responseJson);
     })
     .catch((error) => {
-      reject("Can not reach server")
+      reject('Can not reach server')
     });
   })
 }
@@ -64,12 +66,12 @@ export function loginMock(username, password) {
     fetch('http://' + localIp + ':8080/users/' + mockUserId)
     .then(handleErrors)
     .then(response => response.json())
-    .then(responseJson => {
+    .then((responseJson) => {
       resolve(responseJson);
-     })
-     .catch((error) => {
-       reject("Can not reach server")
-     });
+    })
+    .catch((error) => {
+      reject('Can not reach server')
+    });
   })
 }
 
@@ -140,26 +142,26 @@ export function postTrip(trip) {
     fetch('http://' + localIp + ':8080/trips', {
       method: 'POST',
       headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(trip)
+      body: JSON.stringify(trip),
     })
     .then(handleErrors)
     .then(response => response.json())
     .then((responseJson) => {
-      resolve(responseJson)
+      resolve(responseJson);
     })
     .catch((error) => {
-      reject('Can not reach server')
+      reject(error)
     });
   })
 }
 
 /** CANCEL TRIP
 * Delete a trip from the inukshuk server
-* REQUIRES: a component with details in state
-* MODIFIES: the database of trips on the inukshuk server, navigator route
+* REQUIRES: a tripId
+* MODIFIES: the database of trips on the inukshuk server
 * RETURNS: nothing
 **/
 export function cancelTrip(tripId) {
@@ -204,8 +206,8 @@ export async function completeTrip(tripId) {
 
 /** EXTEND TRIP
 * Extend a trip on the inukshuk server
-* REQUIRES: a component with details in state, including a Javascript date
-* MODIFIES: the database of trips on the inukshuk server, navigator route
+* REQUIRES: a tripId and a new return date
+* MODIFIES: the database of trips on the inukshuk server
 * RETURNS: nothing
 **/
 export function extendTrip(tripId, newReturnDate) {
@@ -225,6 +227,34 @@ export function extendTrip(tripId, newReturnDate) {
     .then(() => resolve())
     .catch(function(error) {
       reject('Can not reach server');
+    });
+  })
+}
+
+/** THROW CRUMBS
+* Add breadcrumbs to the database
+* REQUIRES: tripId and an array of objects with lat, lon and timestamp
+* MODIFIES: the database of trips on the inukshuk server, the local store of
+* unposted breadcrumbs
+* RETURNS: nothing
+**/
+export function throwCrumbs(tripId, breadcrumbs) {
+  return new Promise((resolve, reject) => {
+    fetch('http://' + localIp + ':8080/trips/' + tripId + '/breadcrumbs/', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(breadcrumbs),
+    })
+    .then(handleErrors)
+    .then(response => response.json())
+    .then((responseJson) => {
+      resolve(responseJson);
+    })
+    .catch((error) => {
+      reject('Error posting breadcrumbs to the server');
     });
   })
 }

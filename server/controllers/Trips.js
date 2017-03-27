@@ -17,3 +17,7 @@ module.exports.getTrip = function getTrip (req, res, next) {
 module.exports.updateTrip = function updateTrip (req, res, next) {
   Trips.updateTrip(req.swagger.params, res, next)
 }
+
+module.exports.updateBreadcrumbs = function updateBreadcrumbs (req, res, next) {
+  Trips.updateBreadcrumbs(req.swagger.params, res, next)
+}

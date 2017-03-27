@@ -12,7 +12,9 @@ import {
   TouchableOpacity,
   Image,
   AsyncStorage,
-  Modal
+  Modal,
+  TextInput,
+  Switch
 } from 'react-native';
 
 import { postTrip } from '../scripts/apiCalls.js';
@@ -36,38 +38,62 @@ export default class TripSummary extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      location: null,
+      tripName: null,
+      savedName: false,
+      startLocation: null,
+      endLocation: null,
       contact: null,
+      contactAddress: null,
       return: null,
       note: null,
       modalVisible: false,
+      destIsStart: true,
+      user: JSON.parse(this.props.user),
     };
     console.log('constructing summary')
     this.setSummaryNote = this.setSummaryNote.bind(this);
-    this.setSummaryLocation = this.setSummaryLocation.bind(this);
+    this.setSummaryStartLocation = this.setSummaryStartLocation.bind(this);
+    this.setSummaryEndLocation = this.setSummaryEndLocation.bind(this);
     this.setSummaryReturn = this.setSummaryReturn.bind(this);
     this.setSummaryContact = this.setSummaryContact.bind(this);
+    this.setSummaryContactAddress = this.setSummaryContactAddress.bind(this);
     this.setSummaryUser = this.setSummaryUser.bind(this);
     this.clearTrip = this.clearTrip.bind(this);
   }
 
   componentDidMount() {
-    storageMultiGet(['location','contact','return','note']).then((response => {
+    storageMultiGet(['tripName', 'startLocation', 'endLocation', 'contact','contactAddress','return','note','user']).then((response => {
+      console.log(response);
       this.setState({
-        location: JSON.parse(response[0][1]),
-        contact: JSON.parse(response[1][1]),
-        return: JSON.parse(response[2][1]),
-        note: response[3][1],
+        tripName: response[0][1],
+        savedName: (response[0][1] != null ? true : false),
+        startLocation: JSON.parse(response[1][1]),
+        endLocation: JSON.parse(response[2][1]),
+        contact: JSON.parse(response[3][1]),
+        contactAddress: response[4][1],
+        return: JSON.parse(response[5][1]),
+        note: response[6][1],
+        user: JSON.parse(response[7][1]),
       });
-    }));
+    }))
+    .catch((error) => console.error(error));
   }
 
-  navLocation(){
-    storageGet('location').then((response) => {
+  navStartLocation(){
+    storageGet('startLocation').then((response) => {
       this.props.navigator.push({
-        id: 'location',
-        location: response,
-        callback: this.setSummaryLocation,
+        id: 'startLocation',
+        startLocation: response,
+        callback: this.setSummaryStartLocation,
+      });
+    });
+  }
+  navEndLocation(){
+    storageGet('endLocation').then((response) => {
+      this.props.navigator.push({
+        id: 'endLocation',
+        endLocation: response,
+        callback: this.setSummaryEndLocation,
       });
     });
   }
@@ -76,7 +102,8 @@ export default class TripSummary extends Component {
       this.props.navigator.push({
         id: 'contact',
         contact: response,
-        callback: this.setSummaryContact,
+        setContact: this.setSummaryContact,
+        setContactAddress: this.setSummaryContactAddress,
       });
     });
   }
@@ -102,23 +129,13 @@ export default class TripSummary extends Component {
     console.log('navstart');
     this.props.navigator.push({
       id: 'start',
-      location: this.state.location,
+      tripName: this.state.tripName,
+      startLocation: this.state.startLocation,
+      endLocation: this.state.endLocation,
       contact: this.state.contact,
       return: this.state.return,
       note: this.state.note,
       trip: tripJson,
-      callback: this.clearTrip,
-    });
-  }
-  // TODO remove test start
-  testStart(){
-    console.log('testStart');
-    this.props.navigator.push({
-      id: 'start',
-      location: this.state.location,
-      contact: this.state.contact,
-      return: this.state.return,
-      note: this.state.note,
       callback: this.clearTrip,
     });
   }
@@ -133,47 +150,88 @@ export default class TripSummary extends Component {
     });
   }
 
+  // Given an address string, determine whether it is an email
+  isEmail(str) {
+    if (str.includes("@"))
+      return true;
+    else return false;
+  }
+
   // Post the trip to the server
   start() {
     console.log('navstart');
-    if (this.state.location != null && this.state.contact != null && this.state.return != null && this.state.note != null) {
-      // TODO: server should take chosen email/number and not require both
-      var ce = (this.state.contact.emails.length > 0 ? this.state.contact.emails[0].email : 'ehauner@gmail.com');
-      var tel = (this.state.contact.phones.length > 0 ? this.state.contact.phones[0].number : '6046523447');
-      tel = tel.replace(/\D+/g, "");
-      var returnTime = new Date(this.state.return.year, this.state.return.month, this.state.return.day, this.state.return.hour, this.state.return.minute, 0,0);
-      postTrip({
-        userId: this.props.user._id,
-        returnTime: returnTime,
-        contactEmail: ce,
-        contactPhone: tel,
+    if ((this.state.tripName &&
+         this.state.startLocation != null &&
+         this.state.contact != null &&
+         this.state.return != null &&
+         this.state.note != null &&
+         this.state.destIsStart) ||
+        (this.state.tripName != null &&
+         this.state.startLocation != null &&
+         this.state.contact != null &&
+         this.state.return != null &&
+         this.state.note != null &&
+         !this.state.destIsStart &&
+         this.state.endLocation != null)) {
+      let trip = {
+        userId: this.state.user._id,
+        tripName: this.state.tripName,
+        returnTime: new Date(
+          this.state.return.year,
+          this.state.return.month,
+          this.state.return.day,
+          this.state.return.hour,
+          this.state.return.minute, 0,0),
         startingLocation: {
-          latitude: this.state.location.latitude,
-          longitude: this.state.location.longitude,
+          latitude: this.state.startLocation.latitude,
+          longitude: this.state.startLocation.longitude,
+        },
+        endingLocation: {
+          latitude: (
+            this.state.destIsStart ?
+            this.state.startLocation.latitude :
+            this.state.endLocation.latitude
+          ),
+          longitude: (
+            this.state.destIsStart ?
+            this.state.startLocation.longitude :
+            this.state.endLocation.longitude
+          ),
         },
         note: this.state.note,
         completed: false,
-      })
+      };
+      if (this.isEmail(this.state.contactAddress)) {
+        trip.contactEmail = this.state.contactAddress;
+      } else {
+        trip.contactPhone = this.state.contactAddress.replace(/\D+/g, "");
+      }
+      console.log(trip);
+      postTrip(trip)
       .then((responseJson) => {
+        console.log(responseJson);
         Alert.alert(
           'Success!',
           'Your trip has been created!',
           [
-            {text: 'OK', onPress: () => this.navStart(responseJson)},
+            {text: 'OK', onPress: () => this.navStart(JSON.stringify(responseJson))},
           ],
           { cancelable: false }
         )
       })
-      .catch((error) => Alert.alert(error));
+      .catch((error) => console.error(error));
     } else {
       Alert.alert('Please fill in all trip details before proceeding');
     }
   }
 
   clearTrip(showDialog) {
-    storageMultiRemove(['location','contact','return','note']).then((response => {
+    storageMultiRemove(['tripName','startLocation','endLocation','contact','return','note']).then((response => {
       this.setState({
-        location: null,
+        tripName: null,
+        savedName: false,
+        startLocation: null,
+        endLocation: null,
         contact: null,
         return: null,
         note: null,
@@ -192,12 +250,20 @@ export default class TripSummary extends Component {
     await this.setState({note: currentNote});
   }
 
-  async setSummaryLocation(currentLocation) {
-    await this.setState({location: JSON.parse(currentLocation)});
+  async setSummaryStartLocation(currentStartLocation) {
+    await this.setState({startLocation: JSON.parse(currentStartLocation)});
+  }
+
+  async setSummaryEndLocation(currentEndLocation) {
+    await this.setState({endLocation: JSON.parse(currentEndLocation)});
   }
 
   async setSummaryContact(currentContact) {
     await this.setState({contact: JSON.parse(currentContact)});
+  }
+
+  async setSummaryContactAddress(currentContactAddress) {
+    await this.setState({contactAddress: JSON.parse(currentContactAddress)});
   }
 
   async setSummaryReturn(currentReturn) {
@@ -208,13 +274,37 @@ export default class TripSummary extends Component {
     await this.setState({user: currentUser});
   }
 
+  saveTripName() {
+    if (this.state.tripName != null && this.state.tripName.length > 0) {
+      storageSet('tripName', this.state.tripName)
+      .then(() => {
+        this.setState({
+          savedName: true,
+        })
+      })
+    } else {
+      storageRemove('tripName')
+      .then(() => {
+        this.setState({
+          savedName: false,
+        })
+      })
+    }
+  }
+
   render() {
     // Set check values if details have been provided
+    let tripNameCheck = (this.state.savedName ? checkIcon : null);
+
     let noteCheck = (this.state.note != null ? checkIcon : null);
 
-    let locationCheck = (this.state.location != null ? checkIcon : null);
-    let chosenLocationLat = (this.state.location != null ? this.state.location.latitude.toFixed(4).toString() + ',' : null);
-    let chosenLocationLon = (this.state.location != null ? this.state.location.longitude.toFixed(4) : null);
+    let startLocationCheck = (this.state.startLocation != null ? checkIcon : null);
+    let chosenStartLocationLat = (this.state.startLocation != null ? this.state.startLocation.latitude.toFixed(4).toString() + ',' : null);
+    let chosenStartLocationLon = (this.state.startLocation != null ? this.state.startLocation.longitude.toFixed(4) : null);
+
+    let endLocationCheck = (this.state.endLocation != null ? checkIcon : null);
+    let chosenEndLocationLat = (this.state.endLocation != null ? this.state.endLocation.latitude.toFixed(4).toString() + ',' : null);
+    let chosenEndLocationLon = (this.state.endLocation != null ? this.state.endLocation.longitude.toFixed(4) : null);
 
     let returnCheck = (this.state.return != null ? checkIcon : null);
     let chosenReturnTime = (this.state.return != null ? padTime(this.state.return.hour) + ':' + padTime(this.state.return.minute) : null);
@@ -235,22 +325,61 @@ export default class TripSummary extends Component {
 
         <View style={styles.tripDetailsContainer}>
           <ScrollView>
+            <View style={styles.inputBox}>
+              <TextInput
+                style={styles.inputText}
+                placeholder={'Give your trip a name'}
+                defaultValue={this.state.tripName}
+                autoCapitalize={'words'}
+                onChangeText={(text) => this.setState({tripName: text})}
+                onEndEditing={() => this.saveTripName()}/>
+              <View style={{marginTop: 10}}>
+                {tripNameCheck}
+              </View>
+            </View>
             <TouchableHighlight
-                style = {styles.tripDetail}
+                style = {[styles.tripDetailLocation, styles.firstTripDetail]}
                 underlayColor='#e6e6e6'
-                onPress={this.navLocation.bind(this)}>
+                onPress={this.navStartLocation.bind(this)}>
               <View style = {styles.innerDetail}>
-                <Text style={styles.tripDetailText}>Where are you going?</Text>
+                <Text style={styles.tripDetailText}>Where will it start?</Text>
                 <View style = {styles.chosenValues}>
                   <Text style={styles.chosenValuesText}>
-                    {chosenLocationLat}{chosenLocationLon}
+                    {chosenStartLocationLat}{chosenStartLocationLon}
                   </Text>
-                  {locationCheck}
+                  {startLocationCheck}
                 </View>
               </View>
             </TouchableHighlight>
+            <View style={styles.innerDetail}>
+              <Text style={{marginLeft: 18, marginTop: 12, marginBottom: 8}}>
+                The trip will end {this.state.destIsStart ? 'where it started' : 'somewhere else'}
+              </Text>
+              <Switch
+                style={{margin: 8, marginRight:17}}
+                onValueChange={(value) => this.setState({destIsStart: value})}
+                value={this.state.destIsStart} />
+            </View>
+            {this.state.destIsStart ?
+              null
+              :
+              <TouchableHighlight
+                  style={styles.tripDetailLocation}
+                  underlayColor='#e6e6e6'
+                  onPress={this.navEndLocation.bind(this)}>
+                <View style = {styles.innerDetail}>
+                  <Text style={styles.tripDetailText}>Where will it end?</Text>
+                  <View style = {styles.chosenValues}>
+                    <Text style={styles.chosenValuesText}>
+                      {chosenEndLocationLat}{chosenEndLocationLon}
+                    </Text>
+                    {endLocationCheck}
+                  </View>
+                </View>
+              </TouchableHighlight>
+            }
             <TouchableHighlight
-                style = {styles.tripDetail}
+                style = {[styles.tripDetail, styles.firstTripDetail]}
                 underlayColor='#e6e6e6'
                 onPress={this.navContacts.bind(this)}>
               <View style = {styles.innerDetail}>
@@ -282,7 +411,7 @@ export default class TripSummary extends Component {
                 underlayColor='#e6e6e6'
                 onPress={this.navNotes.bind(this)}>
                 <View style = {styles.innerDetail}>
-                  <Text style={styles.tripDetailText}>What more should your contact know?</Text>
+                  <Text style={styles.tripDetailText}>What else should your contact know?</Text>
                   {noteCheck}
                 </View>
             </TouchableHighlight>
@@ -383,6 +512,13 @@ const styles = StyleSheet.create({
      borderBottomWidth: 2,
      borderBottomColor: '#e6e6e6'
    },
+   tripDetailLocation: {
+     padding: 18,
+   },
+   firstTripDetail: {
+     borderTopWidth: 2,
+     borderTopColor: '#e6e6e6'
+   },
    tripDetailText: {
      fontSize: 16,
      marginRight: 10,
@@ -429,5 +565,23 @@ const styles = StyleSheet.create({
      padding: 15,
      borderBottomColor: '#e6e6e6',
      borderBottomWidth: 1,
-   }
+   },
+   inputText: {
+     flex: 1,
+     alignSelf: 'stretch',
+     height: 45,
+     fontSize: 16,
+   },
+   inputBox: {
+     backgroundColor: '#e6e6e6',
+     borderRadius: 5,
+     margin: 10,
+     paddingLeft: 8,
+     paddingRight: 8,
+     paddingTop: 6,
+     paddingBottom: 4,
+     flexDirection: 'row',
+     justifyContent: 'space-between',
+     alignItems: 'stretch'
+   },
 });

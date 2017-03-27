@@ -15,6 +15,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Alert,
+  Switch,
 } from 'react-native';
 import { createUser } from '../scripts/apiCalls.js';
 import { storageSet } from '../scripts/localStorage.js';
@@ -88,55 +89,60 @@ export default class SignUp extends Component {
                         })}
                         onIconClicked={this.props.navigator.pop}
                         titleColor={'#FFFFFF'}/>
+        <View style={styles.textContainer}>
+          <ScrollView>
 
-        <ScrollView style={styles.textContainer}>
+            {/* First name input */}
+            <View style={styles.inputBox}>
+              <TextInput
+                style={styles.inputText}
+                placeholder = "First name"
+                autoCapitalize={'words'}
+                onChangeText={(text) => this.setState({firstName: text})}
+              />
+            </View>
 
-          {/* First name input */}
-          <View style={styles.inputBox}>
-            <TextInput
-              style={styles.inputText}
-              placeholder = "First name"
-              onChangeText={(text) => this.setState({firstName: text})}
-            />
-          </View>
+            {/* Last name input */}
+            <View style={styles.inputBox}>
+              <TextInput
+                style={styles.inputText}
+                placeholder = "Last name"
+                autoCapitalize={'words'}
+                onChangeText={(text) => this.setState({lastName: text})}
+              />
+            </View>
 
-          {/* Last name input */}
-          <View style={styles.inputBox}>
-            <TextInput
-              style={styles.inputText}
-              placeholder = "Last name"
-              onChangeText={(text) => this.setState({lastName: text})}
-            />
-          </View>
+            {/* Email input */}
+            <View style={styles.inputBox}>
+              <TextInput
+                style={styles.inputText}
+                placeholder = "Email"
+                keyboardType={'email-address'}
+                onChangeText={(text) => this.setState({email: text})}
+              />
+            </View>
 
-          {/* Email input */}
-          <View style={styles.inputBox}>
-            <TextInput
-              style={styles.inputText}
-              placeholder = "Email"
-              onChangeText={(text) => this.setState({email: text})}
-            />
-          </View>
+            {/* Phone number input */}
+            <View style={styles.inputBox}>
+              <TextInput
+                style={styles.inputText}
+                placeholder = "Phone number"
+                keyboardType={'phone-pad'}
+                onChangeText={(text) => this.setState({phoneNumber: text})}
+              />
+            </View>
 
-          {/* Phone number input */}
-          <View style={styles.inputBox}>
-            <TextInput
-              style={styles.inputText}
-              placeholder = "Phone number"
-              onChangeText={(text) => this.setState({phoneNumber: text})}
-            />
-          </View>
+            {/* Password */}
+            <View style={styles.inputBox}>
+              <TextInput
+                style={styles.inputText}
+                placeholder = "Password"
+                onChangeText={(text) => this.setState({password: text})}
+              />
+            </View>
 
-          {/* Password */}
-          <View style={styles.inputBox}>
-            <TextInput
-              style={styles.inputText}
-              placeholder = "Password"
-              onChangeText={(text) => this.setState({password: text})}
-            />
-          </View>
-
-        </ScrollView>
+          </ScrollView>
+        </View>
 
         {/* Create account button */}
         <View style={styles.createContainer}>

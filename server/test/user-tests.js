@@ -41,7 +41,7 @@ describe('Users', () => {
   })
 
   describe('/POST user', () => {
-    it('it should NOT create user a with invald email', (done) => {
+    it('it should NOT create user a with invalid email', (done) => {
       let newUser = {
         firstName: 'Miguelito',
         lastName: 'Lopez',
@@ -113,7 +113,7 @@ describe('Users', () => {
         firstName: 'Papa',
         lastName: 'John',
         phoneNumber: '7785583029',
-        email: 'bollain@gmail.com'
+        email: 'deezenuts@gmail.com'
       })
       existingUser.save((err, user) => {
         let update = {
@@ -121,7 +121,7 @@ describe('Users', () => {
           firstName: 'Papa',
           lastName: 'John',
           phoneNumber: '7785564040',
-          email: 'bollain@gmail.com'
+          email: 'deezenuts@gmail.com'
         }
         if (err) {}
         chai.request(index)
@@ -134,9 +134,7 @@ describe('Users', () => {
             })
       })
     })
-  })
 
-  describe('/PUT user', () => {
     it('it should update a user\'s email', (done) => {
       let existingUser = new User({
         firstName: 'Papa',
@@ -170,14 +168,13 @@ describe('Users', () => {
             })
       })
     })
-  })
-  describe('/PUT user', () => {
+
     it('it should not update with an invalid email', (done) => {
       let existingUser = new User({
         firstName: 'Papa',
         lastName: 'John',
         phoneNumber: '7785583029',
-        email: 'bollain@gmail.com'
+        email: 'rekt@gmail.com'
       })
       existingUser.save((err, user) => {
         let update = {
@@ -198,9 +195,7 @@ describe('Users', () => {
         done()
       })
     })
-  })
 
-  describe('/PUT user', () => {
     it('it should not update with an invalid phoneNumber', (done) => {
       let existingUser = new User({
         firstName: 'Papa',
@@ -227,9 +222,7 @@ describe('Users', () => {
         done()
       })
     })
-  })
 
-  describe('/PUT user', () => {
     it('it should not update with a non existing user ID', (done) => {
       let fakeUser = {
         id: 69,
@@ -247,9 +240,7 @@ describe('Users', () => {
             })
       done()
     })
-  })
 
-  describe('/PUT user', () => {
     it('should not update with email that already exists', (done) => {
       let firstUser = new User({
         firstName: 'Papa',

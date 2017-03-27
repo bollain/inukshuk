@@ -86,7 +86,7 @@ function dropCrumb() {
     throwCrumbs(tripId, breadcrumbsArr)
     // Clear local breadcrumbs array
     .then((responseJson) => {
-      breadcrumbs = [];
+      breadcrumbsArr = [];
       console.log(responseJson);
     })
     .catch((error) => console.error(error))
@@ -100,7 +100,7 @@ function getCrumb() {
     navigator.geolocation.getCurrentPosition(
       (position) => {
         resolve({
-          // timeStamp: new Date(), //TODO: put the timestamp back in breadcrumbs
+          timeStamp: new Date(),
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
         })

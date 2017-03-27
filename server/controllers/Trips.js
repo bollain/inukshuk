@@ -19,5 +19,5 @@ module.exports.updateTrip = function updateTrip (req, res, next) {
 }
 
 module.exports.updateBreadcrumbs = function updateBreadcrumbs (req, res, next) {
-  Trips.updateBreadcrumbs(req.swagger.params, res, next);
-};
+  Trips.updateBreadcrumbs(req.swagger.params, res, next)
+}

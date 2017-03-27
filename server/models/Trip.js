@@ -38,7 +38,7 @@ var tripSchema = new Schema({
     type: {type: String}, // Latitude always goes first!
     coordinates: [Number]
   },
-  breadCrumbs : [{
+  breadCrumbs: [{
     type: {type: String},
     coordinates: [Number]
   }],
@@ -48,11 +48,11 @@ var tripSchema = new Schema({
   updated_at: Date
 })
 
-tripSchema.methods.updateBreadcrumbs = function(breadCrumbs){
-  if (!breadCrumbs){
+tripSchema.methods.updateBreadcrumbs = function (breadCrumbs) {
+  if (!breadCrumbs) {
     return
   }
-  for(i = 0; i < breadCrumbs.length; i++){
+  for (var i = 0; i < breadCrumbs.length; i++) {
     var latitude = breadCrumbs[i].latitude
     var longitude = breadCrumbs[i].longitude
     var coordinates = [latitude, longitude]

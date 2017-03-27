@@ -19,10 +19,39 @@ module.exports.confirmEmergencyContactSMS = function (trip, user) {
                           user.firstName + ', who is going on a hike. 🏃 ' +
                           'They are planning to return at ' + trip.returnTime + ' We\'ll let you know ' +
                           'when they return'
+  twilioClient.sendSms(trip.contactPhone, messageForContact)
+}
+
+module.exports.confirmAlertsWithUser = function (user) {
   var messageForUser = 'We have sent a message to your emergency contact letting them know ' +
                       'you are going on a hike. Have fun!😀'
-  twilioClient.sendSms(trip.contactPhone, messageForContact)
   twilioClient.sendSms(user.phoneNumber, messageForUser)
+}
+
+module.exports.confirmEmergencyContactEmail = function (trip, user) {
+  // setup email data with unicode symbols
+  var mailOptions = {
+    from: '"Inukshuk 👻" <inukshuk@inukshuk.me>', // sender address
+    to: trip.contactEmail, // list of receivers
+    subject: 'You are the chosen one! 👏', // Subject line
+    text: 'You have been chosen as an emergency contact for ' +
+          user.firstName + ', who is going on a hike. 🏃 ' +
+          'They are planning to return at ' + trip.returnTime + ' We\'ll let you know ' +
+          'when they return', // plain text body
+    html: '<b>Hello,</b>' +
+          '<p>You have been chosen as an emergency contact for ' +
+          user.firstName + ', who is going on a hike. 🏃 </p>' +
+          '<p>They are planning to return at ' + trip.returnTime + '. We\'ll let you know ' +
+          'when they return.</p>'
+  }
+
+// send mail with defined transport object
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      return console.log(error)
+    }
+    console.log('Message %s sent: %s', info.messageId, info.response)
+  })
 }
 
 module.exports.createSMSAlert = function (alertId, phoneNumber, triggerTime) {
@@ -112,10 +141,33 @@ module.exports.sendReturnedSafeSMS = function (phoneNumber) {
   twilioClient.sendSms(phoneNumber, safeMessage)
 }
 
-module.exports.updateEmergencyContact = function (trip) {
+module.exports.updateEmergencyContactSMS = function (trip) {
   var message = 'We just wanted to let you know your friend has extended' +
                     ' their trip. Their new return time is ' + trip.returnTime
   twilioClient.sendSms(trip.contactPhone, message)
+}
+
+module.exports.updateEmergencyContactEmail = function (trip) {
+  var mailOptions = {
+    from: '"Inukshuk 👻" <inukshuk@inukshuk.me>', // sender address
+    to: trip.contactEmail,
+    subject: 'Your friend has extended their hike 💪', // Subject line
+    text: 'We just wanted to let you know your friend has ' +
+    'extended their hike\n' +
+    'Their new return time is: ' + trip.returnTime, // plain text body
+    html: '<b>Hello,</b>' +
+          '<p>We just wanted to let you know your friend has ' +
+            'extended their hike.</p>\n' +
+            '<p>Their new return time is: ' + trip.returnTime + '</p>' // html  body
+  }
+
+  // send mail with defined transport object
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      return console.log(error)
+    }
+    console.log('Message %s sent: %s', info.messageId, info.response)
+  })
 }
 
 module.exports.sendReturnedSafeEmail = function (emailAddress) {

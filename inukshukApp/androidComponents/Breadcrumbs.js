@@ -14,18 +14,18 @@ BackgroundJob.register(breadcrumbsJob);
 var breadcrumbsSchedule = {
   jobKey: "breadcrumbs",
   timeout: 10000,
-  period: 600000,
+  period: 1000, // should be 600000 after testing
 }
 
 // Set up an array of breadcrumbs to be synced with the server
 var breadcrumbsArr = [];
-var numSent = 0;
+var tripId;
 
 export default class Breadcrumbs extends Component {
   constructor(props) {
     super(props);
+    tripId = this.props.tripId;
     this.state = {
-      numSent: 0, // number of breadcrumbs sent
       isBreadcrumbs: false, // set whether breadcrumbs is on
     }
   }
@@ -76,31 +76,20 @@ function dropCrumb() {
   // add to the array
   .then((currentLocation) => {
     return new Promise((resolve, reject) => {
-      console.log(currentLocation);
+      // console.log(currentLocation);
       breadcrumbsArr.push(currentLocation);
       resolve();
     })
   })
   // try to send the array to the server
   .then(() => {
-    // throwCrumbs(this)
-    console.log(breadcrumbsArr);
-    console.log("throwing crumbs")
-  })
-  // Increment count of crumbs sent
-  .then(() => {
-    return new Promise((resolve, reject) => {
-      numSent = numSent + breadcrumbsArr.length;
-      resolve();
+    throwCrumbs(tripId, breadcrumbsArr)
+    // Clear local breadcrumbs array
+    .then((responseJson) => {
+      breadcrumbs = [];
+      console.log(responseJson);
     })
-  })
-  // Clear the local storage of breadcrumbs
-  .then(() => {
-    return new Promise((resolve, reject) => {
-      // breadcrumbs = [];
-      console.log(numSent);
-      resolve();
-    })
+    .catch((error) => console.error(error))
   })
   .catch((err) => console.error(err));
 }
@@ -111,7 +100,7 @@ function getCrumb() {
     navigator.geolocation.getCurrentPosition(
       (position) => {
         resolve({
-          timeStamp: new Date(),
+          // timeStamp: new Date(), //TODO: put the timestamp back in breadcrumbs
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
         })

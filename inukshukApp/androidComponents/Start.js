@@ -24,6 +24,7 @@ import { toMonth, toWeekday, padTime } from '../scripts/datesAndTimes.js';
 import Countdown from './Countdown';
 import Sunset from './Sunset';
 import Breadcrumbs from './Breadcrumbs';
+import BackgroundJob from 'react-native-background-job';
 
 var nativeImageSource = require('nativeImageSource');
 
@@ -56,7 +57,7 @@ export default class Start extends Component {
       [
         {text: 'No'},
         {text: 'Cancel trip', onPress: () => {
-          cancelTrip(this.props.trip.tripId)
+          cancelTrip(JSON.parse(this.props.trip)._id)
           .then(
             Alert.alert(
               'Trip Cancelled',
@@ -81,7 +82,7 @@ export default class Start extends Component {
       [
         {text: 'No'},
         {text: 'Complete trip', onPress: () => {
-          completeTrip(this.props.trip.tripId)
+          completeTrip(JSON.parse(this.props.trip)._id)
           .then(
             Alert.alert(
               'Trip Completed',
@@ -104,11 +105,11 @@ export default class Start extends Component {
     .then(() => {
       Alert.alert(
         'Are you sure you want to extend your trip?',
-        'Your contact will be notified that you plan to return on ' + this.state.newReturnDate.toDateString() + ' at ' + this.state.newReturnDate.toLocaleTimeString().substring(0,5),
+        'Your contact will be notified that you plan to return on ' + this.state.newReturnDate.toDateString() + ' at ' + this.state.newReturnDate.toLocaleTimeString(),
         [
           {text: 'No'},
           {text: 'Extend trip', onPress: () => {
-            extendTrip(this.props.trip.tripId, this.state.newReturnDate)
+            extendTrip(JSON.parse(this.props.trip)._id, this.state.newReturnDate)
             .then(() => {
               let returnTime = this.state.return;
               returnTime.hour = this.state.newReturnDate.getHours();
@@ -118,7 +119,7 @@ export default class Start extends Component {
                 return: returnTime,
               });
               Alert.alert(
-                'Trip Extended to ' + this.state.newReturnDate.toDateString() + ' at ' + this.state.newReturnDate.toLocaleTimeString().substring(0,5),
+                'Trip Extended to ' + this.state.newReturnDate.toDateString() + ' at ' + this.state.newReturnDate.toLocaleTimeString(),
                 'We also notified your contact of this change',
               )
             })
@@ -167,11 +168,20 @@ export default class Start extends Component {
   }
 
   render() {
+    let endLocation = (this.props.endLocation == null ?
+                       this.props.startLocation :
+                       this.props.endLocation)
     console.log(this.props);
     let returnDate = this.state.returnDate.toDateString();
-    let returnTime = this.state.returnDate.toLocaleTimeString().substring(0,5);
-    let startGeoUrl = 'geo:' + this.props.startLocation.latitude + ',' + this.props.startLocation.longitude + '?q=' + this.props.startLocation.latitude + ',' + this.props.startLocation.longitude + '(Start)';
-    let endGeoUrl = 'geo:' + this.props.endLocation.latitude + ',' + this.props.endLocation.longitude + '?q=' + this.props.endLocation.latitude + ',' + this.props.endLocation.longitude + '(End)';
+    let returnTime = this.state.returnDate.toLocaleTimeString();
+    let startGeoUrl = 'geo:' + this.props.startLocation.latitude + ',' +
+                      this.props.startLocation.longitude + '?q=' +
+                      this.props.startLocation.latitude + ',' +
+                      this.props.startLocation.longitude + '(Start)';
+    let endGeoUrl = 'geo:' + endLocation.latitude + ',' +
+                    endLocation.longitude + '?q=' +
+                    endLocation.latitude + ',' +
+                    endLocation.longitude + '(End)';
     return (
       <View style={styles.container}>
         <ToolbarAndroid style={styles.toolbar}
@@ -181,13 +191,16 @@ export default class Start extends Component {
           <View style={styles.textContainer}>
             <Text style={styles.textLeft}>
               <Text>You told </Text>
-              <Text style={{fontStyle: 'italic'}}>{this.props.contact.firstName} </Text>
-              <Text>that you would arrive at </Text>
+              <Text style={{fontStyle: 'italic'}}>
+                {this.props.contact.firstName}
+              </Text>
+              <Text> that you would arrive at </Text>
               <Text
                 style={{fontStyle: 'italic', color: '#00aaf1'}}
                 onPress={() => this.openMap(endGeoUrl)}>
                 <Text>
-                  {this.props.endLocation.latitude.toFixed(6)}, {this.props.endLocation.longitude.toFixed(6)}
+                  {endLocation.latitude.toFixed(6)},
+                  {endLocation.longitude.toFixed(6)}
                 </Text>
               </Text>
               <Text> from </Text>
@@ -195,7 +208,8 @@ export default class Start extends Component {
                 style={{fontStyle: 'italic', color: '#00aaf1'}}
                 onPress={() => this.openMap(startGeoUrl)}>
                 <Text>
-                  {this.props.startLocation.latitude.toFixed(6)}, {this.props.startLocation.longitude.toFixed(6)}
+                  {this.props.startLocation.latitude.toFixed(6)},
+                  {this.props.startLocation.longitude.toFixed(6)}
                 </Text>
               </Text>
               <Text> by </Text>
@@ -227,7 +241,7 @@ export default class Start extends Component {
                 source={require('../img/ic_location_on_black_24dp.png')}
               />
               <Text style={styles.textCenter}>Automatically send your location every 10 minutes</Text>
-              <Breadcrumbs trip={this.props.trip.tripId}/>
+              <Breadcrumbs tripId={JSON.parse(this.props.trip)._id}/>
             </View>
           </View>
         </ScrollView>

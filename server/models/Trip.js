@@ -56,10 +56,10 @@ tripSchema.methods.updateBreadcrumbs = function (breadCrumbs) {
   for (var i = 0; i < breadCrumbs.length; i++) {
     var latitude = breadCrumbs[i].latitude
     var longitude = breadCrumbs[i].longitude
-    //var coordinates = [latitude, longitude]
+    // var coordinates = [latitude, longitude]
     var bCrumb = {
       timeStamp: breadCrumbs[i].timeStamp,
-      coordinates:[latitude, longitude]
+      coordinates: [latitude, longitude]
     }
     console.log(bCrumb)
 

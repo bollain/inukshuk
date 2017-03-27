@@ -355,3 +355,6 @@ definitions:
       longitude:
         type: "number"
         format: "double"
+      timeStamp:
+        type: "string"
+        format: "date-time"

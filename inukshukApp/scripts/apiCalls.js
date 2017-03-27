@@ -8,7 +8,7 @@ import {
 } from './localStorage.js';
 
 var localIp = '192.168.1.90';
-var mockUserId = 246;
+var mockUserId = 257;
 
 /** HANDLE ERRORS
 * Handle any errors while communicating with the server
@@ -18,6 +18,7 @@ var mockUserId = 246;
 **/
 function handleErrors(response) {
   if (!response.ok) {
+    console.error(response);
     throw Error("Problem connecting to server");
   }
   return response;
@@ -141,18 +142,18 @@ export function postTrip(trip) {
     fetch('http://' + localIp + ':8080/trips', {
       method: 'POST',
       headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(trip)
+      body: JSON.stringify(trip),
     })
     .then(handleErrors)
     .then(response => response.json())
     .then((responseJson) => {
-      resolve(responseJson)
+      resolve(responseJson);
     })
     .catch((error) => {
-      reject('Can not reach server')
+      reject(error)
     });
   })
 }

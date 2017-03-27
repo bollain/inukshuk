@@ -94,7 +94,8 @@ class inukshukApp extends Component {
             navigator={navigator}
             title="Contact"
             contact={route.contact}
-            callback={route.callback}
+            setContact={route.setContact}
+            setContactAddress={route.setContactAddress}
           />
         );
       case 'return':
@@ -120,7 +121,6 @@ class inukshukApp extends Component {
           <Start
             navigator={navigator}
             title="Start"
-            tripId={route.tripId}
             tripName={route.tripName}
             startLocation={route.startLocation}
             endLocation={route.endLocation}

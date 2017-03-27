@@ -43,10 +43,12 @@ export default class TripSummary extends Component {
       startLocation: null,
       endLocation: null,
       contact: null,
+      contactAddress: null,
       return: null,
       note: null,
       modalVisible: false,
       destIsStart: true,
+      user: JSON.parse(this.props.user),
     };
     console.log('constructing summary')
     this.setSummaryNote = this.setSummaryNote.bind(this);
@@ -54,22 +56,27 @@ export default class TripSummary extends Component {
     this.setSummaryEndLocation = this.setSummaryEndLocation.bind(this);
     this.setSummaryReturn = this.setSummaryReturn.bind(this);
     this.setSummaryContact = this.setSummaryContact.bind(this);
+    this.setSummaryContactAddress = this.setSummaryContactAddress.bind(this);
     this.setSummaryUser = this.setSummaryUser.bind(this);
     this.clearTrip = this.clearTrip.bind(this);
   }
 
   componentDidMount() {
-    storageMultiGet(['tripName', 'startLocation', 'endLocation', 'contact','return','note']).then((response => {
+    storageMultiGet(['tripName', 'startLocation', 'endLocation', 'contact','contactAddress','return','note','user']).then((response => {
+      console.log(response);
       this.setState({
         tripName: response[0][1],
         savedName: (response[0][1] != null ? true : false),
         startLocation: JSON.parse(response[1][1]),
         endLocation: JSON.parse(response[2][1]),
         contact: JSON.parse(response[3][1]),
-        return: JSON.parse(response[4][1]),
-        note: response[5][1],
+        contactAddress: response[4][1],
+        return: JSON.parse(response[5][1]),
+        note: response[6][1],
+        user: JSON.parse(response[7][1]),
       });
-    }));
+    }))
+    .catch((error) => console.error(error));
   }
 
   navStartLocation(){
@@ -95,7 +102,8 @@ export default class TripSummary extends Component {
       this.props.navigator.push({
         id: 'contact',
         contact: response,
-        callback: this.setSummaryContact,
+        setContact: this.setSummaryContact,
+        setContactAddress: this.setSummaryContactAddress,
       });
     });
   }
@@ -121,7 +129,6 @@ export default class TripSummary extends Component {
     console.log('navstart');
     this.props.navigator.push({
       id: 'start',
-      tripId: 0,
       tripName: this.state.tripName,
       startLocation: this.state.startLocation,
       endLocation: this.state.endLocation,
@@ -129,21 +136,6 @@ export default class TripSummary extends Component {
       return: this.state.return,
       note: this.state.note,
       trip: tripJson,
-      callback: this.clearTrip,
-    });
-  }
-  // TODO remove test start
-  testStart(){
-    console.log('testStart');
-    this.props.navigator.push({
-      id: 'start',
-      tripId: 0,
-      tripName: this.state.tripName,
-      startLocation: this.state.startLocation,
-      endLocation: this.state.endLocation,
-      contact: this.state.contact,
-      return: this.state.return,
-      note: this.state.note,
       callback: this.clearTrip,
     });
   }
@@ -158,6 +150,13 @@ export default class TripSummary extends Component {
     });
   }
 
+  // Given an address string, determine whether it is an email
+  isEmail(str) {
+    if (str.includes("@"))
+      return true;
+    else return false;
+  }
+
   // Post the trip to the server
   start() {
     console.log('navstart');
@@ -166,47 +165,61 @@ export default class TripSummary extends Component {
          this.state.contact != null &&
          this.state.return != null &&
          this.state.note != null &&
-         !this.state.destIsStart) ||
+         this.state.destIsStart) ||
         (this.state.tripName != null &&
          this.state.startLocation != null &&
          this.state.contact != null &&
          this.state.return != null &&
          this.state.note != null &&
-         this.state.destIsStart &&
+         !this.state.destIsStart &&
          this.state.endLocation != null)) {
-      // TODO: server should take chosen email/number and not require both
-      var ce = (this.state.contact.emails.length > 0 ? this.state.contact.emails[0].email : 'ehauner@gmail.com');
-      var tel = (this.state.contact.phones.length > 0 ? this.state.contact.phones[0].number : '6046523447');
-      tel = tel.replace(/\D+/g, "");
-      var returnTime = new Date(this.state.return.year, this.state.return.month, this.state.return.day, this.state.return.hour, this.state.return.minute, 0,0);
-      postTrip({
-        userId: this.props.user._id,
+      let trip = {
+        userId: this.state.user._id,
         tripName: this.state.tripName,
-        returnTime: returnTime,
-        contactEmail: ce,
-        contactPhone: tel,
+        returnTime: new Date(
+          this.state.return.year,
+          this.state.return.month,
+          this.state.return.day,
+          this.state.return.hour,
+          this.state.return.minute, 0,0),
         startingLocation: {
           latitude: this.state.startLocation.latitude,
           longitude: this.state.startLocation.longitude,
         },
         endingLocation: {
-          latitude: (this.state.destIsStart ? this.state.startLocation.latitude : this.state.endLocation.latitude),
-          longitude: (this.state.destIsStart ? this.state.startLocation.longitude : this.state.endLocation.longitude),
+          latitude: (
+            this.state.destIsStart ?
+            this.state.startLocation.latitude :
+            this.state.endLocation.latitude
+          ),
+          longitude: (
+            this.state.destIsStart ?
+            this.state.startLocation.longitude :
+            this.state.endLocation.longitude
+          ),
         },
         note: this.state.note,
         completed: false,
-      })
+      };
+      if (this.isEmail(this.state.contactAddress)) {
+        trip.contactEmail = this.state.contactAddress;
+      } else {
+        trip.contactPhone = this.state.contactAddress.replace(/\D+/g, "");
+      }
+      console.log(trip);
+      postTrip(trip)
       .then((responseJson) => {
+        console.log(responseJson);
         Alert.alert(
           'Success!',
           'Your trip has been created!',
           [
-            {text: 'OK', onPress: () => this.navStart(responseJson)},
+            {text: 'OK', onPress: () => this.navStart(JSON.stringify(responseJson))},
           ],
           { cancelable: false }
         )
       })
-      .catch((error) => Alert.alert(error));
+      .catch((error) => console.error(error));
     } else {
       Alert.alert('Please fill in all trip details before proceeding');
     }
@@ -247,6 +260,10 @@ export default class TripSummary extends Component {
 
   async setSummaryContact(currentContact) {
     await this.setState({contact: JSON.parse(currentContact)});
+  }
+
+  async setSummaryContactAddress(currentContactAddress) {
+    await this.setState({contactAddress: JSON.parse(currentContactAddress)});
   }
 
   async setSummaryReturn(currentReturn) {
@@ -412,7 +429,7 @@ export default class TripSummary extends Component {
           <View style={styles.startContainer}>
             <TouchableOpacity
               style={styles.start}
-              onPress={this.testStart.bind(this)}
+              onPress={this.start.bind(this)}
               activeOpacity={.8}>
               <Text style={styles.startText}>Submit</Text>
             </TouchableOpacity>

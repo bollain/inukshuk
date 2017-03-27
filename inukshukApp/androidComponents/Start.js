@@ -30,10 +30,10 @@ var nativeImageSource = require('nativeImageSource');
 export default class Start extends Component {
   constructor(props) {
     super(props);
+    console.log(this.props.trip);
     let returnTime = this.props.return;
     this.state = {
       sunset: null,
-      trip: this.props.trip,
       return: this.props.return,
       returnDate: new Date(returnTime.year, returnTime.month, returnTime.day, returnTime.hour, returnTime.minute, 0, 0),
       newReturnDate: this.props.return,
@@ -56,7 +56,7 @@ export default class Start extends Component {
       [
         {text: 'No'},
         {text: 'Cancel trip', onPress: () => {
-          cancelTrip(this.props.tripId)
+          cancelTrip(this.props.trip.tripId)
           .then(
             Alert.alert(
               'Trip Cancelled',
@@ -81,7 +81,7 @@ export default class Start extends Component {
       [
         {text: 'No'},
         {text: 'Complete trip', onPress: () => {
-          completeTrip(this.props.tripId)
+          completeTrip(this.props.trip.tripId)
           .then(
             Alert.alert(
               'Trip Completed',
@@ -108,7 +108,7 @@ export default class Start extends Component {
         [
           {text: 'No'},
           {text: 'Extend trip', onPress: () => {
-            extendTrip(this.props.tripId, this.state.newReturnDate)
+            extendTrip(this.props.trip.tripId, this.state.newReturnDate)
             .then(() => {
               let returnTime = this.state.return;
               returnTime.hour = this.state.newReturnDate.getHours();
@@ -227,7 +227,7 @@ export default class Start extends Component {
                 source={require('../img/ic_location_on_black_24dp.png')}
               />
               <Text style={styles.textCenter}>Automatically send your location every 10 minutes</Text>
-              <Breadcrumbs trip={this.props.tripId}/>
+              <Breadcrumbs trip={this.props.trip.tripId}/>
             </View>
           </View>
         </ScrollView>

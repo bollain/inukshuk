@@ -25,10 +25,10 @@ paths:
           description: "User Created."
           schema:
             $ref: "#/definitions/user"
-        422:
-          description: "Email already registered"
         401:
           description: "Bad request"
+        422:
+          description: "Email already registered"
       x-swagger-router-controller: "Users"
     put:
       tags:
@@ -191,7 +191,7 @@ paths:
       - in: "body"
         name: "Trip"
         description: "JSON object with trip details"
-        required: false
+        required: true
         schema:
           $ref: "#/definitions/trip"
       responses:
@@ -245,6 +245,40 @@ paths:
         404:
           description: "Trip not found"
       x-swagger-router-controller: "Trips"
+  /trips/{tripId}/breadcrumbs:
+    post:
+      tags:
+      - "/trips"
+      description: "Breadcrumbs for a specific trip. Responds with list of all breadcrumbs\
+        \ known by the server."
+      operationId: "updateBreadcrumbs"
+      parameters:
+      - name: "tripId"
+        in: "path"
+        description: "ID of trip"
+        required: true
+        type: "integer"
+        format: "int64"
+      - in: "body"
+        name: "Trip"
+        description: "Array of breadcrumbs"
+        required: true
+        schema:
+          type: "array"
+          items:
+            $ref: "#/definitions/geoLocation"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/geoLocation"
+        400:
+          description: "Invalid Trip ID"
+        404:
+          description: "Resource not found"
+      x-swagger-router-controller: "Trips"
 definitions:
   user:
     type: "object"
@@ -265,6 +299,10 @@ definitions:
         type: "string"
       phoneNumber:
         type: "string"
+      trips:
+        type: "array"
+        items:
+          type: "integer"
   trip:
     type: "object"
     properties:
@@ -274,6 +312,8 @@ definitions:
       userId:
         type: "integer"
         format: "int64"
+      tripName:
+        type: "string"
       returnTime:
         type: "string"
         format: "date-time"
@@ -283,6 +323,12 @@ definitions:
         type: "string"
       startingLocation:
         $ref: "#/definitions/geoLocation"
+      endingLocation:
+        $ref: "#/definitions/geoLocation"
+      breadCrumbs:
+        type: "array"
+        items:
+          $ref: "#/definitions/geoLocation"
       note:
         type: "string"
       completed:

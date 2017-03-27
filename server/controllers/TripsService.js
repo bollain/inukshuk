@@ -15,6 +15,7 @@ exports.createTrip = function (args, res, next) {
   var userId = params.userId
   var newTrip = Trip({
     userId: userId,
+    tripName: params.tripName,
     returnTime: params.returnTime,
     contactPhone: params.contactPhone,
     contactEmail: params.contactEmail,
@@ -22,7 +23,10 @@ exports.createTrip = function (args, res, next) {
     completed: false,
     startingLocation: {
       coordinates: [params.startingLocation.latitude,
-        params.startingLocation.longitude]}
+        params.startingLocation.longitude]},
+    endingLocation: {
+      coordinates: [params.endingLocation.latitude,
+        params.endingLocation.longitude]},
   })
   // If user does not exist, kill things off
   User.findById(userId, function (err, user) {
@@ -46,6 +50,7 @@ exports.createTrip = function (args, res, next) {
           }
         })
           // Create text Alert
+          //TODO: only email or text alerts will be created...determine which!
         scheduleAlerts(newTrip)
         confirmEmergencyContact(newTrip, user)
         console.log('Trip created!')
@@ -141,10 +146,12 @@ exports.updateTrip = function (args, res, next) {
       res.statusMessage = 'Trip does not exist'
       res.end('Trip does not exist')
     } else {
+      trip.tripName = params.tripName || trip.tripName
       trip.returnTime = params.returnTime || trip.returnTime
       trip.contactEmail = params.contactEmail || trip.contactEmail
       trip.contactPhone = params.contactPhone || trip.contactPhone
       trip.startingLocation = params.startingLocation ? updateCoordinates(params.startingLocation) : trip.startingLocation
+      trip.endingLocation = params.endingLocation ? updateCoordinates(params.endingLocation) : trip.endingLocation
       trip.note = params.note || trip.note
       trip.completed = params.completed || trip.completed
 
@@ -169,6 +176,42 @@ exports.updateTrip = function (args, res, next) {
         console.log('Trip updated!')
         res.setHeader('Content-Type', 'application/json')
         res.end(JSON.stringify(trip))
+      })
+    }
+  })
+}
+
+exports.updateBreadcrumbs = function(args, res, next) {
+  /**
+   * Breadcrumbs for a specific trip. Responds with list of all breadcrumbs known by the server.
+   *
+   * tripId Long ID of trip
+   * trip List Array of breadcrumbs
+   * returns List
+   **/
+  var tripId = args.tripId.value
+  var breadcrumbs = args.Trip.value
+  Trip.findById(tripId, function (err, trip) {
+    if (err) {
+      handleError(err)
+      return
+    }
+    if (!trip) {
+      res.statusCode = 404
+      res.statusMessage = 'Trip does not exist'
+      res.end('Trip does not exist')
+    } else {
+      //Trip exists!! Update breadcrumbs
+      trip.updateBreadcrumbs(breadcrumbs)
+      trip.save(function (err) {
+        if (err) {
+          console.log(err)
+          handleError(res, err)
+          return
+        }
+        console.log('Breadcrumbs updated!')
+        res.setHeader('Content-Type', 'application/json')
+        res.end(JSON.stringify(trip.breadCrumbs))
       })
     }
   })

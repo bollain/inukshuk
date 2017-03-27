@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="93d7e885-b9e1-40aa-9eb3-8ba3785d8dc0" name="Default" comment="">
+    <list default="true" id="93d7e885-b9e1-40aa-9eb3-8ba3785d8dc0" name="Default" comment="Added test coverage for datesAndTimes.js">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/inukshukApp/scripts/__tests__/datesAndTimes-test.js" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/inukshukApp/__tests__/index.android.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/inukshukApp/__tests__/index.ios.js" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/inukshukApp/androidComponents/Login.js" afterPath="$PROJECT_DIR$/inukshukApp/androidComponents/Login.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/inukshukApp/package.json" afterPath="$PROJECT_DIR$/inukshukApp/package.json" />
     </list>
     <ignored path="Inukshuk.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -16,7 +20,6 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
   </component>
@@ -58,47 +61,191 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="index.android.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/inukshukApp/index.android.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1035">
-              <caret line="69" column="36" selection-start-line="69" selection-start-column="36" selection-end-line="69" selection-end-column="36" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="User.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/User.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-180">
-              <caret line="9" column="42" selection-start-line="9" selection-start-column="42" selection-end-line="9" selection-end-column="42" />
+            <state relative-caret-position="1026">
+              <caret line="71" column="19" lean-forward="false" selection-start-line="71" selection-start-column="19" selection-end-line="71" selection-end-column="19" />
+              <folding>
+                <marker date="1490469320000" expanded="false" signature="0:132" ph="/** Profile page ...*/" />
+                <marker date="1490469320000" expanded="true" signature="141:418" ph="..." />
+                <marker date="1490469320000" expanded="true" signature="518:3537" ph="{...}" />
+                <marker date="1490469320000" expanded="true" signature="587:876" ph="{...}" />
+                <marker date="1490469320000" expanded="true" signature="699:872" ph="{&quot;id&quot;: jsonUser._id...}" />
+                <marker date="1490469320000" expanded="true" signature="937:1653" ph="{...}" />
+                <marker date="1490469320000" expanded="true" signature="954:1163" ph="{...}" />
+                <marker date="1490469320000" expanded="true" signature="1193:1224" ph="{...}" />
+                <marker date="1490469320000" expanded="true" signature="1339:1519" ph="[...]" />
+                <marker date="1490469320000" expanded="true" signature="1379:1397" ph="{...}" />
+                <marker date="1490469320000" expanded="true" signature="1614:1627" ph="{...}" />
+                <marker date="1490469320000" expanded="true" signature="1711:3535" ph="{...}" />
+                <marker date="1490469320000" expanded="true" signature="1775:1796" ph="/*...*/" />
+                <marker date="1490469320000" expanded="true" signature="1908:2037" ph="{...}" />
+                <marker date="1490469320000" expanded="true" signature="2181:2197" ph="/*...*/" />
+                <marker date="1490469320000" expanded="true" signature="2342:2357" ph="/*...*/" />
+                <marker date="1490469320000" expanded="true" signature="2500:2517" ph="/*...*/" />
+                <marker date="1490469320000" expanded="true" signature="2825:2849" ph="/*...*/" />
+                <marker date="1490469320000" expanded="true" signature="3193:3212" ph="/*...*/" />
+                <marker date="1490469320000" expanded="true" signature="3572:3721" ph="{&quot;justifyContent&quot;: 'flex-start'...}" />
+                <marker date="1490469320000" expanded="true" signature="3734:3787" ph="{...}" />
+                <marker date="1490469320000" expanded="true" signature="3806:3874" ph="{...}" />
+                <marker date="1490469320000" expanded="true" signature="3891:3954" ph="{...}" />
+                <marker date="1490469320000" expanded="true" signature="3965:4008" ph="{...}" />
+                <marker date="1490469320000" expanded="true" signature="4029:4061" ph="{...}" />
+                <marker date="1490469320000" expanded="true" signature="4073:4125" ph="{...}" />
+                <marker date="1490469320000" expanded="true" signature="4141:4232" ph="{...}" />
+                <marker date="1490469320000" expanded="true" signature="4247:4338" ph="{...}" />
+                <marker date="1490469320000" expanded="true" signature="4352:4514" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="datesAndTimes.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/inukshukApp/scripts/datesAndTimes.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="765">
+              <caret line="51" column="0" lean-forward="true" selection-start-line="51" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Login.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Login.js">
+      <file leaf-file-name="Contact.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Contact.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="99">
-              <caret line="53" column="45" selection-start-line="53" selection-start-column="45" selection-end-line="53" selection-end-column="45" />
+            <state relative-caret-position="0">
+              <caret line="0" column="11" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="11" />
+              <folding>
+                <marker date="1489718442417" expanded="true" signature="7:436" ph="..." />
+                <marker date="1489718442417" expanded="true" signature="615:7309" ph="{...}" />
+                <marker date="1489718442417" expanded="true" signature="638:1230" ph="{...}" />
+                <marker date="1489718442417" expanded="true" signature="675:1225" ph="{&quot;searchText&quot;: ''...}" />
+                <marker date="1489718442417" expanded="true" signature="734:930" ph="{...}" />
+                <marker date="1489718442417" expanded="true" signature="753:922" ph="{&quot;firstName&quot;: 'firstName'...}" />
+                <marker date="1489718442417" expanded="true" signature="1002:1159" ph="{&quot;firstName&quot;: 'firstName'...}" />
+                <marker date="1489718442417" expanded="true" signature="1254:1321" ph="{...}" />
+                <marker date="1489718442417" expanded="true" signature="1345:2040" ph="{...}" />
+                <marker date="1489718442417" expanded="true" signature="1392:1406" ph="{...}" />
+                <marker date="1489718442417" expanded="true" signature="1442:1479" ph="{...}" />
+                <marker date="1489718442417" expanded="true" signature="1485:2028" ph="{...}" />
+                <marker date="1489718442417" expanded="true" signature="1591:1874" ph="{...}" />
+                <marker date="1489718442417" expanded="true" signature="1617:1864" ph="{...}" />
+                <marker date="1489718442417" expanded="true" signature="1928:2018" ph="{&quot;rawData&quot;: newState...}" />
+                <marker date="1489718442417" expanded="true" signature="2057:2368" ph="{...}" />
+                <marker date="1489718442417" expanded="true" signature="2277:2289" ph="{...}" />
+                <marker date="1489718442417" expanded="true" signature="2394:2743" ph="{...}" />
+                <marker date="1489718442417" expanded="true" signature="2676:2737" ph="{...}" />
+                <marker date="1489718442417" expanded="true" signature="2784:3255" ph="{...}" />
+                <marker date="1489718442417" expanded="true" signature="2904:3002" ph="{...}" />
+                <marker date="1489718442417" expanded="true" signature="3284:3333" ph="{...}" />
+                <marker date="1489718442417" expanded="true" signature="3365:3766" ph="{...}" />
+                <marker date="1489718442417" expanded="true" signature="3451:3508" ph="{...}" />
+                <marker date="1489718442417" expanded="true" signature="3557:3615" ph="{...}" />
+                <marker date="1489718442417" expanded="true" signature="3634:3728" ph="{&quot;chosenContact&quot;: contact...}" />
+                <marker date="1489718442417" expanded="true" signature="3802:3979" ph="{...}" />
+                <marker date="1489718442417" expanded="true" signature="3992:7307" ph="{...}" />
+                <marker date="1489718442417" expanded="true" signature="4173:4358" ph="{...}" />
+                <marker date="1489718442417" expanded="true" signature="5526:5713" ph="{...}" />
+                <marker date="1489718442417" expanded="true" signature="5739:5916" ph="{...}" />
+                <marker date="1489718442417" expanded="true" signature="6038:6158" ph="{...}" />
+                <marker date="1489718442417" expanded="true" signature="7012:7092" ph="{...}" />
+                <marker date="1489718442417" expanded="true" signature="7345:7507" ph="{&quot;justifyContent&quot;: 'flex-start'...}" />
+                <marker date="1489718442417" expanded="true" signature="7520:7573" ph="{...}" />
+                <marker date="1489718442417" expanded="true" signature="7586:7668" ph="{...}" />
+                <marker date="1489718442417" expanded="true" signature="7685:7708" ph="{...}" />
+                <marker date="1489718442417" expanded="true" signature="7720:7786" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Countdown.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Countdown.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="36">
+              <caret line="3" column="27" lean-forward="false" selection-start-line="3" selection-start-column="27" selection-end-line="3" selection-end-column="27" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TripSummary.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/TripSummary.js">
+      <file leaf-file-name="Location.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Location.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="177" column="10" selection-start-line="177" selection-start-column="10" selection-end-line="177" selection-end-column="10" />
+            <state relative-caret-position="18">
+              <caret line="20" column="53" lean-forward="false" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="53" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="package.json" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/inukshukApp/package.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="522">
+              <caret line="29" column="23" lean-forward="false" selection-start-line="29" selection-start-column="23" selection-end-line="29" selection-end-column="23" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="datesAndTimes-test.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/inukshukApp/scripts/__tests__/datesAndTimes-test.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="306">
+              <caret line="20" column="40" lean-forward="false" selection-start-line="20" selection-start-column="40" selection-end-line="20" selection-end-column="40" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="mocha.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/server/node_modules/mocha/mocha.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="765">
+              <caret line="7084" column="2" lean-forward="true" selection-start-line="7084" selection-start-column="2" selection-end-line="7084" selection-end-column="2" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="localStorage.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/inukshukApp/scripts/localStorage.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding>
+                <marker date="1489718442421" expanded="true" signature="124:325" ph="{...}" />
+                <marker date="1489718442421" expanded="true" signature="132:236" ph="{...}" />
+                <marker date="1489718442421" expanded="true" signature="251:323" ph="{...}" />
+                <marker date="1489718442421" expanded="true" signature="412:621" ph="{...}" />
+                <marker date="1489718442421" expanded="true" signature="420:531" ph="{...}" />
+                <marker date="1489718442421" expanded="true" signature="546:619" ph="{...}" />
+                <marker date="1489718442421" expanded="true" signature="700:870" ph="{...}" />
+                <marker date="1489718442421" expanded="true" signature="708:780" ph="{...}" />
+                <marker date="1489718442421" expanded="true" signature="795:868" ph="{...}" />
+                <marker date="1489718442421" expanded="true" signature="960:1138" ph="{...}" />
+                <marker date="1489718442421" expanded="true" signature="968:1047" ph="{...}" />
+                <marker date="1489718442421" expanded="true" signature="1062:1136" ph="{...}" />
+                <marker date="1489718442421" expanded="true" signature="1216:1386" ph="{...}" />
+                <marker date="1489718442421" expanded="true" signature="1224:1297" ph="{...}" />
+                <marker date="1489718442421" expanded="true" signature="1312:1384" ph="{...}" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
     </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>i</find>
+      <find>ios</find>
+    </findStrings>
+    <dirStrings>
+      <dir>$PROJECT_DIR$</dir>
+    </dirStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -235,31 +382,41 @@
         <option value="$PROJECT_DIR$/inukshukApp/guards.js" />
         <option value="$PROJECT_DIR$/inukshukApp/Signup.js" />
         <option value="$PROJECT_DIR$/inukshukApp/Login.js" />
-        <option value="$PROJECT_DIR$/inukshukApp/package.json" />
         <option value="$PROJECT_DIR$/inukshukApp/androidComponents/Trip.js" />
         <option value="$PROJECT_DIR$/inukshukApp/index.android.js" />
         <option value="$PROJECT_DIR$/inukshukApp/androidComponents/TripSummary.js" />
         <option value="$PROJECT_DIR$/inukshukApp/androidComponents/Signup.js" />
         <option value="$PROJECT_DIR$/inukshukApp/androidComponents/User.js" />
         <option value="$PROJECT_DIR$/inukshukApp/androidComponents/Login.js" />
+        <option value="$PROJECT_DIR$/inukshukApp/package.json" />
+        <option value="$PROJECT_DIR$/inukshukApp/scripts/__tests__/datesAndTimes-test.js" />
       </list>
     </option>
   </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsFlowSettings">
+    <service-enabled>false</service-enabled>
+    <exe-path />
+    <annotation-enable>false</annotation-enable>
+    <other-services-enabled>false</other-services-enabled>
+  </component>
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="NodeModulesDirectoryManager">
+    <handled-path value="$PROJECT_DIR$/node_modules" />
+    <handled-path value="$PROJECT_DIR$/server/node_modules" />
+  </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="45" />
-    <option name="y" value="23" />
-    <option name="width" value="1395" />
-    <option name="height" value="877" />
+    <option name="x" value="64" />
+    <option name="y" value="-11" />
+    <option name="width" value="1857" />
+    <option name="height" value="962" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
-    <OptionsSetting value="true" id="Add" />
-    <OptionsSetting value="true" id="Remove" />
-    <OptionsSetting value="true" id="Checkout" />
-    <OptionsSetting value="true" id="Update" />
-    <OptionsSetting value="true" id="Status" />
-    <OptionsSetting value="true" id="Edit" />
     <ConfirmationsSetting value="1" id="Add" />
-    <ConfirmationsSetting value="0" id="Remove" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -276,20 +433,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
-      <pane id="AndroidView">
-        <subPane />
-      </pane>
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Inukshuk" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-          </PATH>
           <PATH>
             <PATH_ELEMENT>
               <option name="myItemId" value="Inukshuk" />
@@ -311,6 +456,46 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="inukshukApp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Inukshuk" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Inukshuk" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="inukshukApp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scripts" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Inukshuk" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Inukshuk" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="inukshukApp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="scripts" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="__tests__" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -334,12 +519,20 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="Scratches" />
+      <pane id="PackagesPane" />
+      <pane id="AndroidView">
+        <subPane />
+      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="android.sdk.path" value="/Volumes/extraSpace" />
-    <property name="settings.editor.selected.configurable" value="configurable.group.build" />
-    <property name="settings.editor.splitter.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="Settings.JavaScript" />
+    <property name="HbShouldOpenHtmlAsHb" value="" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="nodejs_interpreter_path" value="/usr/local/bin/node" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -349,231 +542,77 @@
       <recent name="$PROJECT_DIR$/inukshukApp/android/app/src/main/scripts" />
     </key>
   </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
   <component name="RunManager">
-    <configuration default="true" type="AndroidRunConfigurationType" factoryName="Android App">
-      <module name="" />
-      <option name="DEPLOY" value="true" />
-      <option name="ARTIFACT_NAME" value="" />
-      <option name="PM_INSTALL_OPTIONS" value="" />
-      <option name="ACTIVITY_EXTRA_FLAGS" value="" />
-      <option name="MODE" value="default_activity" />
-      <option name="TARGET_SELECTION_MODE" value="SHOW_DIALOG" />
-      <option name="PREFERRED_AVD" value="" />
-      <option name="CLEAR_LOGCAT" value="false" />
-      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="false" />
-      <option name="SKIP_NOOP_APK_INSTALLATIONS" value="true" />
-      <option name="FORCE_STOP_RUNNING_APP" value="true" />
-      <option name="DEBUGGER_TYPE" value="Auto" />
-      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
-      <option name="PREFERRED_AVD" value="" />
-      <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="-1" />
-      <option name="SELECTED_CLOUD_MATRIX_PROJECT_ID" value="" />
-      <Auto>
-        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
-        <option name="WORKING_DIR" value="" />
-        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
-      </Auto>
-      <Hybrid>
-        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
-        <option name="WORKING_DIR" value="" />
-        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
-      </Hybrid>
-      <Java />
-      <Native>
-        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
-        <option name="WORKING_DIR" value="" />
-        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
-      </Native>
-      <Profilers>
-        <option name="ENABLE_ADVANCED_PROFILING" value="true" />
-        <option name="GAPID_ENABLED" value="false" />
-        <option name="GAPID_DISABLE_PCS" value="false" />
-        <option name="SUPPORT_LIB_ENABLED" value="true" />
-        <option name="INSTRUMENTATION_ENABLED" value="true" />
-      </Profilers>
-      <option name="DEEP_LINK" value="" />
-      <option name="ACTIVITY_CLASS" value="" />
+    <configuration default="true" type="DartCommandLineRunConfigurationType" factoryName="Dart Command Line Application">
       <method />
     </configuration>
-    <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Tests">
-      <module name="" />
-      <option name="TESTING_TYPE" value="0" />
-      <option name="INSTRUMENTATION_RUNNER_CLASS" value="" />
-      <option name="METHOD_NAME" value="" />
-      <option name="CLASS_NAME" value="" />
-      <option name="PACKAGE_NAME" value="" />
-      <option name="EXTRA_OPTIONS" value="" />
-      <option name="TARGET_SELECTION_MODE" value="SHOW_DIALOG" />
-      <option name="PREFERRED_AVD" value="" />
-      <option name="CLEAR_LOGCAT" value="false" />
-      <option name="SHOW_LOGCAT_AUTOMATICALLY" value="false" />
-      <option name="SKIP_NOOP_APK_INSTALLATIONS" value="true" />
-      <option name="FORCE_STOP_RUNNING_APP" value="true" />
-      <option name="DEBUGGER_TYPE" value="Auto" />
-      <option name="USE_LAST_SELECTED_DEVICE" value="false" />
-      <option name="PREFERRED_AVD" value="" />
-      <option name="SELECTED_CLOUD_MATRIX_CONFIGURATION_ID" value="-1" />
-      <option name="SELECTED_CLOUD_MATRIX_PROJECT_ID" value="" />
-      <Auto>
-        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
-        <option name="WORKING_DIR" value="" />
-        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
-      </Auto>
-      <Hybrid>
-        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
-        <option name="WORKING_DIR" value="" />
-        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
-      </Hybrid>
-      <Java />
-      <Native>
-        <option name="USE_JAVA_AWARE_DEBUGGER" value="false" />
-        <option name="WORKING_DIR" value="" />
-        <option name="TARGET_LOGGING_CHANNELS" value="lldb process:gdb-remote packets" />
-      </Native>
-      <Profilers>
-        <option name="ENABLE_ADVANCED_PROFILING" value="true" />
-        <option name="GAPID_ENABLED" value="false" />
-        <option name="GAPID_DISABLE_PCS" value="false" />
-        <option name="SUPPORT_LIB_ENABLED" value="true" />
-        <option name="INSTRUMENTATION_ENABLED" value="true" />
-      </Profilers>
+    <configuration default="true" type="DartTestRunConfigurationType" factoryName="Dart Test">
       <method />
     </configuration>
-    <configuration default="true" type="Application" factoryName="Application">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="" />
+    <configuration default="true" type="JavaScriptTestRunnerJest" factoryName="Jest">
+      <node-interpreter value="project" />
+      <working-dir value="" />
+      <envs />
+      <scope-kind value="ALL" />
+      <method />
+    </configuration>
+    <configuration default="true" type="JavaScriptTestRunnerKarma" factoryName="Karma">
+      <config-file value="" />
+      <node-interpreter value="project" />
       <envs />
       <method />
     </configuration>
-    <configuration default="true" type="GradleRunConfiguration" factoryName="Gradle">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list />
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <method />
-    </configuration>
-    <configuration default="true" type="JUnit" factoryName="JUnit">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <module name="" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="METHOD_NAME" />
-      <option name="TEST_OBJECT" value="class" />
-      <option name="VM_PARAMETERS" value="-ea" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="singleModule" />
-      </option>
-      <envs />
-      <patterns />
-      <method />
-    </configuration>
-    <configuration default="true" type="JarApplication" factoryName="JAR Application">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+    <configuration default="true" type="JavaScriptTestRunnerProtractor" factoryName="Protractor">
+      <config-file value="" />
+      <node-interpreter value="project" />
       <envs />
       <method />
     </configuration>
-    <configuration default="true" type="Java Scratch" factoryName="Java Scratch">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <option name="SCRATCH_FILE_ID" value="0" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
-      <option name="WORKING_DIRECTORY" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="ENABLE_SWING_INSPECTOR" value="false" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <module name="" />
+    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
+      <method />
+    </configuration>
+    <configuration default="true" type="NodeJSConfigurationType" factoryName="Node.js" path-to-node="project" working-dir="">
+      <method />
+    </configuration>
+    <configuration default="true" type="cucumber.js" factoryName="Cucumber.js">
+      <option name="cucumberJsArguments" value="" />
+      <option name="executablePath" />
+      <option name="filePath" />
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
+      <method />
+    </configuration>
+    <configuration default="true" type="js.build_tools.npm" factoryName="npm">
+      <command value="run" />
+      <scripts />
+      <node-interpreter value="project" />
       <envs />
       <method />
     </configuration>
-    <configuration default="true" type="Remote" factoryName="Remote">
-      <option name="USE_SOCKET_TRANSPORT" value="true" />
-      <option name="SERVER_MODE" value="false" />
-      <option name="SHMEM_ADDRESS" value="javadebug" />
-      <option name="HOST" value="localhost" />
-      <option name="PORT" value="5005" />
-      <method />
-    </configuration>
-    <configuration default="true" type="TestNG" factoryName="TestNG">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <module name="" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="SUITE_NAME" />
-      <option name="PACKAGE_NAME" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="METHOD_NAME" />
-      <option name="GROUP_NAME" />
-      <option name="TEST_OBJECT" value="CLASS" />
-      <option name="VM_PARAMETERS" value="-ea" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="$MODULE_DIR$" />
-      <option name="OUTPUT_DIRECTORY" />
-      <option name="ANNOTATION_TYPE" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="singleModule" />
-      </option>
-      <option name="USE_DEFAULT_REPORTERS" value="false" />
-      <option name="PROPERTIES_FILE" />
+    <configuration default="true" type="mocha-javascript-test-runner" factoryName="Mocha">
+      <node-interpreter>project</node-interpreter>
+      <node-options />
+      <working-directory />
+      <pass-parent-env>true</pass-parent-env>
       <envs />
-      <properties />
-      <listeners />
-      <method />
-    </configuration>
-    <configuration default="true" type="TestNGTestDiscovery" factoryName="TestNG Test Discovery" changeList="All">
-      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
-      <module name="" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="SUITE_NAME" />
-      <option name="PACKAGE_NAME" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="METHOD_NAME" />
-      <option name="GROUP_NAME" />
-      <option name="TEST_OBJECT" value="CLASS" />
-      <option name="VM_PARAMETERS" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" />
-      <option name="OUTPUT_DIRECTORY" />
-      <option name="ANNOTATION_TYPE" />
-      <option name="ENV_VARIABLES" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="singleModule" />
-      </option>
-      <option name="USE_DEFAULT_REPORTERS" value="false" />
-      <option name="PROPERTIES_FILE" />
-      <envs />
-      <properties />
-      <listeners />
+      <ui />
+      <extra-mocha-options />
+      <test-kind>DIRECTORY</test-kind>
+      <test-directory />
+      <recursive>false</recursive>
       <method />
     </configuration>
     <configuration name="&lt;template&gt;" type="Applet" default="true" selected="false">
@@ -602,50 +641,54 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1487651079180</updated>
+      <workItem from="1490581680051" duration="2616000" />
     </task>
     <servers />
   </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="2676000" />
+  </component>
   <component name="ToolWindowManager">
-    <frame x="45" y="23" width="1395" height="877" extended-state="6" />
-    <editor active="true" />
+    <frame x="64" y="-11" width="1857" height="962" extended-state="6" />
     <layout>
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23689957" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32971016" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23583663" sideWeight="0.51544404" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32971016" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23583663" sideWeight="0.484556" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23725055" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32889876" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23583663" sideWeight="0.484556" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32889876" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23715416" sideWeight="0.5115578" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23583663" sideWeight="0.51544404" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -656,14 +699,17 @@
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2364395" sideWeight="0.4884422" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23583663" sideWeight="0.484556" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23429416" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23689957" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32889876" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
     </layout-to-restore>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="processedProjectFiles" value="true" />
   </component>
   <component name="Vcs.Log.UiProperties">
     <option name="RECENTLY_FILTERED_USER_GROUPS">
@@ -676,209 +722,519 @@
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Added test coverage for datesAndTimes.js" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added test coverage for datesAndTimes.js" />
+  </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/inukshukApp/index.android.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/inukshukApp/index.android.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Contact.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" column="21" selection-start-line="12" selection-start-column="21" selection-end-line="12" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/TripSummary.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="930">
-          <caret line="62" column="0" selection-start-line="62" selection-start-column="0" selection-end-line="64" selection-end-column="3" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Note.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="600">
-          <caret line="40" column="103" selection-start-line="40" selection-start-column="100" selection-end-line="40" selection-end-column="103" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Login.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="570">
-          <caret line="38" column="12" selection-start-line="38" selection-start-column="12" selection-end-line="38" selection-end-column="45" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Signup.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="990">
-          <caret line="66" column="71" selection-start-line="66" selection-start-column="71" selection-end-line="66" selection-end-column="71" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/inukshukApp/index.android.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/TripSummary.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="570">
-          <caret line="38" column="16" selection-start-line="38" selection-start-column="8" selection-end-line="38" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/inukshukApp/index.android.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/inukshukApp/android/app/src/main/java/com/inukshukapp/MainApplication.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/inukshukApp/app.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/ide/ide-scripting.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/inukshukApp/index.ios.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="15" column="12" selection-start-line="15" selection-start-column="12" selection-end-line="15" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/controllers/Trips.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/models/user.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-88">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-238">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/inukshukApp/guards.js" />
-    <entry file="file://$PROJECT_DIR$/inukshukApp/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="18" column="22" selection-start-line="18" selection-start-column="22" selection-end-line="18" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Trip.js" />
-    <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Return.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1305">
-          <caret line="100" column="10" selection-start-line="100" selection-start-column="4" selection-end-line="100" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Contact.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" column="21" selection-start-line="12" selection-start-column="21" selection-end-line="12" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Signup.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="186">
-          <caret line="29" column="5" selection-start-line="29" selection-start-column="5" selection-end-line="29" selection-end-column="5" />
+          <caret line="29" column="5" lean-forward="false" selection-start-line="29" selection-start-column="5" selection-end-line="29" selection-end-column="5" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Note.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="32" column="25" selection-start-line="32" selection-start-column="25" selection-end-line="32" selection-end-column="25" />
+        <state relative-caret-position="234">
+          <caret line="33" column="0" lean-forward="false" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Location.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="375">
-          <caret line="25" column="18" selection-start-line="25" selection-start-column="10" selection-end-line="25" selection-end-column="18" />
+          <caret line="25" column="18" lean-forward="false" selection-start-line="25" selection-start-column="10" selection-end-line="25" selection-end-column="18" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/inukshukApp/index.android.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1035">
-          <caret line="69" column="36" selection-start-line="69" selection-start-column="36" selection-end-line="69" selection-end-column="36" />
+          <caret line="69" column="36" lean-forward="false" selection-start-line="69" selection-start-column="36" selection-end-line="69" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/TripSummary.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3060">
+          <caret line="198" column="43" lean-forward="false" selection-start-line="198" selection-start-column="43" selection-end-line="198" selection-end-column="43" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Contact.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="788">
+          <caret line="83" column="3" lean-forward="false" selection-start-line="83" selection-start-column="3" selection-end-line="83" selection-end-column="3" />
+          <folding>
+            <marker date="1489718442417" expanded="true" signature="7:436" ph="..." />
+            <marker date="1489718442417" expanded="true" signature="615:7309" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="638:1230" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="675:1225" ph="{&quot;searchText&quot;: ''...}" />
+            <marker date="1489718442417" expanded="true" signature="734:930" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="753:922" ph="{&quot;firstName&quot;: 'firstName'...}" />
+            <marker date="1489718442417" expanded="true" signature="1002:1159" ph="{&quot;firstName&quot;: 'firstName'...}" />
+            <marker date="1489718442417" expanded="true" signature="1254:1321" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="1345:2040" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="1392:1406" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="1442:1479" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="1485:2028" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="1591:1874" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="1617:1864" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="1928:2018" ph="{&quot;rawData&quot;: newState...}" />
+            <marker date="1489718442417" expanded="true" signature="2057:2368" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="2277:2289" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="2394:2743" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="2676:2737" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="2784:3255" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="2904:3002" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="3284:3333" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="3365:3766" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="3451:3508" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="3557:3615" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="3634:3728" ph="{&quot;chosenContact&quot;: contact...}" />
+            <marker date="1489718442417" expanded="true" signature="3802:3979" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="3992:7307" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="4173:4358" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="5526:5713" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="5739:5916" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="6038:6158" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="7012:7092" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="7345:7507" ph="{&quot;justifyContent&quot;: 'flex-start'...}" />
+            <marker date="1489718442417" expanded="true" signature="7520:7573" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="7586:7668" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="7685:7708" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="7720:7786" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Login.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="684">
+          <caret line="53" column="32" lean-forward="true" selection-start-line="53" selection-start-column="32" selection-end-line="53" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/inukshukApp/scripts/apiCalls.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="720">
+          <caret line="40" column="27" lean-forward="true" selection-start-line="40" selection-start-column="27" selection-end-line="40" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/api/swagger.yaml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="738">
+          <caret line="150" column="0" lean-forward="false" selection-start-line="150" selection-start-column="0" selection-end-line="150" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/config/dev.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/config/test.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="18">
+          <caret line="1" column="48" lean-forward="false" selection-start-line="1" selection-start-column="33" selection-end-line="1" selection-end-column="48" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/config/default.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="18">
+          <caret line="1" column="50" lean-forward="false" selection-start-line="1" selection-start-column="33" selection-end-line="1" selection-end-column="50" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Sunset.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1489823064139" expanded="true" signature="7:156" ph="..." />
+            <marker date="1489823064139" expanded="true" signature="205:1445" ph="{...}" />
+            <marker date="1489823064139" expanded="true" signature="228:297" ph="{...}" />
+            <marker date="1489823064139" expanded="true" signature="265:293" ph="{&quot;sunset&quot;: '...'...}" />
+            <marker date="1489823064139" expanded="true" signature="321:348" ph="{...}" />
+            <marker date="1489823064139" expanded="true" signature="364:1367" ph="{...}" />
+            <marker date="1489823064139" expanded="true" signature="749:764" ph="{...}" />
+            <marker date="1489823064139" expanded="true" signature="1304:1317" ph="{...}" />
+            <marker date="1489823064139" expanded="true" signature="1380:1443" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/inukshukApp/scripts/__tests__/dateAndTime-test.js" />
+    <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/User.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="18">
+          <caret line="71" column="19" lean-forward="false" selection-start-line="71" selection-start-column="19" selection-end-line="71" selection-end-column="19" />
+          <folding>
+            <marker date="1490469320000" expanded="false" signature="0:132" ph="/** Profile page ...*/" />
+            <marker date="1490469320000" expanded="true" signature="141:418" ph="..." />
+            <marker date="1490469320000" expanded="true" signature="518:3537" ph="{...}" />
+            <marker date="1490469320000" expanded="true" signature="587:876" ph="{...}" />
+            <marker date="1490469320000" expanded="true" signature="699:872" ph="{&quot;id&quot;: jsonUser._id...}" />
+            <marker date="1490469320000" expanded="true" signature="937:1653" ph="{...}" />
+            <marker date="1490469320000" expanded="true" signature="954:1163" ph="{...}" />
+            <marker date="1490469320000" expanded="true" signature="1193:1224" ph="{...}" />
+            <marker date="1490469320000" expanded="true" signature="1339:1519" ph="[...]" />
+            <marker date="1490469320000" expanded="true" signature="1379:1397" ph="{...}" />
+            <marker date="1490469320000" expanded="true" signature="1614:1627" ph="{...}" />
+            <marker date="1490469320000" expanded="true" signature="1711:3535" ph="{...}" />
+            <marker date="1490469320000" expanded="true" signature="1775:1796" ph="/*...*/" />
+            <marker date="1490469320000" expanded="true" signature="1908:2037" ph="{...}" />
+            <marker date="1490469320000" expanded="true" signature="2181:2197" ph="/*...*/" />
+            <marker date="1490469320000" expanded="true" signature="2342:2357" ph="/*...*/" />
+            <marker date="1490469320000" expanded="true" signature="2500:2517" ph="/*...*/" />
+            <marker date="1490469320000" expanded="true" signature="2825:2849" ph="/*...*/" />
+            <marker date="1490469320000" expanded="true" signature="3193:3212" ph="/*...*/" />
+            <marker date="1490469320000" expanded="true" signature="3572:3721" ph="{&quot;justifyContent&quot;: 'flex-start'...}" />
+            <marker date="1490469320000" expanded="true" signature="3734:3787" ph="{...}" />
+            <marker date="1490469320000" expanded="true" signature="3806:3874" ph="{...}" />
+            <marker date="1490469320000" expanded="true" signature="3891:3954" ph="{...}" />
+            <marker date="1490469320000" expanded="true" signature="3965:4008" ph="{...}" />
+            <marker date="1490469320000" expanded="true" signature="4029:4061" ph="{...}" />
+            <marker date="1490469320000" expanded="true" signature="4073:4125" ph="{...}" />
+            <marker date="1490469320000" expanded="true" signature="4141:4232" ph="{...}" />
+            <marker date="1490469320000" expanded="true" signature="4247:4338" ph="{...}" />
+            <marker date="1490469320000" expanded="true" signature="4352:4514" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/inukshukApp/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="522">
+          <caret line="29" column="27" lean-forward="false" selection-start-line="29" selection-start-column="27" selection-end-line="29" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/inukshukApp/index.android.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/inukshukApp/index.android.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Contact.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" column="21" lean-forward="false" selection-start-line="12" selection-start-column="21" selection-end-line="12" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/TripSummary.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="930">
+          <caret line="62" column="0" lean-forward="false" selection-start-line="62" selection-start-column="0" selection-end-line="64" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Note.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="600">
+          <caret line="40" column="103" lean-forward="false" selection-start-line="40" selection-start-column="100" selection-end-line="40" selection-end-column="103" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Login.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="570">
+          <caret line="38" column="12" lean-forward="false" selection-start-line="38" selection-start-column="12" selection-end-line="38" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Signup.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="990">
+          <caret line="66" column="71" lean-forward="false" selection-start-line="66" selection-start-column="71" selection-end-line="66" selection-end-column="71" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/inukshukApp/index.android.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/TripSummary.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="570">
+          <caret line="38" column="16" lean-forward="false" selection-start-line="38" selection-start-column="8" selection-end-line="38" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/inukshukApp/index.android.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/inukshukApp/android/app/src/main/java/com/inukshukapp/MainApplication.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/inukshukApp/app.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_CONFIG_DIR$/consoles/ide/ide-scripting.js" />
+    <entry file="file://$PROJECT_DIR$/inukshukApp/index.ios.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="15" column="12" lean-forward="false" selection-start-line="15" selection-start-column="12" selection-end-line="15" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/controllers/Trips.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/models/user.js" />
+    <entry file="file://$PROJECT_DIR$/server/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-238">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/inukshukApp/guards.js" />
+    <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Trip.js" />
+    <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Return.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1305">
+          <caret line="100" column="10" lean-forward="false" selection-start-line="100" selection-start-column="4" selection-end-line="100" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Signup.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="186">
+          <caret line="29" column="5" lean-forward="false" selection-start-line="29" selection-start-column="5" selection-end-line="29" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Note.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="32" column="25" lean-forward="false" selection-start-line="32" selection-start-column="25" selection-end-line="32" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/inukshukApp/index.android.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1035">
+          <caret line="69" column="36" lean-forward="false" selection-start-line="69" selection-start-column="36" selection-end-line="69" selection-end-column="36" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/TripSummary.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
-          <caret line="177" column="10" selection-start-line="177" selection-start-column="10" selection-end-line="177" selection-end-column="10" />
-          <folding />
+          <caret line="177" column="10" lean-forward="false" selection-start-line="177" selection-start-column="10" selection-end-line="177" selection-end-column="10" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/User.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-180">
-          <caret line="9" column="42" selection-start-line="9" selection-start-column="42" selection-end-line="9" selection-end-column="42" />
-          <folding />
+        <state relative-caret-position="1026">
+          <caret line="71" column="19" lean-forward="false" selection-start-line="71" selection-start-column="19" selection-end-line="71" selection-end-column="19" />
+          <folding>
+            <marker date="1490469320000" expanded="false" signature="0:132" ph="/** Profile page ...*/" />
+            <marker date="1490469320000" expanded="true" signature="141:418" ph="..." />
+            <marker date="1490469320000" expanded="true" signature="518:3537" ph="{...}" />
+            <marker date="1490469320000" expanded="true" signature="587:876" ph="{...}" />
+            <marker date="1490469320000" expanded="true" signature="699:872" ph="{&quot;id&quot;: jsonUser._id...}" />
+            <marker date="1490469320000" expanded="true" signature="937:1653" ph="{...}" />
+            <marker date="1490469320000" expanded="true" signature="954:1163" ph="{...}" />
+            <marker date="1490469320000" expanded="true" signature="1193:1224" ph="{...}" />
+            <marker date="1490469320000" expanded="true" signature="1339:1519" ph="[...]" />
+            <marker date="1490469320000" expanded="true" signature="1379:1397" ph="{...}" />
+            <marker date="1490469320000" expanded="true" signature="1614:1627" ph="{...}" />
+            <marker date="1490469320000" expanded="true" signature="1711:3535" ph="{...}" />
+            <marker date="1490469320000" expanded="true" signature="1775:1796" ph="/*...*/" />
+            <marker date="1490469320000" expanded="true" signature="1908:2037" ph="{...}" />
+            <marker date="1490469320000" expanded="true" signature="2181:2197" ph="/*...*/" />
+            <marker date="1490469320000" expanded="true" signature="2342:2357" ph="/*...*/" />
+            <marker date="1490469320000" expanded="true" signature="2500:2517" ph="/*...*/" />
+            <marker date="1490469320000" expanded="true" signature="2825:2849" ph="/*...*/" />
+            <marker date="1490469320000" expanded="true" signature="3193:3212" ph="/*...*/" />
+            <marker date="1490469320000" expanded="true" signature="3572:3721" ph="{&quot;justifyContent&quot;: 'flex-start'...}" />
+            <marker date="1490469320000" expanded="true" signature="3734:3787" ph="{...}" />
+            <marker date="1490469320000" expanded="true" signature="3806:3874" ph="{...}" />
+            <marker date="1490469320000" expanded="true" signature="3891:3954" ph="{...}" />
+            <marker date="1490469320000" expanded="true" signature="3965:4008" ph="{...}" />
+            <marker date="1490469320000" expanded="true" signature="4029:4061" ph="{...}" />
+            <marker date="1490469320000" expanded="true" signature="4073:4125" ph="{...}" />
+            <marker date="1490469320000" expanded="true" signature="4141:4232" ph="{...}" />
+            <marker date="1490469320000" expanded="true" signature="4247:4338" ph="{...}" />
+            <marker date="1490469320000" expanded="true" signature="4352:4514" ph="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Login.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="99">
-          <caret line="53" column="45" selection-start-line="53" selection-start-column="45" selection-end-line="53" selection-end-column="45" />
+          <caret line="53" column="45" lean-forward="false" selection-start-line="53" selection-start-column="45" selection-end-line="53" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/inukshukApp/scripts/localStorage.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1489718442421" expanded="true" signature="124:325" ph="{...}" />
+            <marker date="1489718442421" expanded="true" signature="132:236" ph="{...}" />
+            <marker date="1489718442421" expanded="true" signature="251:323" ph="{...}" />
+            <marker date="1489718442421" expanded="true" signature="412:621" ph="{...}" />
+            <marker date="1489718442421" expanded="true" signature="420:531" ph="{...}" />
+            <marker date="1489718442421" expanded="true" signature="546:619" ph="{...}" />
+            <marker date="1489718442421" expanded="true" signature="700:870" ph="{...}" />
+            <marker date="1489718442421" expanded="true" signature="708:780" ph="{...}" />
+            <marker date="1489718442421" expanded="true" signature="795:868" ph="{...}" />
+            <marker date="1489718442421" expanded="true" signature="960:1138" ph="{...}" />
+            <marker date="1489718442421" expanded="true" signature="968:1047" ph="{...}" />
+            <marker date="1489718442421" expanded="true" signature="1062:1136" ph="{...}" />
+            <marker date="1489718442421" expanded="true" signature="1216:1386" ph="{...}" />
+            <marker date="1489718442421" expanded="true" signature="1224:1297" ph="{...}" />
+            <marker date="1489718442421" expanded="true" signature="1312:1384" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/inukshukApp/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="522">
+          <caret line="29" column="23" lean-forward="false" selection-start-line="29" selection-start-column="23" selection-end-line="29" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Location.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="18">
+          <caret line="20" column="53" lean-forward="false" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="53" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Contact.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="11" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="11" />
+          <folding>
+            <marker date="1489718442417" expanded="true" signature="7:436" ph="..." />
+            <marker date="1489718442417" expanded="true" signature="615:7309" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="638:1230" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="675:1225" ph="{&quot;searchText&quot;: ''...}" />
+            <marker date="1489718442417" expanded="true" signature="734:930" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="753:922" ph="{&quot;firstName&quot;: 'firstName'...}" />
+            <marker date="1489718442417" expanded="true" signature="1002:1159" ph="{&quot;firstName&quot;: 'firstName'...}" />
+            <marker date="1489718442417" expanded="true" signature="1254:1321" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="1345:2040" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="1392:1406" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="1442:1479" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="1485:2028" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="1591:1874" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="1617:1864" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="1928:2018" ph="{&quot;rawData&quot;: newState...}" />
+            <marker date="1489718442417" expanded="true" signature="2057:2368" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="2277:2289" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="2394:2743" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="2676:2737" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="2784:3255" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="2904:3002" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="3284:3333" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="3365:3766" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="3451:3508" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="3557:3615" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="3634:3728" ph="{&quot;chosenContact&quot;: contact...}" />
+            <marker date="1489718442417" expanded="true" signature="3802:3979" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="3992:7307" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="4173:4358" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="5526:5713" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="5739:5916" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="6038:6158" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="7012:7092" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="7345:7507" ph="{&quot;justifyContent&quot;: 'flex-start'...}" />
+            <marker date="1489718442417" expanded="true" signature="7520:7573" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="7586:7668" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="7685:7708" ph="{...}" />
+            <marker date="1489718442417" expanded="true" signature="7720:7786" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/inukshukApp/androidComponents/Countdown.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="36">
+          <caret line="3" column="27" lean-forward="false" selection-start-line="3" selection-start-column="27" selection-end-line="3" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/inukshukApp/__tests__/index.android.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="8" column="31" lean-forward="false" selection-start-line="8" selection-start-column="31" selection-end-line="8" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/node_modules/mocha/mocha.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="765">
+          <caret line="7084" column="2" lean-forward="true" selection-start-line="7084" selection-start-column="2" selection-end-line="7084" selection-end-column="2" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/inukshukApp/scripts/__tests__/datesAndTimes-test.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="20" column="40" lean-forward="false" selection-start-line="20" selection-start-column="40" selection-end-line="20" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/inukshukApp/scripts/datesAndTimes.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="765">
+          <caret line="51" column="0" lean-forward="true" selection-start-line="51" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
           <folding />
         </state>
       </provider>

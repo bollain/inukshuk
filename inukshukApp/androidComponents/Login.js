@@ -8,8 +8,10 @@ import {
   Text,
   TextInput,
   View,
-  TouchableOpacity
+  TouchableOpacity,
+  Alert
 } from 'react-native';
+import { storageSet } from '../scripts/localStorage.js';
 import { login, loginMock } from '../scripts/apiCalls.js';
 
 export default class Login extends Component {
@@ -26,6 +28,20 @@ export default class Login extends Component {
     navSignUp(){
       this.props.navigator.push({
         id: 'signup',
+      });
+    }
+
+    login() {
+      loginMock(this.state.username, this.state.password)
+      .then((responseJson) => {
+        storageSet('user', JSON.stringify(responseJson));
+        this.props.navigator.push({
+          id: 'tripSummary',
+          user: responseJson,
+        });
+      })
+      .catch((err) => {
+        Alert.alert('Cannot reach server');
       });
     }
 
@@ -68,7 +84,7 @@ export default class Login extends Component {
             <View style={styles.signinContainer}>
               <TouchableOpacity
                 style={styles.signin}
-                onPress={()=> loginMock(this)}
+                onPress={()=> this.login()}
                 activeOpacity={.8}>
                 <Text style={styles.buttonText}>Sign in</Text>
               </TouchableOpacity>

@@ -62,17 +62,6 @@ export default class Location extends Component {
     this.remove = this.remove.bind(this);
   }
 
-  set() {
-    storageSet('location', JSON.stringify(this.state.region))
-    .then(this.props.callback(JSON.stringify(this.state.region)))
-    .then(_navigator.pop());
-  }
-  remove() {
-    storageRemove('location')
-    .then(this.props.callback(null))
-    .then(_navigator.pop());
-  }
-
  componentDidMount() {
    if (this.props.location == null) {
      navigator.geolocation.getCurrentPosition(

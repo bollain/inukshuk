@@ -40,7 +40,8 @@ var tripSchema = new Schema({
   },
   breadCrumbs: [{
     type: {type: String},
-    coordinates: [Number]
+    coordinates: [Number],
+    timeStamp: {type: Date}
   }],
   note: {type: String},
   completed: {type: Boolean},
@@ -55,9 +56,14 @@ tripSchema.methods.updateBreadcrumbs = function (breadCrumbs) {
   for (var i = 0; i < breadCrumbs.length; i++) {
     var latitude = breadCrumbs[i].latitude
     var longitude = breadCrumbs[i].longitude
-    var coordinates = [latitude, longitude]
+    // var coordinates = [latitude, longitude]
+    var bCrumb = {
+      timeStamp: breadCrumbs[i].timeStamp,
+      coordinates: [latitude, longitude]
+    }
+    console.log(bCrumb)
 
-    this.breadCrumbs.push({coordinates})
+    this.breadCrumbs.push(bCrumb)
   }
 }
 

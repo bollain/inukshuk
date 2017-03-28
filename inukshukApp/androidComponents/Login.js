@@ -37,11 +37,11 @@ export default class Login extends Component {
         storageSet('user', JSON.stringify(responseJson));
         this.props.navigator.push({
           id: 'tripSummary',
-          user: responseJson,
+          user: JSON.stringify(responseJson),
         });
       })
-      .catch((err) => {
-        Alert.alert('Cannot reach server');
+      .catch((error) => {
+        Alert.alert(error);
       });
     }
 
@@ -66,6 +66,7 @@ export default class Login extends Component {
                 style={styles.inputText}
                 underlineColorAndroid='rgba(0,0,0,0)'
                 placeholder='Email'
+                keyboardType={'email-address'}
                 onChangeText={(text) => this.setState({username: text})}
               />
             </View>

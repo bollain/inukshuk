@@ -10,7 +10,8 @@ import {
   BackAndroid,
 } from 'react-native';
 import TripSummary from './androidComponents/TripSummary'
-import Location from './androidComponents/Location';
+import StartLocation from './androidComponents/StartLocation';
+import EndLocation from './androidComponents/EndLocation';
 import Contact from './androidComponents/Contact';
 import Return from './androidComponents/Return';
 import Note from './androidComponents/Note';
@@ -53,12 +54,21 @@ class inukshukApp extends Component {
             user={route.user}
           />
         );
-      case 'location':
+      case 'startLocation':
         return (
-          <Location
+          <StartLocation
             navigator={navigator}
-            title="Location"
-            location={route.location}
+            title="Start Location"
+            location={route.startLocation}
+            callback={route.callback}
+          />
+        );
+      case 'endLocation':
+        return (
+          <EndLocation
+            navigator={navigator}
+            title="End Location"
+            location={route.endLocation}
             callback={route.callback}
           />
         );
@@ -84,7 +94,8 @@ class inukshukApp extends Component {
             navigator={navigator}
             title="Contact"
             contact={route.contact}
-            callback={route.callback}
+            setContact={route.setContact}
+            setContactAddress={route.setContactAddress}
           />
         );
       case 'return':
@@ -110,7 +121,9 @@ class inukshukApp extends Component {
           <Start
             navigator={navigator}
             title="Start"
-            location={route.location}
+            tripName={route.tripName}
+            startLocation={route.startLocation}
+            endLocation={route.endLocation}
             contact={route.contact}
             return={route.return}
             note={route.note}

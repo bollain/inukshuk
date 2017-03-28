@@ -26,6 +26,7 @@ import Sunset from './Sunset';
 import Breadcrumbs from './Breadcrumbs';
 import BackgroundJob from 'react-native-background-job';
 
+var notifySelf = require('../androidComponents/NotifySelf');
 var nativeImageSource = require('nativeImageSource');
 
 export default class Start extends Component {
@@ -45,6 +46,7 @@ export default class Start extends Component {
   // ongoing, clear the trip details and pop the navigator
   leaveStart() {
     BackgroundJob.cancel({jobKey: 'breadcrumbs'});
+    notifySelf.cancelNotification(JSON.parse(this.props.trip)._id);
     this.props.callback(false);
     _navigator.pop();
   }
@@ -72,6 +74,7 @@ export default class Start extends Component {
         }}
       ]
     );
+
   }
 
   // Confirm, then complete trip
@@ -135,6 +138,7 @@ export default class Start extends Component {
       console.error(err)
       Alert.alert(err);
     });
+    notifySelf.modifyNotification(this.state.returnDate);
   }
 
   // Select new return time

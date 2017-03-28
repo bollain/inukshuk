@@ -1,6 +1,5 @@
 var config = require('config')
 
-
 // var sample = 'http://maps.google.com/maps/api/staticmap?&zoom=6&size=512x512&maptype=hybrid&path=color:red|weight:5|45.123,-123.595|46.456,-124.985|46.856,-124.685'
 
 var base = 'http://maps.google.com/maps/api/staticmap?size=512x512&maptype=hybrid&path=color:red|weight:5'

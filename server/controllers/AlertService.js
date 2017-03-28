@@ -6,6 +6,7 @@ var nodemailer = require('nodemailer')
 var config = require('config')
 var staticmap = require('../utils/staticmap')
 var Trip = require('../models/Trip')
+var Messages = require('../resources/messages')
 var GoogleURL = require('google-url')
 var googleUrl = new GoogleURL({key: 'AIzaSyBZJqGZTs5u6r9Nxt4_hx8oQQcUUwZIrXc'})
 
@@ -34,20 +35,7 @@ module.exports.confirmAlertsWithUser = function (user) {
 
 module.exports.confirmEmergencyContactEmail = function (trip, user) {
   // setup email data with unicode symbols
-  var mailOptions = {
-    from: '"Inukshuk 👻" <inukshuk@inukshuk.me>', // sender address
-    to: trip.contactEmail, // list of receivers
-    subject: 'You are the chosen one! 👏', // Subject line
-    text: 'You have been chosen as an emergency contact for ' +
-          user.firstName + ', who is going on a hike. 🏃 ' +
-          'They are planning to return at ' + trip.returnTime + ' We\'ll let you know ' +
-          'when they return', // plain text body
-    html: '<b>Hello,</b>' +
-          '<p>You have been chosen as an emergency contact for ' +
-          user.firstName + ', who is going on a hike. 🏃 </p>' +
-          '<p>They are planning to return at ' + trip.returnTime + '. We\'ll let you know ' +
-          'when they return.</p>'
-  }
+  var mailOptions = Messages.generateConfirmContactEmail(trip, user)
 
 // send mail with defined transport object
   transporter.sendMail(mailOptions, (error, info) => {
@@ -58,14 +46,24 @@ module.exports.confirmEmergencyContactEmail = function (trip, user) {
   })
 }
 
-module.exports.createSMSAlert = function (alertId, phoneNumber, triggerTime) {
-  // var testNumber = '+17785583029';
-  var message = 'Your friend has not checked in from the hike! Please try and contact' +
-                ' them. If you can\'t consider reaching out to search and rescue.'
+module.exports.createSMSAlert = function (alertId, phoneNumber, triggerTime, tripID) {
   console.log('Scheduling text')
   var job = scheduler.scheduleJob(alertId, triggerTime, function () {
     console.log('Triggering!')
-    twilioClient.sendSms(phoneNumber, message)
+    Trip.findById(tripID, (err, trip) => {
+      if(err) {console.log(err)}
+      //Grab the crumbs
+      var longAssURL = staticmap.generateStaticMapURL(trip.breadCrumbs)
+      //Shorten the URL
+      googleUrl.shorten(longAssURL, (err, shortMapURL) => {
+        if(err){
+          console.log(err)
+        }
+        var message = Messages.generateEmergencyText(shortMapURL)
+        //Format the text message and off it goes
+        twilioClient.sendSms(phoneNumber, message)
+      })
+    })
   })
   if (!job) {
     console.log('Job was not created!!')
@@ -80,13 +78,13 @@ module.exports.createEmailAlert = function (alertId, emailAddress, triggerTime, 
       if (err) { console.log(err) }
       // Grab the crumbs
       var longAssURL = staticmap.generateStaticMapURL(trip.breadCrumbs)
-      //Shorten that URL
+      // Shorten that URL
       googleUrl.shorten(longAssURL, function (err, shortMapURL) {
         if (err) {
           console.log(err)
         }
-        //Format your email and send it off.
-        var mailOptions = generateEmergencyEmail(shortMapURL, emailAddress)
+        // Format your email and send it off.
+        var mailOptions = Messages.generateEmergencyEmail(shortMapURL, emailAddress)
         transporter.sendMail(mailOptions, (error, info) => {
           if (error) {
             return console.log(error)
@@ -108,19 +106,7 @@ module.exports.sendCancelSMS = function (phoneNumber) {
 
 module.exports.sendCancelEmail = function (emailAddress) {
   // setup email data with unicode symbols
-  var mailOptions = {
-    from: '"Inukshuk 👻" <inukshuk@inukshuk.me>', // sender address
-    to: emailAddress, // list of receivers
-    subject: 'Your friend has canceled their hike 😢', // Subject line
-    text: 'We just wanted to let you know your friend has ' +
-    'canceled the hike!\n' +
-    'Thanks for being the emergency contact!', // plain text body
-    html: '<b>Hello,</b>' +
-          '<p>We just wanted to let you know your friend has ' +
-          'canceled the hike!</p>' +
-          '<b>Thanks for being the emergency contact!</b>'
-  }
-
+  var mailOptions = Messages.generateCancelEmail(emailAddress)
 // send mail with defined transport object
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
@@ -151,19 +137,7 @@ module.exports.updateEmergencyContactSMS = function (trip) {
 }
 
 module.exports.updateEmergencyContactEmail = function (trip) {
-  var mailOptions = {
-    from: '"Inukshuk 👻" <inukshuk@inukshuk.me>', // sender address
-    to: trip.contactEmail,
-    subject: 'Your friend has extended their hike 💪', // Subject line
-    text: 'We just wanted to let you know your friend has ' +
-    'extended their hike\n' +
-    'Their new return time is: ' + trip.returnTime, // plain text body
-    html: '<b>Hello,</b>' +
-          '<p>We just wanted to let you know your friend has ' +
-            'extended their hike.</p>\n' +
-            '<p>Their new return time is: ' + trip.returnTime + '</p>' // html  body
-  }
-
+  var mailOptions = Messages.generateUpdateContactEmail(trip)
   // send mail with defined transport object
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
@@ -175,19 +149,7 @@ module.exports.updateEmergencyContactEmail = function (trip) {
 
 module.exports.sendReturnedSafeEmail = function (emailAddress) {
   // setup email data with unicode symbols
-  var mailOptions = {
-    from: '"Inukshuk 👻" <inukshuk@inukshuk.me>', // sender address
-    to: emailAddress, // list of receivers
-    subject: 'Your friend has completed their hike ✅', // Subject line
-    text: 'We just wanted to let you know your friend has ' +
-    'returned safely from the hike!\n' +
-    'Thanks for being the emergency contact!', // plain text body
-    html: '<b>Hello,</b>' +
-          '<p>We just wanted to let you know your friend has ' +
-          'returned safely from the hike!</p>' +
-          '<b>Thanks for being the emergency contact!</b>'
-  }
-
+  var mailOptions = Messages.generateReturnedSafeEmail(emailAddress)
 // send mail with defined transport object
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
@@ -195,25 +157,4 @@ module.exports.sendReturnedSafeEmail = function (emailAddress) {
     }
     console.log('Message %s sent: %s', info.messageId, info.response)
   })
-}
-
-// Generate Did not return email with map link
-var generateEmergencyEmail = function (staticURL, emailAddress) {
-  var message = {
-    from: '"Inukshuk 👻" <inukshuk@inukshuk.me>', // sender address
-    to: emailAddress, // list of receivers
-    subject: '❌ Your friend has not checked-in from their hike ❌', // Subject line
-    text: 'We just wanted to let you know your friend has ' +
-  'not checked-in from their hike. Please try and reach out to them. If you \n' +
-  'are unable to reach them, consider contacting Search and Rescue\n' +
-  'Here is a map of their last know locations ' + staticURL,
-    html: '<b>Hello,</b>' +
-        '<p>We just wanted to let you know your friend has ' +
-        'not checked-in from their hike. Please try and reach out to them. If you' +
-        ' are unable to reach them, consider contacting Search and Rescue.</p>' +
-        '<p>Here is a map of their last know locations ' + staticURL + '</p>' +
-        '<b>Thanks for being the emergency contact!</b>'
-
-  }
-  return message
 }

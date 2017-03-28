@@ -51,16 +51,16 @@ module.exports.createSMSAlert = function (alertId, phoneNumber, triggerTime, tri
   var job = scheduler.scheduleJob(alertId, triggerTime, function () {
     console.log('Triggering!')
     Trip.findById(tripID, (err, trip) => {
-      if(err) {console.log(err)}
-      //Grab the crumbs
+      if (err) { console.log(err) }
+      // Grab the crumbs
       var longAssURL = staticmap.generateStaticMapURL(trip.breadCrumbs)
-      //Shorten the URL
+      // Shorten the URL
       googleUrl.shorten(longAssURL, (err, shortMapURL) => {
-        if(err){
+        if (err) {
           console.log(err)
         }
         var message = Messages.generateEmergencyText(shortMapURL)
-        //Format the text message and off it goes
+        // Format the text message and off it goes
         twilioClient.sendSms(phoneNumber, message)
       })
     })

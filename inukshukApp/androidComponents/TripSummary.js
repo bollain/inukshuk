@@ -16,9 +16,6 @@ import {
   TextInput,
   Switch
 } from 'react-native';
-
-import { postTrip } from '../scripts/apiCalls.js';
-
 import {
   storageGet,
   storageMultiGet,
@@ -29,6 +26,8 @@ import {
 
 import { toMonth, padTime } from '../scripts/datesAndTimes.js';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { postTrip } from '../scripts/apiCalls.js';
+import { createEndOfTripNotification } from '../scripts/notifications.js';
 
 var nativeImageSource = require('nativeImageSource');
 
@@ -210,6 +209,7 @@ export default class TripSummary extends Component {
       postTrip(trip)
       .then((responseJson) => {
         console.log(responseJson);
+        createEndOfTripNotification(responseJson._id, new Date(responseJson.returnTime));
         Alert.alert(
           'Success!',
           'Your trip has been created!',

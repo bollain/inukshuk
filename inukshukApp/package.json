@@ -17,6 +17,7 @@
     "react-native-google-places": "^2.0.8",
     "react-native-google-places-autocomplete": "^1.2.7",
     "react-native-maps": "^0.12.4",
+    "react-native-push-notification": "^2.2.1",
     "react-native-vector-icons": "^4.0.0",
     "react-timer-mixin": "^0.13.3"
   },
@@ -30,6 +31,10 @@
   "jest": {
     "preset": "react-native",
     "codeCoverage": true,
-    "collectCoverageFrom" : ["**/*.{js,jsx}", "!**/node_modules/**", "**/androidCompents/**"]
+    "collectCoverageFrom": [
+      "**/*.{js,jsx}",
+      "!**/node_modules/**",
+      "**/androidCompents/**"
+    ]
   }
 }

@@ -228,22 +228,22 @@ var confirmEmergencyContact = function (trip, user) {
 
 var scheduleAlerts = function (trip) {
   if (trip.contactPhone) {
-    scheduleSMSAlert(trip._id + '_SMS', trip.contactPhone, trip.returnTime)
+    scheduleSMSAlert(trip._id + '_SMS', trip.contactPhone, trip.returnTime, trip._id)
   }
   if (trip.contactEmail) {
-    scheduleEmailAlert(trip._id + '_EMAIL', trip.contactEmail, trip.returnTime)
+    scheduleEmailAlert(trip._id + '_EMAIL', trip.contactEmail, trip.returnTime, trip._id)
   }
 }
 
 // ID is a string made up of tripID_EMAIL
-var scheduleEmailAlert = function (id, emailAddress, triggerTime) {
-  AlertService.createEmailAlert(id, emailAddress, triggerTime)
+var scheduleEmailAlert = function (id, emailAddress, triggerTime, tripID) {
+  AlertService.createEmailAlert(id, emailAddress, triggerTime, tripID)
 }
 
 // ID is a string made up of tripID_SMS
 // Push it into the scheduler
-var scheduleSMSAlert = function (id, phoneNumber, triggerTime) {
-  AlertService.createSMSAlert(id, phoneNumber, triggerTime)
+var scheduleSMSAlert = function (id, phoneNumber, triggerTime, tripID) {
+  AlertService.createSMSAlert(id, phoneNumber, triggerTime, tripID)
 }
 
 // Update Alerts

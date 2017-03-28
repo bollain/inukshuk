@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Code coverage report for server/utils/twilioClient.js</title>
+    <title>Code coverage report for server/utils/staticmap.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -16,32 +16,32 @@
 <div class='wrapper'>
   <div class='pad1'>
     <h1>
-      <a href="../../index.html">all files</a> / <a href="index.html">server/utils/</a> twilioClient.js
+      <a href="../../index.html">all files</a> / <a href="index.html">server/utils/</a> staticmap.js
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">50% </span>
+        <span class="strong">27.27% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>4/8</span>
+        <span class='fraction'>3/11</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">100% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/0</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">0% </span>
-        <span class="quiet">Branches</span>
-        <span class='fraction'>0/2</span>
-      </div>
-      <div class='fl pad1y space-right2'>
-        <span class="strong">50% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>1/2</span>
+        <span class='fraction'>0/1</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">50% </span>
+        <span class="strong">27.27% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>4/8</span>
+        <span class='fraction'>3/11</span>
       </div>
     </div>
   </div>
-  <div class='status-line medium'></div>
+  <div class='status-line low'></div>
 <pre><table class="coverage">
 <tr><td class="line-count quiet">1
 2
@@ -60,39 +60,45 @@
 15
 16
 17
-18</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1×</span>
+18
+19
+20</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1×</span>
-<span class="cline-any cline-yes">2×</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">var config = require('config')
-var client = require('twilio')(config.TWILIO_ACCOUNT_SID, config.TWILIO_AUTH_TOKEN)
 &nbsp;
-module.exports.sendSms = function (to, message) {
-  client.messages.create({
-    body: message,
-    to: to,
-    from: config.TWILIO_NUMBER
-  }, <span class="fstat-no" title="function not covered" >function (err, data) {</span>
-<span class="cstat-no" title="statement not covered" >    if (err) {</span>
-<span class="cstat-no" title="statement not covered" >      console.error('Could not notify ')</span>
-<span class="cstat-no" title="statement not covered" >      console.error(err)</span>
-    } else {
-<span class="cstat-no" title="statement not covered" >      console.log('Text message sent')</span>
-    }
-  })
+&nbsp;
+// var sample = 'http://maps.google.com/maps/api/staticmap?&amp;zoom=6&amp;size=512x512&amp;maptype=hybrid&amp;path=color:red|weight:5|45.123,-123.595|46.456,-124.985|46.856,-124.685'
+&nbsp;
+var base = 'http://maps.google.com/maps/api/staticmap?size=512x512&amp;maptype=hybrid&amp;path=color:red|weight:5'
+&nbsp;
+module.exports.generateStaticMapURL = <span class="fstat-no" title="function not covered" >function (breadcrumbs) {</span>
+  // The first one is always lat, the second lon
+<span class="cstat-no" title="statement not covered" >  var result = base</span>
+<span class="cstat-no" title="statement not covered" >  for (var i = 0; i &lt; breadcrumbs.length; i++) {</span>
+<span class="cstat-no" title="statement not covered" >    var coordinates = breadcrumbs[i].coordinates</span>
+<span class="cstat-no" title="statement not covered" >    var lat = coordinates[0]</span>
+<span class="cstat-no" title="statement not covered" >    var lon = coordinates[1]</span>
+<span class="cstat-no" title="statement not covered" >    result = result + '|' + lat + ',' + lon</span>
+  }
+<span class="cstat-no" title="statement not covered" >  result = result + '&amp;' + config.GOOGLE_API_TOKEN</span>
+<span class="cstat-no" title="statement not covered" >  return result</span>
 }
 &nbsp;</pre></td></tr>
 </table></pre>

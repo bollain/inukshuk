@@ -22,6 +22,7 @@
   "dependencies": {
     "config": "^1.25.1",
     "connect": "^3.2.0",
+    "google-url": "0.0.4",
     "js-yaml": "^3.3.0",
     "mongoose": "^4.8.2",
     "mongoose-auto-increment": "^5.0.1",

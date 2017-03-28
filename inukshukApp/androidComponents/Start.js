@@ -26,6 +26,7 @@ import Sunset from './Sunset';
 import Breadcrumbs from './Breadcrumbs';
 import BackgroundJob from 'react-native-background-job';
 
+import { cancelNotification, modifyNotification } from '../scripts/notifications.js';
 var nativeImageSource = require('nativeImageSource');
 
 export default class Start extends Component {
@@ -45,8 +46,13 @@ export default class Start extends Component {
   // ongoing, clear the trip details and pop the navigator
   leaveStart() {
     BackgroundJob.cancel({jobKey: 'breadcrumbs'});
+    cancelNotification(JSON.parse(this.props.trip)._id);
     this.props.callback(false);
     _navigator.pop();
+  }
+
+  onComponentWillUnmount() {
+    cancelNotification(JSON.parse(this.props.trip)._id);
   }
 
   // Confirm, then cancel trip
@@ -72,6 +78,7 @@ export default class Start extends Component {
         }}
       ]
     );
+
   }
 
   // Confirm, then complete trip
@@ -121,7 +128,8 @@ export default class Start extends Component {
               Alert.alert(
                 'Trip Extended to ' + this.state.newReturnDate.toDateString() + ' at ' + this.state.newReturnDate.toLocaleTimeString(),
                 'We also notified your contact of this change',
-              )
+              );
+              modifyNotification(this.props.trip._id, this.state.newReturnDate);
             })
             .catch((err) => {
               console.error(err)

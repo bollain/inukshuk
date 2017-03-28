@@ -8,7 +8,7 @@ var staticmap = require('../utils/staticmap')
 var Trip = require('../models/Trip')
 var Messages = require('../resources/messages')
 var GoogleURL = require('google-url')
-var googleUrl = new GoogleURL({key: 'AIzaSyBZJqGZTs5u6r9Nxt4_hx8oQQcUUwZIrXc'})
+var googleUrl = new GoogleURL({key: config.GOOGLE_API_TOKEN})
 
 var transporter = nodemailer.createTransport({
   host: 'mail.privateemail.com',
@@ -53,7 +53,7 @@ module.exports.createSMSAlert = function (alertId, phoneNumber, triggerTime, tri
     Trip.findById(tripID, (err, trip) => {
       if (err) { console.log(err) }
       // Grab the crumbs
-      var longAssURL = staticmap.generateStaticMapURL(trip.breadCrumbs)
+      var longAssURL = staticmap.generateStaticMapURL(trip)
       // Shorten the URL
       googleUrl.shorten(longAssURL, (err, shortMapURL) => {
         if (err) {
@@ -77,7 +77,7 @@ module.exports.createEmailAlert = function (alertId, emailAddress, triggerTime, 
     Trip.findById(tripID, (err, trip) => {
       if (err) { console.log(err) }
       // Grab the crumbs
-      var longAssURL = staticmap.generateStaticMapURL(trip.breadCrumbs)
+      var longAssURL = staticmap.generateStaticMapURL(trip)
       // Shorten that URL
       googleUrl.shorten(longAssURL, function (err, shortMapURL) {
         if (err) {

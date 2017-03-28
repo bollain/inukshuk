@@ -61,7 +61,6 @@ tripSchema.methods.updateBreadcrumbs = function (breadCrumbs) {
       timeStamp: breadCrumbs[i].timeStamp,
       coordinates: [latitude, longitude]
     }
-    console.log(bCrumb)
 
     this.breadCrumbs.push(bCrumb)
   }

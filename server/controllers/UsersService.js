@@ -21,14 +21,6 @@ exports.createUser = function (args, res, next) {
   User.findOrCreate({email: params.email}, newUser,
     function (err, user, created) {
       if (err) {
-        if (!err.errors) {
-        // duplicate user name
-          console.log('duplicate user email')
-          res.statusCode = 401
-          res.statusMessage = 'Bad request'
-          res.end('email already exists')
-          return
-        }
         if (err.errors.email) {
           console.log('The email was bad')
           res.statusCode = 401
@@ -163,28 +155,8 @@ exports.getUserTrips = function (args, res, next) {
    * userId Long The User for which we want all trips
    * returns tripsCollection
    **/
-  var examples = {}
-  examples['application/json'] = {
-    'trips': [ {
-      'note': 'aeiou',
-      'contactEmail': 'aeiou',
-      'startingLocation': {
-        'latitude': 1.3579000000000001069366817318950779736042022705078125,
-        'longitude': 1.3579000000000001069366817318950779736042022705078125
-      },
-      'tripId': 123456789,
-      'contactPhone': 'aeiou',
-      'userId': 123456789,
-      'returnTime': '2000-01-23T04:56:07.000+00:00'
-    } ],
-    'userId': 123
-  }
-  if (Object.keys(examples).length > 0) {
-    res.setHeader('Content-Type', 'application/json')
-    res.end(JSON.stringify(examples[Object.keys(examples)[0]] || {}, null, 2))
-  } else {
-    res.end()
-  }
+   // TODO: this
+  res.end()
 }
 
 exports.searchTrip = function (args, res, next) {
@@ -195,23 +167,6 @@ exports.searchTrip = function (args, res, next) {
    * tripId String The ID of a trip
    * returns trip
    **/
-  var examples = {}
-  examples['application/json'] = {
-    'note': 'aeiou',
-    'contactEmail': 'aeiou',
-    'startingLocation': {
-      'latitude': 1.3579000000000001069366817318950779736042022705078125,
-      'longitude': 1.3579000000000001069366817318950779736042022705078125
-    },
-    'tripId': 123456789,
-    'contactPhone': 'aeiou',
-    'userId': 123456789,
-    'returnTime': '2000-01-23T04:56:07.000+00:00'
-  }
-  if (Object.keys(examples).length > 0) {
-    res.setHeader('Content-Type', 'application/json')
-    res.end(JSON.stringify(examples[Object.keys(examples)[0]] || {}, null, 2))
-  } else {
-    res.end()
-  }
+   // TODO: Finish this
+  res.end()
 }

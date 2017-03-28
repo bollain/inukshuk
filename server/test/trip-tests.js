@@ -30,6 +30,7 @@ describe('Trip', () => {
       var confirmEmergencyContactEmail = sinon.stub(AlertService, 'confirmEmergencyContactEmail')
       var createEmailAlert = sinon.stub(AlertService, 'createEmailAlert')
       var createSMSAlert = sinon.stub(AlertService, 'createSMSAlert')
+      var confirmAlertsWithUser = sinon.stub(AlertService, 'confirmAlertsWithUser')
 
       let existingUser = new User({
         firstName: 'Papa',
@@ -54,11 +55,13 @@ describe('Trip', () => {
                 sinon.assert.called(confirmEmergencyContactEmail)
                 sinon.assert.called(createEmailAlert)
                 sinon.assert.called(createSMSAlert)
+                sinon.assert.called(confirmAlertsWithUser)
                 // And now restore them
                 confirmEmergencyContactEmail.restore()
                 confirmEmergencyContactSMS.restore()
                 createEmailAlert.restore()
                 createSMSAlert.restore()
+                confirmAlertsWithUser.restore()
                 done()
               })
       })

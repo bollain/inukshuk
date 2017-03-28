@@ -9,12 +9,15 @@
   },
   "dependencies": {
     "countdown": "^2.6.0",
+    "mock-async-storage": "^1.0.3",
     "react": "15.4.2",
     "react-native": "0.41.2",
+    "react-native-background-job": "^1.1.2",
     "react-native-contacts": "^0.8.0",
     "react-native-google-places": "^2.0.8",
     "react-native-google-places-autocomplete": "^1.2.7",
     "react-native-maps": "^0.12.4",
+    "react-native-push-notification": "^2.2.1",
     "react-native-vector-icons": "^4.0.0",
     "react-timer-mixin": "^0.13.3"
   },
@@ -27,6 +30,12 @@
     "react-test-renderer": "15.4.2"
   },
   "jest": {
-    "preset": "react-native"
+    "preset": "react-native",
+    "codeCoverage": true,
+    "collectCoverageFrom": [
+      "**/*.{js,jsx}",
+      "!**/node_modules/**",
+      "**/androidCompents/**"
+    ]
   }
 }

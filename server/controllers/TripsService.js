@@ -15,6 +15,7 @@ exports.createTrip = function (args, res, next) {
   var userId = params.userId
   var newTrip = Trip({
     userId: userId,
+    tripName: params.tripName,
     returnTime: params.returnTime,
     contactPhone: params.contactPhone,
     contactEmail: params.contactEmail,
@@ -22,7 +23,10 @@ exports.createTrip = function (args, res, next) {
     completed: false,
     startingLocation: {
       coordinates: [params.startingLocation.latitude,
-        params.startingLocation.longitude]}
+        params.startingLocation.longitude]},
+    endingLocation: {
+      coordinates: [params.endingLocation.latitude,
+        params.endingLocation.longitude]}
   })
   // If user does not exist, kill things off
   User.findById(userId, function (err, user) {
@@ -45,7 +49,7 @@ exports.createTrip = function (args, res, next) {
             handleError(res, err)
           }
         })
-          // Create text Alert
+        // Schedule alerts and confirm with emergency contact
         scheduleAlerts(newTrip)
         confirmEmergencyContact(newTrip, user)
         console.log('Trip created!')
@@ -88,8 +92,8 @@ exports.deleteTrip = function (args, res, next) {
           return handleError(res, err)
         }
         // Cancel all alerts
-        cancelAlerts(trip._id)
-        createCancelMessage(trip.contactPhone, trip.contactEmail)
+        cancelAlerts(trip)
+        createCancelMessage(trip)
         res.end('Trip deleted')
       })
     }
@@ -141,10 +145,12 @@ exports.updateTrip = function (args, res, next) {
       res.statusMessage = 'Trip does not exist'
       res.end('Trip does not exist')
     } else {
+      trip.tripName = params.tripName || trip.tripName
       trip.returnTime = params.returnTime || trip.returnTime
       trip.contactEmail = params.contactEmail || trip.contactEmail
       trip.contactPhone = params.contactPhone || trip.contactPhone
       trip.startingLocation = params.startingLocation ? updateCoordinates(params.startingLocation) : trip.startingLocation
+      trip.endingLocation = params.endingLocation ? updateCoordinates(params.endingLocation) : trip.endingLocation
       trip.note = params.note || trip.note
       trip.completed = params.completed || trip.completed
 
@@ -157,8 +163,8 @@ exports.updateTrip = function (args, res, next) {
         // alerts
         if (params.completed) {
           console.log('Trip completed, cancelling alerts!')
-          cancelAlerts(trip._id)
-          createReturnedSafelyAlerts(trip.contactPhone, trip.contactEmail)
+          cancelAlerts(trip)
+          createReturnedSafelyAlerts(trip)
         }
         // If return time was updated, update alerts
         if (params.returnTime) {
@@ -174,13 +180,59 @@ exports.updateTrip = function (args, res, next) {
   })
 }
 
+exports.updateBreadcrumbs = function (args, res, next) {
+  /**
+   * Breadcrumbs for a specific trip. Responds with list of all breadcrumbs known by the server.
+   *
+   * tripId Long ID of trip
+   * trip List Array of breadcrumbs
+   * returns List
+   **/
+  var tripId = args.tripId.value
+  var breadcrumbs = args.Trip.value
+  Trip.findById(tripId, function (err, trip) {
+    if (err) {
+      handleError(err)
+      return
+    }
+    if (!trip) {
+      res.statusCode = 404
+      res.statusMessage = 'Trip does not exist'
+      res.end('Trip does not exist')
+    } else {
+      // Trip exists!! Update breadcrumbs
+      trip.updateBreadcrumbs(breadcrumbs)
+      trip.save(function (err) {
+        if (err) {
+          console.log(err)
+          handleError(res, err)
+          return
+        }
+        console.log('Breadcrumbs updated!')
+        res.setHeader('Content-Type', 'application/json')
+        res.end(JSON.stringify(trip.breadCrumbs))
+      })
+    }
+  })
+}
+
 var confirmEmergencyContact = function (trip, user) {
-  AlertService.confirmEmergencyContactSMS(trip, user)
+  if (trip.contactPhone) {
+    AlertService.confirmEmergencyContactSMS(trip, user)
+  }
+  if (trip.contactEmail) {
+    AlertService.confirmEmergencyContactEmail(trip, user)
+  }
+  AlertService.confirmAlertsWithUser(user)
 }
 
 var scheduleAlerts = function (trip) {
-  scheduleSMSAlert(trip._id + '_SMS', trip.contactPhone, trip.returnTime)
-  scheduleEmailAlert(trip._id + '_EMAIL', trip.contactEmail, trip.returnTime)
+  if (trip.contactPhone) {
+    scheduleSMSAlert(trip._id + '_SMS', trip.contactPhone, trip.returnTime)
+  }
+  if (trip.contactEmail) {
+    scheduleEmailAlert(trip._id + '_EMAIL', trip.contactEmail, trip.returnTime)
+  }
 }
 
 // ID is a string made up of tripID_EMAIL
@@ -197,7 +249,7 @@ var scheduleSMSAlert = function (id, phoneNumber, triggerTime) {
 // Update Alerts
 var updateAlerts = function (trip) {
   // First cancel current alerts
-  cancelAlerts(trip._id)
+  cancelAlerts(trip)
   // Then reschedule them!
   scheduleAlerts(trip)
   // Let your buddy know!
@@ -206,25 +258,42 @@ var updateAlerts = function (trip) {
 
 // Updating emergency contact with new return time
 var updateEmergencyContact = function (trip) {
-  AlertService.updateEmergencyContact(trip)
+  if (trip.contactPhone) {
+    AlertService.updateEmergencyContactSMS(trip)
+  }
+  if (trip.contactEmail) {
+    AlertService.updateEmergencyContactEmail(trip)
+  }
 }
 
 // Cancel scheduled alerts for a trip
-var cancelAlerts = function (tripID) {
+var cancelAlerts = function (trip) {
   // Cancel all scheduled alerts
-  AlertService.cancelAlert(tripID + '_SMS')
-  AlertService.cancelAlert(tripID + '_EMAIL')
+  if (trip.contactEmail) {
+    AlertService.cancelAlert(trip._id + '_EMAIL')
+  }
+  if (trip.contactPhone) {
+    AlertService.cancelAlert(trip._id + '_SMS')
+  }
 }
 
-var createCancelMessage = function (contactPhone, contactEmail) {
-  AlertService.sendCancelSMS(contactPhone)
-  AlertService.sendCancelEmail(contactEmail)
+var createCancelMessage = function (trip) {
+  if (trip.contactPhone) {
+    AlertService.sendCancelSMS(trip.contactPhone)
+  }
+  if (trip.contactEmail) {
+    AlertService.sendCancelEmail(trip.contactEmail)
+  }
 }
 
 // User does not get one
-var createReturnedSafelyAlerts = function (contactPhone, contactEmail) {
-  AlertService.sendReturnedSafeSMS(contactPhone)
-  AlertService.sendReturnedSafeEmail(contactEmail)
+var createReturnedSafelyAlerts = function (trip) {
+  if (trip.contactPhone) {
+    AlertService.sendReturnedSafeSMS(trip.contactPhone)
+  }
+  if (trip.contactEmail) {
+    AlertService.sendReturnedSafeEmail(trip.contactEmail)
+  }
 }
 
 var handleError = function (res, error) {

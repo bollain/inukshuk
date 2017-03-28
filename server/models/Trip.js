@@ -20,6 +20,7 @@ var validatePhone = function (phoneNumber) {
 
 var tripSchema = new Schema({
   userId: {type: Number, ref: 'User', required: true},
+  tripName: {type: String},
   returnTime: {type: Date, required: true},
   contactEmail: {type: String,
     trim: true,
@@ -33,11 +34,37 @@ var tripSchema = new Schema({
     type: {type: String}, // Latitude always goes first!
     coordinates: [Number]
   },
+  endingLocation: {
+    type: {type: String}, // Latitude always goes first!
+    coordinates: [Number]
+  },
+  breadCrumbs: [{
+    type: {type: String},
+    coordinates: [Number],
+    timeStamp: {type: Date}
+  }],
   note: {type: String},
   completed: {type: Boolean},
   created_at: Date,
   updated_at: Date
 })
+
+tripSchema.methods.updateBreadcrumbs = function (breadCrumbs) {
+  if (!breadCrumbs) {
+    return
+  }
+  for (var i = 0; i < breadCrumbs.length; i++) {
+    var latitude = breadCrumbs[i].latitude
+    var longitude = breadCrumbs[i].longitude
+    // var coordinates = [latitude, longitude]
+    var bCrumb = {
+      timeStamp: breadCrumbs[i].timeStamp,
+      coordinates: [latitude, longitude]
+    }
+
+    this.breadCrumbs.push(bCrumb)
+  }
+}
 
 tripSchema.pre('save', function (next) {
   // Get the current Date

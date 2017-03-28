@@ -83,11 +83,13 @@ export default class Contact extends Component {
     });
   }
 
+  // Set the chosen contact and the chosen address (email or phone)
   set(address) {
     let chosenContact = JSON.stringify(this.state.chosenContact);
     storageSet('contact', chosenContact)
     .then(storageSet('contactAddress', address))
-    .then(this.props.callback(chosenContact))
+    .then(this.props.setContact(chosenContact))
+    .then(this.props.setContactAddress(address))
     .then(() => {
       this.setModalVisible(!this.state.modalVisible);
       _navigator.pop();

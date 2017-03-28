@@ -23,6 +23,8 @@ var nativeImageSource = require('nativeImageSource');
 import MapView from 'react-native-maps';
 import RNGooglePlaces from 'react-native-google-places';
 
+import Icon from 'react-native-vector-icons/MaterialIcons';
+
 var { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
 
@@ -57,9 +59,6 @@ export default class Location extends Component {
       };
     }
     this.onRegionChange = this.onRegionChange.bind(this);
-    this.centerLocation = this.centerLocation.bind(this);
-    this.set = this.set.bind(this);
-    this.remove = this.remove.bind(this);
   }
 
  componentDidMount() {
@@ -76,7 +75,6 @@ export default class Location extends Component {
          });
        },
        (error) => alert(JSON.stringify(error)),
-       {enableHighAccuracy: false, timeout: 20000, maximumAge: 1000}
      );
      this.watchID = navigator.geolocation.watchPosition((position) => {
        this.setState({
@@ -113,7 +111,6 @@ export default class Location extends Component {
        });
      },
      (error) => alert(JSON.stringify(error)),
-     {enableHighAccuracy: false, timeout: 20000, maximumAge: 1000}
    );
  }
 
@@ -154,38 +151,43 @@ export default class Location extends Component {
             onRegionChange={this.onRegionChange}
           >
           </MapView>
-          <TouchableOpacity
-            style={styles.buttonContainer}
-          >
-            <Button
-              style={styles.button}
-              onPress={this.centerLocation}
-              title="Center"
-              color="#841584"
-              accessibilityLabel="Center"
-            />
-            <Button
-              style={styles.button}
+          <View style={styles.buttonContainerTop}>
+            <TouchableOpacity
+              style={styles.androidButtonContainer}
               onPress={() => this.openSearchModal()}
-              title="Search"
-              color="#841584"
-              accessibilityLabel="Search"
-            />
-            <Button
-              style={styles.button}
+              activeOpacity={.9}
+            >
+              <Icon
+                name="search"
+                size={22}
+                color="#666666"
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={[styles.androidButtonContainer, styles.blue]}
+              onPress={() => this.centerLocation()}
+              activeOpacity={.9}
+            >
+              <Icon
+                name="gps-fixed"
+                size={22}
+                color="white"
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.buttonContainerBottom}>
+            <TouchableOpacity
+              style={[styles.androidButtonContainer, styles.green]}
               onPress={() => this.set()}
-              title="Submit"
-              color="#841584"
-              accessibilityLabel="Submit"
-            />
-            <Button
-              style={styles.button}
-              onPress={() => this.remove()}
-              title="Remove"
-              color="#841584"
-              accessibilityLabel="Submit"
-            />
-        </TouchableOpacity>
+              activeOpacity={.9}
+            >
+              <Icon
+                name="check"
+                size={22}
+                color="white"
+              />
+            </TouchableOpacity>
+        </View>
           <View style={styles.markerContainer}>
             <Image style={styles.marker} source={require('../assets/marker.png')} />
           </View>
@@ -201,33 +203,61 @@ export default class Location extends Component {
 };
 
 const styles = StyleSheet.create({
-   container: {
-     ...StyleSheet.absoluteFillObject,
-     justifyContent: 'flex-start',
-     alignItems: 'stretch',
-     backgroundColor: 'white',
-   },
-   toolbar: {
-     height: 60,
-     backgroundColor: '#00aaf1',
-   },
-   mapContainer: {
-     flex: 1,
-   },
-   map: {
-     ...StyleSheet.absoluteFillObject,
-   },
-   markerContainer: {
-     flex: 1,
-     justifyContent: 'center',
-     alignItems: 'center',
-   },
-   marker: {
-     width: 25,
-     height: 40,
-   },
-   buttonContainer: {
-     flexDirection: 'row',
-     justifyContent: 'space-between',
-   },
+  container: {
+    ...StyleSheet.absoluteFillObject,
+    justifyContent: 'flex-start',
+    alignItems: 'stretch',
+    backgroundColor: 'white',
+  },
+  toolbar: {
+    height: 60,
+    backgroundColor: '#00aaf1',
+  },
+  mapContainer: {
+    flex: 1,
+  },
+  map: {
+    ...StyleSheet.absoluteFillObject,
+  },
+  markerContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  marker: {
+    width: 25,
+    height: 40,
+  },
+  buttonContainerTop: {
+    flex: 1,
+    width: width,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    position:'absolute',
+    padding: 10,
+  },
+  buttonContainerBottom: {
+    flex: 1,
+    width: width,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    position:'absolute',
+    padding: 10,
+    bottom: 0,
+  },
+  androidButtonContainer: {
+    height:50,
+    width:50,
+    borderRadius:25,
+    backgroundColor: 'white',
+    elevation: 4,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  green: {
+    backgroundColor: 'green',
+  },
+  blue: {
+    backgroundColor: '#00aaf1',
+  }
 });

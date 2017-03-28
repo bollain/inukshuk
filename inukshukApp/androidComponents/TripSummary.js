@@ -12,7 +12,6 @@ import {
   TouchableOpacity,
   Image,
   AsyncStorage,
-  Modal,
   TextInput,
   Switch
 } from 'react-native';
@@ -45,7 +44,6 @@ export default class TripSummary extends Component {
       contactAddress: null,
       return: null,
       note: null,
-      modalVisible: false,
       destIsStart: true,
       user: JSON.parse(this.props.user),
     };
@@ -225,7 +223,7 @@ export default class TripSummary extends Component {
     }
   }
 
-  clearTrip(showDialog) {
+  clearTrip() {
     storageMultiRemove(['tripName','startLocation','endLocation','contact','return','note']).then((response => {
       this.setState({
         tripName: null,
@@ -237,13 +235,6 @@ export default class TripSummary extends Component {
         note: null,
       });
     }));
-    if (showDialog) {
-      this.setModalVisible(!this.state.modalVisible);
-    }
-  }
-
-  setModalVisible(visible) {
-    this.setState({modalVisible: visible});
   }
 
   async setSummaryNote(currentNote) {
@@ -421,7 +412,16 @@ export default class TripSummary extends Component {
           <View style={styles.clearContainer}>
             <TouchableOpacity
               style={styles.clear}
-              onPress={() => this.setModalVisible(!this.state.modalVisible)}
+              onPress={() => {
+                Alert.alert(
+                  'Clear trip details',
+                  'Are you sure you want to do this?',
+                  [
+                    {text: 'Cancel'},
+                    {text: 'Clear trip details', onPress: () => this.clearTrip()},
+                  ],
+                )
+              }}
               activeOpacity={.8}>
               <Text style={styles.startText}>Clear</Text>
             </TouchableOpacity>
@@ -435,57 +435,6 @@ export default class TripSummary extends Component {
             </TouchableOpacity>
           </View>
         </View>
-        <Modal
-          animationType={"fade"}
-          transparent={true}
-          visible={this.state.modalVisible}
-          onRequestClose={() => {alert("Modal has been closed.")}}
-          >
-         <View style={{
-           flex: 1,
-           flexDirection: 'column',
-           justifyContent: 'center',
-           alignItems: 'center',
-           backgroundColor: 'rgba(0, 0, 0, 0.5)'
-         }}>
-          <View style={{
-            width: 300,
-            justifyContent: 'flex-start',
-            alignItems: 'stretch',
-            backgroundColor: 'white',
-          }}>
-            <Text style={{
-              fontSize: 20,
-              fontWeight: 'bold',
-              textAlign: 'center',
-              margin: 5,
-            }}>
-              Are you sure you want to clear this trip?
-            </Text>
-            <View style={{
-              borderTopWidth: 1,
-              borderTopColor: '#e6e6e6',
-            }}>
-              <TouchableHighlight
-                style={styles.modalOption}
-                underlayColor='#e6e6e6'
-                onPress={() => {
-                this.clearTrip(true)
-              }}>
-                <Text style={{fontSize: 16, textAlign: 'center'}}>Clear</Text>
-              </TouchableHighlight>
-              <TouchableHighlight
-                style={styles.modalOption}
-                underlayColor='#e6e6e6'
-                onPress={() => {
-                this.setModalVisible(!this.state.modalVisible)
-              }}>
-                <Text style={{fontSize: 16, textAlign: 'center'}}>Cancel</Text>
-              </TouchableHighlight>
-            </View>
-          </View>
-         </View>
-        </Modal>
       </View>
     );
   }
@@ -560,11 +509,6 @@ const styles = StyleSheet.create({
      fontWeight: 'bold',
      color: 'white',
      textAlign: 'center'
-   },
-   modalOption: {
-     padding: 15,
-     borderBottomColor: '#e6e6e6',
-     borderBottomWidth: 1,
    },
    inputText: {
      flex: 1,

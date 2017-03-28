@@ -148,7 +148,11 @@ export default class Contact extends Component {
     } else {
       Alert.alert(
         "Nothing to see here",
-         contact.firstName + " " + contact.lastName + " doesn't have an email or phone number in your address book"
+         this.formatName(
+           contact.firstName,
+           contact.middleName,
+           contact.lastName
+         ) + " doesn't have an email or phone number in your address book"
       );
     }
   }
@@ -299,16 +303,17 @@ const styles = StyleSheet.create({
     elevation: 20,
   },
   contactAddress: {
-    padding:10,
+    padding: 10,
     borderBottomColor: '#e6e6e6',
     borderBottomWidth: 1,
   },
   modalTitle: {
     fontSize: 22,
     fontWeight: 'bold',
-    textAlign: 'center',
+    textAlign: 'left',
     color: 'black',
     margin: 5,
+    marginLeft: 10,
   },
   cancelModal: {
     fontSize: 14,

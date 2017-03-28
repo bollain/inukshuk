@@ -45,9 +45,13 @@ export default class Start extends Component {
   // Clean up before leaving the start page. Clear the breadcrumbs job if it is
   // ongoing, clear the trip details and pop the navigator
   leaveStart() {
-    BackgroundJob.cancel({jobKey: 'breadcrumbs'});
+    BackgroundJob.getAll({callback: (jobs) => {
+      console.log("Jobs:",jobs);
+      if (jobs.indexOf('breadcrumbs') > -1)
+        BackgroundJob.cancel({jobKey: 'breadcrumbs'});
+    }})
     cancelNotification(JSON.parse(this.props.trip)._id);
-    this.props.callback(false);
+    this.props.callback();
     _navigator.pop();
   }
 

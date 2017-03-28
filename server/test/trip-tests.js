@@ -181,7 +181,7 @@ describe('Trip', () => {
     })
   })
 
-  describe('/GET Trip', ()=> {
+  describe('/GET Trip', () => {
     it('Should get an existing trip', (done) => {
       let someUser = new User({
         firstName: 'Linus',
@@ -189,7 +189,7 @@ describe('Trip', () => {
         phoneNumber: '7785580000',
         email: 'linux@gnu.com'
       })
-      someUser.save((err, user) =>{
+      someUser.save((err, user) => {
         var trip = new Trip({
           userId: user._id,
           tripName: 'MyTestTrip',
@@ -213,9 +213,9 @@ describe('Trip', () => {
           note: 'string',
           completed: false
         })
-        if(err) {console.log(err)}
+        if (err) { console.log(err) }
         trip.save((err, trip) => {
-          if(err){console.log(err)}
+          if (err) { console.log(err) }
           chai.request(index)
               .get('/trips/' + trip._id)
               .end((err, res) => {
@@ -231,7 +231,7 @@ describe('Trip', () => {
       })
     })
 
-    it('Should give error on non-existent trip', (done) =>{
+    it('Should give error on non-existent trip', (done) => {
       chai.request(index)
           .get('/trips/' + 420)
           .end((err, res) => {
@@ -242,14 +242,14 @@ describe('Trip', () => {
     })
   })
 
-  describe("/PUT Trip", () => {
-    it('Should return error when updating a non-existent trip', (done) =>{
+  describe('/PUT Trip', () => {
+    it('Should return error when updating a non-existent trip', (done) => {
       var fakeTrip = createTrip()
       fakeTrip.tripId = 420
       chai.request(index)
           .put('/trips')
           .send(fakeTrip)
-          .end((err, res) =>{
+          .end((err, res) => {
             res.should.have.status(404)
             if (err) {}
             done()
@@ -257,7 +257,7 @@ describe('Trip', () => {
     })
 
     it('Should not update a trip with invalid email/phone', (done) => {
-      //First create a user
+      // First create a user
       let existingUser = new User({
         firstName: 'Papa',
         lastName: 'John',
@@ -265,7 +265,7 @@ describe('Trip', () => {
         email: 'bollain@gmail.com'
       })
       existingUser.save((err, user) => {
-        //Now save a trip
+        // Now save a trip
         var trip = new Trip({
           userId: user._id,
           tripName: 'MyTestTrip',
@@ -289,11 +289,11 @@ describe('Trip', () => {
           note: 'string',
           completed: false
         })
-        if(err) {console.log(err)}
-        //Save the trip
+        if (err) { console.log(err) }
+        // Save the trip
         trip.save((err, trip) => {
           if (err) { console.log(err) }
-          //Update the trip
+          // Update the trip
           var tripUpdate = {
             tripId: trip._id,
             contactEmail: 'bademail',
@@ -316,15 +316,14 @@ describe('Trip', () => {
               })
         })
       })
-
     })
 
     it('Should send alerts when trip completed', (done) => {
-      //Stub out the AlertService calls
+      // Stub out the AlertService calls
       var cancelAlert = sinon.stub(AlertService, 'cancelAlert')
       var returnedSafeSMS = sinon.stub(AlertService, 'sendReturnedSafeSMS')
       var returnedSafeEmail = sinon.stub(AlertService, 'sendReturnedSafeEmail')
-      //First create a user
+      // First create a user
       let existingUser = new User({
         firstName: 'Papa',
         lastName: 'John',
@@ -332,7 +331,7 @@ describe('Trip', () => {
         email: 'charlie@gmail.com'
       })
       existingUser.save((err, user) => {
-        //Now save a trip
+        // Now save a trip
         var trip = new Trip({
           userId: user._id,
           tripName: 'MyTestTrip',
@@ -356,16 +355,16 @@ describe('Trip', () => {
           note: 'string',
           completed: false
         })
-        if(err) {console.log(err)}
-        //Save the trip
+        if (err) { console.log(err) }
+        // Save the trip
         trip.save((err, trip) => {
           if (err) { console.log(err) }
-          //Complete the trip
+          // Complete the trip
           var tripUpdate = {
             tripId: trip._id,
             completed: true
           }
-          //PUT IT
+          // PUT IT
           chai.request(index)
               .put('/trips')
               .send(tripUpdate)
@@ -381,60 +380,60 @@ describe('Trip', () => {
                 returnedSafeEmail.restore()
                 done()
               })
-            })
-          })
         })
+      })
+    })
 
-      it('Should update alerts when time changed', (done) => {
-        //Stub out the AlertService calls
-        var cancelAlert = sinon.stub(AlertService, 'cancelAlert')
-        var createEmailAlert = sinon.stub(AlertService, 'createEmailAlert')
-        var createSMSAlert = sinon.stub(AlertService, 'createSMSAlert')
-        var updateEmergencyContactSMS = sinon.stub(AlertService, "updateEmergencyContactSMS")
-        var updateEmergencyContactEmail = sinon.stub(AlertService, 'updateEmergencyContactEmail')
-        //First create a user
-        let existingUser = new User({
-          firstName: 'Papa',
-          lastName: 'John',
-          phoneNumber: '7785583076',
-          email: 'charlie@gmail.com'
-        })
-        existingUser.save((err, user) => {
-          //Now save a trip
-          var trip = new Trip({
-            userId: user._id,
-            tripName: 'MyTestTrip',
-            returnTime: '2017-03-26T22:34:33.649Z',
-            contactEmail: 'bollain@gmail.com',
-            contactPhone: '7785583029',
-            startingLocation: {
+    it('Should update alerts when time changed', (done) => {
+        // Stub out the AlertService calls
+      var cancelAlert = sinon.stub(AlertService, 'cancelAlert')
+      var createEmailAlert = sinon.stub(AlertService, 'createEmailAlert')
+      var createSMSAlert = sinon.stub(AlertService, 'createSMSAlert')
+      var updateEmergencyContactSMS = sinon.stub(AlertService, 'updateEmergencyContactSMS')
+      var updateEmergencyContactEmail = sinon.stub(AlertService, 'updateEmergencyContactEmail')
+        // First create a user
+      let existingUser = new User({
+        firstName: 'Papa',
+        lastName: 'John',
+        phoneNumber: '7785583076',
+        email: 'charlie@gmail.com'
+      })
+      existingUser.save((err, user) => {
+          // Now save a trip
+        var trip = new Trip({
+          userId: user._id,
+          tripName: 'MyTestTrip',
+          returnTime: '2017-03-26T22:34:33.649Z',
+          contactEmail: 'bollain@gmail.com',
+          contactPhone: '7785583029',
+          startingLocation: {
+            latitude: 0,
+            longitude: 0
+          },
+          endingLocation: {
+            latitude: 0,
+            longitude: 0
+          },
+          breadCrumbs: [
+            {
               latitude: 0,
               longitude: 0
-            },
-            endingLocation: {
-              latitude: 0,
-              longitude: 0
-            },
-            breadCrumbs: [
-              {
-                latitude: 0,
-                longitude: 0
-              }
-            ],
-            note: 'string',
-            completed: false
-          })
-          if(err) {console.log(err)}
-          //Save the trip
-          trip.save((err, trip) => {
-            if (err) { console.log(err) }
-            //Complete the trip
-            var tripUpdate = {
-              tripId: trip._id,
-              returnTime: '2017-03-26T22:34:33.649Z'
             }
-            //PUT IT
-            chai.request(index)
+          ],
+          note: 'string',
+          completed: false
+        })
+        if (err) { console.log(err) }
+          // Save the trip
+        trip.save((err, trip) => {
+          if (err) { console.log(err) }
+            // Complete the trip
+          var tripUpdate = {
+            tripId: trip._id,
+            returnTime: '2017-03-26T22:34:33.649Z'
+          }
+            // PUT IT
+          chai.request(index)
                 .put('/trips')
                 .send(tripUpdate)
                 .end((err, res) => {
@@ -453,71 +452,97 @@ describe('Trip', () => {
                   updateEmergencyContactEmail.restore()
                   done()
                 })
-              })
-            })
-          })
+        })
       })
+    })
+  })
 
-      describe('/POST breadCrumbs', () => {
-        it('Should update breadCrumbs for valid trip', (done) => {
-          //First create a user
-          let existingUser = new User({
-            firstName: 'Papa',
-            lastName: 'John',
-            phoneNumber: '7785583076',
-            email: 'charlie@gmail.com'
-          })
-          existingUser.save((err, user) => {
-            //Now save a trip
-            var trip = new Trip({
-              userId: user._id,
-              tripName: 'MyTestTrip',
-              returnTime: '2017-03-26T22:34:33.649Z',
-              contactEmail: 'bollain@gmail.com',
-              contactPhone: '7785583029',
-              startingLocation: {
-                latitude: 0,
-                longitude: 0
-              },
-              endingLocation: {
-                latitude: 0,
-                longitude: 0
-              },
-              note: 'string',
-              completed: false
-            })
-            if(err) {console.log(err)}
-            //Save the trip
-            trip.save((err, trip) => {
-              if(err) {console.log(err)}
-              var bCrumz = [
-                  {
-                    "latitude": 42,
-                    "longitude": 420,
-                    "timeStamp": "2017-03-27T05:58:57.412Z"
-                  },
-                  {
-                    "latitude": 67,
-                    "longitude": 45,
-                    "timeStamp": "2017-03-27T05:58:57.412Z"
-                  }
-                ]
+  describe('/POST breadCrumbs', () => {
+    it('Should update breadCrumbs for valid trip', (done) => {
+          // First create a user
+      let existingUser = new User({
+        firstName: 'Papa',
+        lastName: 'John',
+        phoneNumber: '7785583076',
+        email: 'charlie@gmail.com'
+      })
+      existingUser.save((err, user) => {
+            // Now save a trip
+        var trip = new Trip({
+          userId: user._id,
+          tripName: 'MyTestTrip',
+          returnTime: '2017-03-26T22:34:33.649Z',
+          contactEmail: 'bollain@gmail.com',
+          contactPhone: '7785583029',
+          startingLocation: {
+            latitude: 0,
+            longitude: 0
+          },
+          endingLocation: {
+            latitude: 0,
+            longitude: 0
+          },
+          note: 'string',
+          completed: false
+        })
+        if (err) { console.log(err) }
+            // Save the trip
+        trip.save((err, trip) => {
+          if (err) { console.log(err) }
+          var bCrumz = [
+            {
+              'latitude': 42,
+              'longitude': 420,
+              'timeStamp': '2017-03-27T05:58:57.412Z'
+            },
+            {
+              'latitude': 67,
+              'longitude': 45,
+              'timeStamp': '2017-03-27T05:58:57.412Z'
+            }
+          ]
 
-            //Post the crumbs
-              chai.request(index)
+            // Post the crumbs
+          chai.request(index)
                   .post('/trips/' + trip._id + '/breadcrumbs')
                   .send(bCrumz)
                   .end((err, res) => {
+                    if (err) { console.log(err) }
                     res.should.have.status(200)
                     res.body[0].should.have.property('coordinates')
                     res.body[0].should.have.property('timeStamp')
                     res.body.length.should.equal(2)
                     done()
                   })
-            })
-          })
         })
       })
+    })
+
+    it('Should not post crumbz to a non-existent trip', (done) => {
+      var bCrumz = [
+        {
+          'latitude': 42,
+          'longitude': 420,
+          'timeStamp': '2017-03-27T05:58:57.412Z'
+        },
+        {
+          'latitude': 67,
+          'longitude': 45,
+          'timeStamp': '2017-03-27T05:58:57.412Z'
+        }
+      ]
+
+        // Post the crumbs
+      chai.request(index)
+              .post('/trips/' + 420 + '/breadcrumbs')
+              .send(bCrumz)
+              .end((err, res) => {
+                if (err) { console.log(err) }
+                res.should.have.status(404)
+                done()
+              })
+    })
+  })
 })
 
 var createTrip = function () {

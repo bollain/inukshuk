@@ -13,7 +13,9 @@ import {
   TouchableHighlight,
   TextInput,
   Modal,
-  ToolbarAndroid
+  ToolbarAndroid,
+  TouchableWithoutFeedback,
+  TouchableOpacity
 } from 'react-native';
 import {
   storageGet,
@@ -137,11 +139,18 @@ export default class Contact extends Component {
     for (i = 0; i < contact.phones.length ; i++){
       contactArray.push(contact.phones[i].number);
     }
-    this.setState({
-      chosenContact: contact,
-      addressDataSource: ds.cloneWithRows(contactArray),
-    });
-    this.setModalVisible(true);
+    if (contactArray.length > 0) {
+      this.setState({
+        chosenContact: contact,
+        addressDataSource: ds.cloneWithRows(contactArray),
+      });
+      this.setModalVisible(true);
+    } else {
+      Alert.alert(
+        "Nothing to see here",
+         contact.firstName + " " + contact.lastName + " doesn't have an email or phone number in your address book"
+      );
+    }
   }
 
   formatName(first, middle, last) {
@@ -196,26 +205,14 @@ export default class Contact extends Component {
           visible={this.state.modalVisible}
           onRequestClose={() => {alert("Modal has been closed.")}}
           >
-         <View style={{
-           flex: 1,
-           flexDirection: 'column',
-           justifyContent: 'center',
-           alignItems: 'center',
-           backgroundColor: 'rgba(0, 0, 0, 0.5)'
-         }}>
-          <View style={{
-            width: 300,
-            height: 400,
-            justifyContent: 'flex-start',
-            alignItems: 'stretch',
-            backgroundColor: 'white',
-          }}>
-            <View style={{padding:10, borderBottomColor: '#e6e6e6', borderBottomWidth: 1}}>
-              <Text style={{
-                fontSize: 20,
-                fontWeight: 'bold',
-                textAlign: 'center',
-              }}>
+          <TouchableWithoutFeedback
+            style={{flex:1}}
+            onPress={() => this.setModalVisible(!this.state.modalVisible)}
+          >
+         <View style={styles.contactModalContainer}>
+          <View style={styles.contactModal}>
+            <View style={styles.contactAddress}>
+              <Text style={styles.modalTitle}>
                 {this.formatName(this.state.chosenContact.firstName,this.state.chosenContact.middleName,this.state.chosenContact.lastName)}
               </Text>
             </View>
@@ -237,17 +234,18 @@ export default class Contact extends Component {
               }
             />
 
-            <View style={{padding:10}}>
-              <TouchableHighlight
+            <View style={{padding:10, paddingTop:15}}>
+              <TouchableOpacity
                 onPress={() => {
                 this.setModalVisible(!this.state.modalVisible)
               }}>
-                <Text style={{fontSize: 16, textAlign: 'center'}}>Close</Text>
-              </TouchableHighlight>
+                <Text style={styles.cancelModal}>CANCEL</Text>
+              </TouchableOpacity>
             </View>
 
           </View>
          </View>
+         </TouchableWithoutFeedback>
         </Modal>
       </View>
     );
@@ -283,5 +281,40 @@ const styles = StyleSheet.create({
   searchContainer: {
     elevation: 4,
     backgroundColor: 'white',
+  },
+  contactModalContainer: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.6)'
+  },
+  contactModal: {
+    width: 310,
+    height: 400,
+    justifyContent: 'flex-start',
+    alignItems: 'stretch',
+    backgroundColor: 'white',
+    borderRadius: 4,
+    elevation: 20,
+  },
+  contactAddress: {
+    padding:10,
+    borderBottomColor: '#e6e6e6',
+    borderBottomWidth: 1,
+  },
+  modalTitle: {
+    fontSize: 22,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: 'black',
+    margin: 5,
+  },
+  cancelModal: {
+    fontSize: 14,
+    textAlign: 'right',
+    marginRight: 15,
+    marginBottom: 10,
+    fontWeight: '500',
   }
 });

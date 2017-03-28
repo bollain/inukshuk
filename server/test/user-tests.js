@@ -38,14 +38,29 @@ describe('Users', () => {
               done()
             })
     })
-  })
 
-  describe('/POST user', () => {
-    it('it should NOT create user a with invalid email', (done) => {
+    it('it should NOT create a with an invalid phoneNumber', (done) => {
       let newUser = {
         firstName: 'Miguelito',
         lastName: 'Lopez',
-        phoneNumber: '+17785583029',
+        phoneNumber: '911',
+        email: 'bollain6@gmail.com'
+      }
+      chai.request(index)
+            .post('/users')
+            .send(newUser)
+            .end((err, res) => {
+              res.should.have.status(401)
+              if (err) {}
+              done()
+            })
+    })
+
+    it('it should NOT create a with an invalid email', (done) => {
+      let newUser = {
+        firstName: 'Miguelito',
+        lastName: 'Lopez',
+        phoneNumber: '911',
         email: 'bollaingmail.com'
       }
       chai.request(index)
@@ -57,41 +72,20 @@ describe('Users', () => {
               done()
             })
     })
-  })
 
-  describe('/POST user', () => {
-    it('it should NOT create a with an invalid phoneNumber', (done) => {
-      let newUser = {
-        firstName: 'Miguelito',
-        lastName: 'Lopez',
-        phoneNumber: '911',
-        email: 'bollain@gmail.com'
-      }
-      chai.request(index)
-            .post('/users')
-            .send(newUser)
-            .end((err, res) => {
-              res.should.have.status(401)
-              if (err) {}
-              done()
-            })
-    })
-  })
-
-  describe('/POST user', () => {
     it('it should NOT create a user when email exists', (done) => {
       let existingUser = new User({
         firstName: 'Papa',
         lastName: 'John',
         phoneNumber: '7785583029',
-        email: 'bollain@gmail.com'
+        email: 'miguel@gmail.com'
       })
       existingUser.save((err, user) => {
         let duplicateUser = {
           firstName: 'Mike',
           lastName: 'Lopez',
           phoneNumber: '7785584040',
-          email: 'bollain@gmail.com'
+          email: 'miguel@gmail.com'
         }
         if (err) {}
         chai.request(index)
@@ -303,6 +297,16 @@ describe('Users', () => {
               done()
             })
       })
+    })
+
+    it('it should fail on non-existent user', (done) => {
+      chai.request(index)
+          .get('/users/' + 420)
+          .end((err, res) => {
+            res.should.have.status(404)
+            if (err) {}
+            done()
+          })
     })
   })
 

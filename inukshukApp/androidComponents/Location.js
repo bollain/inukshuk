@@ -47,6 +47,7 @@ export default class Location extends Component {
           latitudeDelta: LATITUDE_DELTA,
           longitudeDelta: LONGITUDE_DELTA,
         },
+        userPosition: null,
       };
     } else {
       this.state = {
@@ -56,6 +57,7 @@ export default class Location extends Component {
           latitudeDelta: LATITUDE_DELTA,
           longitudeDelta: LONGITUDE_DELTA,
         },
+        userPosition: null,
       };
     }
     this.onRegionChange = this.onRegionChange.bind(this);
@@ -64,55 +66,24 @@ export default class Location extends Component {
  componentDidMount() {
    if (this.props.location == null) {
      navigator.geolocation.getCurrentPosition(
-       (position) => {
-         this.setState({
-           region: {
-             latitude: position.coords.latitude,
-             longitude: position.coords.longitude,
-             latitudeDelta: LATITUDE_DELTA,
-             longitudeDelta: LONGITUDE_DELTA,
-           },
-         });
-       },
-       (error) => alert(JSON.stringify(error)),
-     );
-     this.watchID = navigator.geolocation.watchPosition((position) => {
-       this.setState({
-         region: {
-           latitude: position.coords.latitude,
-           longitude: position.coords.longitude,
-           latitudeDelta: LATITUDE_DELTA,
-           longitudeDelta: LONGITUDE_DELTA,
-         },
-       });
-     });
-   }
- }
-
- componentWillUnmount() {
-   navigator.geolocation.clearWatch(this.watchID);
+      (position) => {
+        this.setState({
+          region: {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            latitudeDelta: LATITUDE_DELTA,
+            longitudeDelta: LONGITUDE_DELTA,
+          },
+        });
+      },
+      (error) => alert(JSON.stringify(error)),
+    );
+  }
  }
 
  onRegionChange(region) {
    this.setState({ region });
  };
-
- centerLocation() {
-   navigator.geolocation.getCurrentPosition(
-     (position) => {
-       console.log(position);
-       this.setState({
-         region: {
-           latitude: position.coords.latitude,
-           longitude: position.coords.longitude,
-           latitudeDelta: LATITUDE_DELTA,
-           longitudeDelta: LONGITUDE_DELTA,
-         },
-       });
-     },
-     (error) => alert(JSON.stringify(error)),
-   );
- }
 
   openSearchModal() {
   RNGooglePlaces.openAutocompleteModal()
@@ -149,9 +120,10 @@ export default class Location extends Component {
             style={styles.map}
             region={this.state.region}
             onRegionChange={this.onRegionChange}
+            showsUserLocation={true}
           >
           </MapView>
-          <View style={styles.buttonContainerTop}>
+          <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={styles.androidButtonContainer}
               onPress={() => this.openSearchModal()}
@@ -163,19 +135,6 @@ export default class Location extends Component {
                 color="#666666"
               />
             </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.androidButtonContainer, styles.blue]}
-              onPress={() => this.centerLocation()}
-              activeOpacity={.9}
-            >
-              <Icon
-                name="gps-fixed"
-                size={22}
-                color="white"
-              />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.buttonContainerBottom}>
             <TouchableOpacity
               style={[styles.androidButtonContainer, styles.green]}
               onPress={() => this.set()}
@@ -189,11 +148,15 @@ export default class Location extends Component {
             </TouchableOpacity>
         </View>
           <View style={styles.markerContainer}>
-            <Image style={styles.marker} source={require('../assets/marker.png')} />
+          <Icon
+            name="location-on"
+            size={36}
+            color="#666666"
+          />
           </View>
           <TouchableOpacity>
-            <Text style={{ textAlign: 'center'}}>
-              {this.state.region.latitude.toPrecision(7)}, {this.state.region.longitude.toPrecision(7)}
+            <Text style={{ textAlign: 'center', margin: 6}}>
+              {this.state.region.latitude.toFixed(6)}, {this.state.region.longitude.toFixed(6)}
             </Text>
           </TouchableOpacity>
         </View>
@@ -224,40 +187,26 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  marker: {
-    width: 25,
-    height: 40,
-  },
-  buttonContainerTop: {
+  buttonContainer: {
     flex: 1,
-    width: width,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    position:'absolute',
-    padding: 10,
-  },
-  buttonContainerBottom: {
-    flex: 1,
-    width: width,
-    flexDirection: 'row',
+    height: height,
     justifyContent: 'flex-end',
     position:'absolute',
-    padding: 10,
+    right: 0,
     bottom: 0,
   },
   androidButtonContainer: {
-    height:50,
-    width:50,
-    borderRadius:25,
+    height: 50,
+    width: 50,
+    borderRadius: 25,
     backgroundColor: 'white',
     elevation: 4,
     justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: 15,
+    marginRight: 15,
   },
   green: {
     backgroundColor: 'green',
   },
-  blue: {
-    backgroundColor: '#00aaf1',
-  }
 });

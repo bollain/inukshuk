@@ -34,28 +34,34 @@ export default class Contact extends Component {
       searchText: '',
       dataSource: ds.cloneWithRows({
         contact: {
-          firstName: 'firstName',
-          middleName: 'middleName',
-          lastName: 'lastName',
-          emails: 'emails',
-          phones: 'phones',
+          firstName: '',
+          middleName: '',
+          lastName: '',
+          emails: '',
+          phones: '',
         }
       }),
       rawData: null,
       modalVisible: false,
       chosenContact: {
-        firstName: 'firstName',
-        middleName: 'middleName',
-        lastName: 'lastName',
-        emails: 'emails',
-        phones: 'phones',
+        firstName: '',
+        middleName: '',
+        lastName: '',
+        emails: '',
+        phones: '',
       },
       addressDataSource: ds.cloneWithRows(['Loading...']),
     };
   }
 
+  componentWillMount() {
+  }
+
   componentDidMount() {
-    this.getContacts().then(console.log('mounted contacts'));
+    setTimeout(() => {
+      this.getContacts().then(console.log('mounted contacts'));
+    }, 500)
+    this.refs.searchBar.focus();
   }
 
   async getContacts() {
@@ -101,16 +107,17 @@ export default class Contact extends Component {
     let searchText = event.nativeEvent.text;
     this.setState({searchText});
     let filteredContacts = this.filterContacts(searchText, JSON.stringify(this.state.rawData));
-    console.log(filteredContacts);
-    this.setState({
-      dataSource: ds.cloneWithRows(filteredContacts),
-    });
+    if (filteredContacts.length > 0) {
+      this.setState({
+        dataSource: ds.cloneWithRows(filteredContacts),
+      });
+    }
   }
 
   filterContacts(searchText, contacts) {
     console.log(contacts);
     let text = searchText.toLowerCase();
-    return JSON.parse(contacts).filter((entry) => {
+    return response = JSON.parse(contacts).filter((entry) => {
       let inFirst = entry.firstName != null && entry.firstName.toLowerCase().search(text) !== -1;
       let inMiddle = entry.middleName != null && entry.middleName.toLowerCase().search(text) !== -1;
       let inLast = entry.lastName != null && entry.lastName.toLowerCase().search(text) !== -1;
@@ -156,12 +163,15 @@ export default class Contact extends Component {
                         })}
                         onIconClicked={this.props.navigator.pop}
                         titleColor={'#FFFFFF'}/>
-        <TextInput
-           style={styles.search}
-           value={this.state.searchText}
-           onChange={this.searchContacts.bind(this)}
-           placeholder="Search"
-        />
+        <View style={styles.searchContainer}>
+          <TextInput
+             ref='searchBar'
+             style={styles.search}
+             value={this.state.searchText}
+             onChange={this.searchContacts.bind(this)}
+             placeholder="Search"
+          />
+        </View>
         <ScrollView>
           <ListView
             dataSource={this.state.dataSource}
@@ -255,6 +265,7 @@ const styles = StyleSheet.create({
   toolbar: {
     height: 60,
     backgroundColor: '#00aaf1',
+    elevation: 4,
   },
   contact: {
     padding: 15,
@@ -268,5 +279,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     paddingLeft: 15,
     paddingRight: 15,
+  },
+  searchContainer: {
+    elevation: 4,
+    backgroundColor: 'white',
   }
 });

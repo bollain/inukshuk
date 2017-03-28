@@ -263,7 +263,7 @@ export default class TripSummary extends Component {
   }
 
   async setSummaryContactAddress(currentContactAddress) {
-    await this.setState({contactAddress: JSON.parse(currentContactAddress)});
+    await this.setState({contactAddress: currentContactAddress});
   }
 
   async setSummaryReturn(currentReturn) {

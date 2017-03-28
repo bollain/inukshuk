@@ -30,6 +30,7 @@ import {
 import { toMonth, padTime } from '../scripts/datesAndTimes.js';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
+var notifySelf = require('../androidComponents/NotifySelf');
 var nativeImageSource = require('nativeImageSource');
 
 const checkIcon = <Icon name="check-circle" size={24} color="green" />;
@@ -210,6 +211,7 @@ export default class TripSummary extends Component {
       postTrip(trip)
       .then((responseJson) => {
         console.log(responseJson);
+        notifySelf.createEndOfTripNotification(JSON.parse(responseJson).tripId,JSON.parse(responseJson).returnDate);
         Alert.alert(
           'Success!',
           'Your trip has been created!',

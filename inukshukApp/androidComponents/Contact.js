@@ -63,7 +63,6 @@ export default class Contact extends Component {
     setTimeout(() => {
       this.getContacts().then(console.log('mounted contacts'));
     }, 500)
-    this.refs.searchBar.focus();
   }
 
   async getContacts() {
@@ -178,11 +177,13 @@ export default class Contact extends Component {
                         titleColor={'#FFFFFF'}/>
         <View style={styles.searchContainer}>
           <TextInput
-             ref='searchBar'
              style={styles.search}
              value={this.state.searchText}
              onChange={this.searchContacts.bind(this)}
              placeholder="Search"
+             autoFocus={true}
+             autoCorrect={true}
+             autoCapitalize={'words'}
           />
         </View>
         <ScrollView>
@@ -271,8 +272,8 @@ const styles = StyleSheet.create({
   },
   contact: {
     padding: 15,
-    borderBottomColor: '#e6e6e6',
-    borderBottomWidth: 1,
+    borderTopColor: '#e6e6e6',
+    borderTopWidth: 1,
   },
   contactText: {
     fontSize: 16,

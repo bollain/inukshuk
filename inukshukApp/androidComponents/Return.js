@@ -162,10 +162,13 @@ const styles = StyleSheet.create({
      textAlign: 'center'
    },
    timeButton: {
-     backgroundColor: 'lightgrey',
-     padding: 18,
+     backgroundColor: '#e6e6e6',
+     padding: 16,
      borderTopColor: 'white',
      borderTopWidth: 2,
+     borderRadius: 5,
+     margin: 10,
+     marginBottom: 0,
    },
    timeText: {
      color: 'black',

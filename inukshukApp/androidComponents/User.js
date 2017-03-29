@@ -60,6 +60,12 @@ export default class User extends Component {
     });
   }
 
+  // Logout
+  logout() {
+    this.props.navigator.popToTop();
+  }
+
+
   // Render the user component to the screen
   render() {
     return(
@@ -107,16 +113,34 @@ export default class User extends Component {
 
         </View>
 
-        {/* Update button */}
-        <View style={styles.updateContainer}>
-          <TouchableOpacity
-            style={styles.update}
-            onPress={() => this.updateUser()}
-            activeOpacity={.8}>
-            <Text style={styles.buttonText}>Save changes</Text>
-          </TouchableOpacity>
+        {/* Save an log out buttons */}
+        <View style={styles.buttons}>
+          <View style={styles.clearContainer}>
+            <TouchableOpacity
+              style={styles.clear}
+              onPress={() => {
+                Alert.alert(
+                  'Log out',
+                  'Are you sure you want to do this?',
+                  [
+                    {text: 'Cancel'},
+                    {text: 'Log out', onPress: () => this.logout()},
+                  ],
+                )
+              }}
+              activeOpacity={.8}>
+              <Text style={styles.startText}>Log Out</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.startContainer}>
+            <TouchableOpacity
+              style={styles.start}
+              onPress={() => this.updateUser()}
+              activeOpacity={.8}>
+              <Text style={styles.startText}>Save</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-
       </View>
     );
   }
@@ -174,5 +198,31 @@ const styles = StyleSheet.create({
     paddingRight: 8,
     paddingTop: 6,
     paddingBottom: 4,
+  },
+  buttons: {
+    flexDirection: 'row',
+  },
+  startContainer: {
+    flex: 2,
+    justifyContent: 'flex-end',
+    alignItems: 'stretch'
+  },
+  start: {
+    backgroundColor: 'green',
+    padding: 18,
+  },
+  clearContainer: {
+    flex: 2,
+    alignItems: 'stretch',
+  },
+  clear: {
+    backgroundColor: 'red',
+    padding: 18,
+  },
+  startText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'white',
+    textAlign: 'center'
   },
 });

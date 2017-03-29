@@ -257,6 +257,7 @@ export default class Start extends Component {
           <View style={styles.buttons}>
             <View style={styles.button}>
               <TouchableOpacity
+                ref = "complete"
                 style={styles.submit}
                 onPress={() => this.completeTrip()}
                 activeOpacity={.8}>
@@ -265,6 +266,7 @@ export default class Start extends Component {
             </View>
             <View style={styles.button}>
               <TouchableOpacity
+                ref = "extend"
                 style={styles.extend}
                 onPress={() => this.extendTrip()}
                 activeOpacity={.8}>
@@ -273,6 +275,7 @@ export default class Start extends Component {
             </View>
             <View style={styles.button}>
               <TouchableOpacity
+                ref = "cancel"
                 style={styles.remove}
                 onPress={() => this.cancelTrip()}
                 activeOpacity={.8}>

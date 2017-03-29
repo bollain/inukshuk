@@ -7,11 +7,11 @@ import React from 'react'
 var datesAndTimes = require('../datesAndTimes');
 
 test('Convert to Month', () => {
-    expect(datesAndTimes.toMonth(3,false)).toEqual("April");
+    expect(datesAndTimes.toMonth(3,false)).toMatch("April");
 });
 
 test('Convert to Month short', () => {
-    expect(datesAndTimes.toMonth(5,true)).toEqual("Jun");
+    expect(datesAndTimes.toMonth(5,true)).toMatch("Jun");
 });
 
 test('Convert to weekday', () => {

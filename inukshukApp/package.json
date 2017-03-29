@@ -30,11 +30,13 @@
   },
   "jest": {
     "preset": "react-native",
-    "codeCoverage": true,
     "collectCoverageFrom": [
       "**/*.{js,jsx}",
       "!**/node_modules/**",
       "**/androidCompents/**"
-    ]
+      ],
+      "setupFiles": [
+      "./test/setup.js"
+      ]
   }
 }

@@ -4,6 +4,7 @@ var autoIncrement = require('mongoose-auto-increment')
 var findOrCreate = require('mongoose-findorcreate')
 var validator = require('validator')
 var config = require('config')
+var bcrypt = require('bcrypt-nodejs')
 
 var connection = mongoose.createConnection(config.DBHost)
 
@@ -25,6 +26,7 @@ var validateEmail = function (email) {
 var userSchema = new Schema({
   firstName: {type: String, required: true},
   lastName: {type: String, required: true},
+  password: {type: String, required: true},
   email: {
     type: String,
     required: true,
@@ -50,21 +52,44 @@ userSchema.methods.removeTrip = function (tripId) {
   this.trips.splice(index, 1)
 }
 
+userSchema.methods.comparePassword = function(pw, cb) {
+  bcrypt.compare(pw, this.password, function(err, isMatch) {
+    if (err) {
+      return cb(err);
+    }
+    cb(null, isMatch);
+  });
+};
+
 // Add any user methods here!
 
 userSchema.pre('save', function (next) {
   // Get the current Date
   var currentDate = new Date()
-
   // Changed the updated_at field
   this.updated_at = currentDate
-
   // if created_at doesnt exist, start it!
   if (!this.created_at) {
     this.created_at = currentDate
   }
 
-  next()
+  var user = this
+  if (this.isModified('password') || this.isNew) {
+    bcrypt.genSalt(10, function (err, salt) {
+      if (err) {
+        return next(err)
+      }
+      bcrypt.hash(user.password, salt, function (err, hash) {
+        if (err) {
+          return next(err)
+        }
+        user.password = hash
+        next()
+      })
+    })
+  } else {
+    return next()
+  }
 })
 
 userSchema.plugin(autoIncrement.plugin, 'User')

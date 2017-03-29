@@ -30,14 +30,6 @@ export default class Breadcrumbs extends Component {
     }
   }
 
-  componentWillUnmount() {
-    BackgroundJob.getAll({callback: (jobs) => {
-      console.log("Jobs:",jobs);
-      if (jobs.indexOf('breadcrumbs') > -1)
-        BackgroundJob.cancel({jobKey: 'breadcrumbs'});
-    }})
-  }
-
   // Schedule or cancel the breadcrumbs job depending on the toggle
   setBreadcrumbs(value) {
     if (value) {
@@ -54,11 +46,7 @@ export default class Breadcrumbs extends Component {
       )
     } else {
       this.setState({isBreadcrumbs: value});
-      BackgroundJob.getAll({callback: (jobs) => {
-        console.log("Jobs:",jobs);
-        if (jobs.indexOf('breadcrumbs') > -1)
-          BackgroundJob.cancel({jobKey: 'breadcrumbs'});
-      }})
+      BackgroundJob.cancel({jobKey: 'breadcrumbs'});
     }
   }
 

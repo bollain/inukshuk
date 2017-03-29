@@ -15,7 +15,8 @@ exports.createUser = function (args, res, next) {
   var newUser = {
     firstName: params.firstName,
     lastName: params.lastName,
-    phoneNumber: params.phoneNumber
+    phoneNumber: params.phoneNumber,
+    password: params.password
   }
 
   User.findOrCreate({email: params.email}, newUser,
@@ -43,7 +44,8 @@ exports.createUser = function (args, res, next) {
       if (created) {
         console.log('User saved successfully!')
         res.setHeader('Content-Type', 'application/json')
-        res.end(JSON.stringify(user))
+        var createdUser = unpackUser(user)
+        res.end(JSON.stringify(createdUser))
       } else {
         console.log('The user exists!')
         res.statusCode = 422
@@ -116,7 +118,8 @@ exports.updateUser = function (args, res, next) {
         return
       }
       res.setHeader('Content-Type', 'application/json')
-      res.end(JSON.stringify(user))
+      var updatedUser = unpackUser(user)
+      res.end(JSON.stringify(updatedUser))
     })
 }
 
@@ -143,7 +146,8 @@ exports.getUser = function (args, res, next) {
       res.end('User does not exist')
     } else {
       res.setHeader('Content-Type', 'application/json')
-      res.end(JSON.stringify(user[0]))
+      var requestedUser = unpackUser(user[0])
+      res.end(JSON.stringify(requestedUser))
     }
   })
 }
@@ -169,4 +173,19 @@ exports.searchTrip = function (args, res, next) {
    **/
    // TODO: Finish this
   res.end()
+}
+
+// Helpers
+var unpackUser = function (user) {
+  var unpackedUser = {
+    _id: user._id,
+    created_at: user.created_at,
+    updated_at: user.updated_at,
+    email: user.email,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    phoneNumber: user.phoneNumber,
+    trips: user.trips
+  }
+  return unpackedUser
 }

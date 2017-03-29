@@ -52,11 +52,10 @@ userSchema.methods.removeTrip = function (tripId) {
   this.trips.splice(index, 1)
 }
 
-userSchema.methods.comparePassword = function (pw, cb) {
-  bcrypt.compare(pw, this.password, function (err, isMatch) {
-    if (err) {
-      return cb(err)
-    }
+userSchema.methods.comparePassword = function (candidatePassword, cb) {
+  bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
+    if (err) { return cb(err) }
+
     cb(null, isMatch)
   })
 }
@@ -72,24 +71,20 @@ userSchema.pre('save', function (next) {
   if (!this.created_at) {
     this.created_at = currentDate
   }
+  const user = this
+  const SALT_FACTOR = 5
 
-  var user = this
-  if (this.isModified('password') || this.isNew) {
-    bcrypt.genSalt(10, function (err, salt) {
-      if (err) {
-        return next(err)
-      }
-      bcrypt.hash(user.password, salt, function (err, hash) {
-        if (err) {
-          return next(err)
-        }
-        user.password = hash
-        next()
-      })
+  if (!user.isModified('password')) return next()
+
+  bcrypt.genSalt(SALT_FACTOR, function (err, salt) {
+    if (err) return next(err)
+
+    bcrypt.hash(user.password, salt, null, function (err, hash) {
+      if (err) return next(err)
+      user.password = hash
+      next()
     })
-  } else {
-    return next()
-  }
+  })
 })
 
 userSchema.plugin(autoIncrement.plugin, 'User')

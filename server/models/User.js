@@ -52,14 +52,14 @@ userSchema.methods.removeTrip = function (tripId) {
   this.trips.splice(index, 1)
 }
 
-userSchema.methods.comparePassword = function(pw, cb) {
-  bcrypt.compare(pw, this.password, function(err, isMatch) {
+userSchema.methods.comparePassword = function (pw, cb) {
+  bcrypt.compare(pw, this.password, function (err, isMatch) {
     if (err) {
-      return cb(err);
+      return cb(err)
     }
-    cb(null, isMatch);
-  });
-};
+    cb(null, isMatch)
+  })
+}
 
 // Add any user methods here!
 

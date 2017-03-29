@@ -4,10 +4,7 @@
 // var chai = require('chai')
 var AlertService = require('../controllers/AlertService')
 var sinon = require('sinon')
-var nodemailer = require('nodemailer')
-var config = require('config')
 var twilioClient = require('../utils/twilioClient')
-
 
 describe('Alerts', () => {
   it('Should send confirmation text', (done) => {

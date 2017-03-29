@@ -5,6 +5,29 @@ info:
   version: "1.0"
   title: "Inukshuk API"
 paths:
+  /login:
+    post:
+      tags:
+      - "/login"
+      description: "Authenticates a user"
+      operationId: "authenticateUser"
+      consumes:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "User info"
+        description: "Credentials"
+        required: true
+        schema:
+          $ref: "#/definitions/authRequest"
+      responses:
+        200:
+          description: "User Authenticated"
+        400:
+          description: "User not found"
+        401:
+          description: "Unauthorized"
+      x-swagger-router-controller: "Login"
   /users:
     post:
       tags:
@@ -286,6 +309,7 @@ definitions:
     - "email"
     - "firstName"
     - "lastName"
+    - "password"
     - "phoneNumber"
     properties:
       id:
@@ -296,6 +320,8 @@ definitions:
       lastName:
         type: "string"
       email:
+        type: "string"
+      password:
         type: "string"
       phoneNumber:
         type: "string"
@@ -343,6 +369,16 @@ definitions:
         type: "array"
         items:
           $ref: "#/definitions/trip"
+  authRequest:
+    type: "object"
+    required:
+    - "email"
+    - "password"
+    properties:
+      email:
+        type: "string"
+      password:
+        type: "string"
   geoLocation:
     type: "object"
     required:

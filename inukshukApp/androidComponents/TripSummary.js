@@ -24,12 +24,15 @@ import {
   storageSet,
 } from '../scripts/localStorage.js';
 
-import { toMonth, padTime } from '../scripts/datesAndTimes.js';
+import { toMonth, padTime, isInFutureByXMins } from '../scripts/datesAndTimes.js';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { postTrip } from '../scripts/apiCalls.js';
 import { createEndOfTripNotification } from '../scripts/notifications.js';
 
 var nativeImageSource = require('nativeImageSource');
+
+// The minimum number of minutes in the future that a user can select
+var MIN_MINS_IN_FUTURE = 10;
 
 const checkIcon = <Icon name="check-circle" size={24} color="green" />;
 
@@ -164,7 +167,24 @@ export default class TripSummary extends Component {
   // Post the trip to the server
   start() {
     console.log('navstart');
-    if ((this.state.tripName &&
+    if (this.state.return != null &&
+      !isInFutureByXMins(
+        new Date(
+          this.state.return.year,
+          this.state.return.month,
+          this.state.return.day,
+          this.state.return.hour,
+          this.state.return.minute, 0,0
+        ),
+        MIN_MINS_IN_FUTURE)
+      ) {
+      Alert.alert(
+        'If I could turn back time... ♫ ♪',
+        'Please pick a return time at least ' + MIN_MINS_IN_FUTURE +
+        ' minutes in the future',
+      );
+    }
+    else if ((this.state.tripName &&
          this.state.startLocation != null &&
          this.state.contact != null &&
          this.state.return != null &&
@@ -185,7 +205,8 @@ export default class TripSummary extends Component {
           this.state.return.month,
           this.state.return.day,
           this.state.return.hour,
-          this.state.return.minute, 0,0),
+          this.state.return.minute, 0,0
+        ),
         startingLocation: {
           latitude: this.state.startLocation.latitude,
           longitude: this.state.startLocation.longitude,

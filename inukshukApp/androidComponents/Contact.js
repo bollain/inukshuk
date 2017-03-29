@@ -36,7 +36,7 @@ export default class Contact extends Component {
       searchText: '',
       dataSource: ds.cloneWithRows({
         contact: {
-          firstName: '',
+          firstName: 'Loading...',
           middleName: '',
           lastName: '',
           emails: '',
@@ -272,8 +272,8 @@ const styles = StyleSheet.create({
   },
   contact: {
     padding: 15,
-    borderTopColor: '#e6e6e6',
-    borderTopWidth: 1,
+    borderBottomColor: '#e6e6e6',
+    borderBottomWidth: 1,
   },
   contactText: {
     fontSize: 16,
@@ -282,6 +282,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     paddingLeft: 15,
     paddingRight: 15,
+    height: 55,
   },
   searchContainer: {
     elevation: 4,

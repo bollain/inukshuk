@@ -13,7 +13,8 @@ import {
   Image,
   AsyncStorage,
   TextInput,
-  Switch
+  Switch,
+  Navigator,
 } from 'react-native';
 import {
   storageGet,
@@ -82,6 +83,7 @@ export default class TripSummary extends Component {
         id: 'startLocation',
         startLocation: response,
         callback: this.setSummaryStartLocation,
+        gestures: Navigator.SceneConfigs.PushFromRight.gestures
       });
     });
   }
@@ -91,6 +93,7 @@ export default class TripSummary extends Component {
         id: 'endLocation',
         endLocation: response,
         callback: this.setSummaryEndLocation,
+        gestures: Navigator.SceneConfigs.PushFromRight.gestures
       });
     });
   }
@@ -101,6 +104,7 @@ export default class TripSummary extends Component {
         contact: response,
         setContact: this.setSummaryContact,
         setContactAddress: this.setSummaryContactAddress,
+        gestures: Navigator.SceneConfigs.PushFromRight.gestures
       });
     });
   }
@@ -110,6 +114,7 @@ export default class TripSummary extends Component {
         id: 'return',
         return: response,
         callback: this.setSummaryReturn,
+        gestures: Navigator.SceneConfigs.PushFromRight.gestures
       });
     });
   }
@@ -119,6 +124,7 @@ export default class TripSummary extends Component {
         id: 'note',
         note: response,
         callback: this.setSummaryNote,
+        gestures: Navigator.SceneConfigs.PushFromRight.gestures
       });
     });
   }
@@ -143,6 +149,7 @@ export default class TripSummary extends Component {
         id: 'user',
         user: response,
         callback: this.setSummaryUser,
+        gestures: Navigator.SceneConfigs.PushFromRight.gestures
       });
     });
   }
@@ -219,7 +226,10 @@ export default class TripSummary extends Component {
       })
       .catch((error) => console.error(error));
     } else {
-      Alert.alert('Please fill in all trip details before proceeding');
+      Alert.alert(
+        'Something\'s missing',
+        'Please fill in all trip details before proceeding'
+      );
     }
   }
 

@@ -31,7 +31,11 @@ export default class Breadcrumbs extends Component {
   }
 
   componentWillUnmount() {
-    BackgroundJob.cancel({jobKey: 'breadcrumbs'});
+    BackgroundJob.getAll({callback: (jobs) => {
+      console.log("Jobs:",jobs);
+      if (jobs.indexOf('breadcrumbs') > -1)
+        BackgroundJob.cancel({jobKey: 'breadcrumbs'});
+    }})
   }
 
   // Schedule or cancel the breadcrumbs job depending on the toggle
@@ -39,7 +43,7 @@ export default class Breadcrumbs extends Component {
     if (value) {
       Alert.alert(
         'Are you sure?',
-        'This feature runs in the background when your screen is off and uses extra mobile data and ',
+        'This feature runs in the background when your screen is off and uses extra mobile data',
         [
           {text: 'No'},
           { text: 'Yes', onPress: () => {
@@ -50,7 +54,11 @@ export default class Breadcrumbs extends Component {
       )
     } else {
       this.setState({isBreadcrumbs: value});
-      BackgroundJob.cancel({jobKey: 'breadcrumbs'});
+      BackgroundJob.getAll({callback: (jobs) => {
+        console.log("Jobs:",jobs);
+        if (jobs.indexOf('breadcrumbs') > -1)
+          BackgroundJob.cancel({jobKey: 'breadcrumbs'});
+      }})
     }
   }
 

@@ -49,3 +49,10 @@ export function toTwentyFour(time) {
   if(AMPM == "AM" && hours==12) hours = hours-12;
   return [hours, minutes];
 }
+
+// Return true if given date is in a given number of minutes into the future
+export function isInFutureByXMins(date, mins) {
+  let now = new Date();
+  let xMinutesFromNow = new Date(now.getTime() + (mins * 60000));
+  return date > xMinutesFromNow;
+}

@@ -137,7 +137,7 @@ export default class User extends Component {
               style={styles.start}
               onPress={() => this.updateUser()}
               activeOpacity={.8}>
-              <Text style={styles.startText}>Save</Text>
+              <Text style={styles.startText}>Save Changes</Text>
             </TouchableOpacity>
           </View>
         </View>

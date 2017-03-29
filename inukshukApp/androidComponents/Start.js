@@ -19,7 +19,12 @@ import {
 
 import { completeTrip, cancelTrip, extendTrip } from '../scripts/apiCalls.js';
 
-import { toMonth, toWeekday, padTime } from '../scripts/datesAndTimes.js';
+import {
+  toMonth,
+  toWeekday,
+  padTime,
+  isInFutureByXMins
+} from '../scripts/datesAndTimes.js';
 
 import Countdown from './Countdown';
 import Sunset from './Sunset';
@@ -28,6 +33,9 @@ import BackgroundJob from 'react-native-background-job';
 
 import { cancelNotification, modifyNotification } from '../scripts/notifications.js';
 var nativeImageSource = require('nativeImageSource');
+
+// The minimum number of minutes in the future that a user can set the return
+var MIN_MINS_IN_FUTURE = 10;
 
 export default class Start extends Component {
   constructor(props) {
@@ -114,34 +122,49 @@ export default class Start extends Component {
   extendTrip() {
     this.showTimePicker()
     .then(() => {
-      Alert.alert(
-        'Are you sure you want to extend your trip?',
-        'Your contact will be notified that you plan to return on ' + this.state.newReturnDate.toDateString() + ' at ' + this.state.newReturnDate.toLocaleTimeString(),
-        [
-          {text: 'No'},
-          {text: 'Extend trip', onPress: () => {
-            extendTrip(JSON.parse(this.props.trip)._id, this.state.newReturnDate)
-            .then(() => {
-              let returnTime = this.state.return;
-              returnTime.hour = this.state.newReturnDate.getHours();
-              returnTime.minute = this.state.newReturnDate.getMinutes();
-              this.setState({
-                returnDate: this.state.newReturnDate,
-                return: returnTime,
+      // Check if the selected date is in the future
+      if (isInFutureByXMins(this.state.newReturnDate, MIN_MINS_IN_FUTURE)) {
+        Alert.alert(
+          'Are you sure you want to extend your trip?',
+          'Your contact will be notified that you plan to return on ' + this.state.newReturnDate.toDateString() + ' at ' + this.state.newReturnDate.toLocaleTimeString(),
+          [
+            {text: 'No'},
+            {text: 'Extend trip', onPress: () => {
+              extendTrip(JSON.parse(this.props.trip)._id, this.state.newReturnDate)
+              .then(() => {
+                let returnTime = this.state.return;
+                returnTime.hour = this.state.newReturnDate.getHours();
+                returnTime.minute = this.state.newReturnDate.getMinutes();
+                this.setState({
+                  returnDate: this.state.newReturnDate,
+                  return: returnTime,
+                });
+                Alert.alert(
+                  'Trip Extended to ' + this.state.newReturnDate.toDateString() + ' at ' + this.state.newReturnDate.toLocaleTimeString(),
+                  'We also notified your contact of this change',
+                );
+                modifyNotification(this.props.trip._id, this.state.newReturnDate);
+              })
+              .catch((err) => {
+                console.error(err)
+                Alert.alert(err);
               });
-              Alert.alert(
-                'Trip Extended to ' + this.state.newReturnDate.toDateString() + ' at ' + this.state.newReturnDate.toLocaleTimeString(),
-                'We also notified your contact of this change',
-              );
-              modifyNotification(this.props.trip._id, this.state.newReturnDate);
-            })
-            .catch((err) => {
-              console.error(err)
-              Alert.alert(err);
-            });
-          }},
-        ]
-      );
+            }},
+          ]
+        );
+      } else {
+        // Change the date back
+        this.setState({
+          newReturnDate: this.state.returnDate
+        });
+        // Alert the user of the problem
+        Alert.alert(
+          'If I could turn back time... ♫ ♪',
+          'Please pick a time at least ' +
+          MIN_MINS_IN_FUTURE +
+          ' minutes in the future',
+        );
+      }
     })
     .catch((err) => {
       console.error(err)

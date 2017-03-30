@@ -15,7 +15,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Alert,
-  Switch,
+  Navigator,
 } from 'react-native';
 import { createUser } from '../scripts/apiCalls.js';
 import { storageSet } from '../scripts/localStorage.js';

@@ -8,6 +8,7 @@ import {
   AppRegistry,
   Navigator,
   BackAndroid,
+  Alert,
 } from 'react-native';
 import TripSummary from './androidComponents/TripSummary'
 import StartLocation from './androidComponents/StartLocation';
@@ -20,12 +21,32 @@ import SignUp from './androidComponents/Signup';
 import Start from './androidComponents/Start';
 import User from './androidComponents/User';
 
+// Add a listener for the android back button
 BackAndroid.addEventListener('hardwareBackPress', () => {
-  if (_navigator.getCurrentRoutes().length === 1  ) {
+  let routes = _navigator.getCurrentRoutes();
+  let thisRoute = routes[routes.length-1];
+  if (routes.length === 1  ) {
      return false;
   }
-  _navigator.pop();
-  return true;
+  // Disable back button if you on start page (get message) or
+  // tripSummary page (will exit app)
+  if (thisRoute.id === 'start') {
+    Alert.alert(
+      'You can\'t do that',
+      'Please complete or cancel your trip to go back',
+    );
+    return true;
+  } else if (thisRoute.id === 'tripSummary') {
+    Alert.alert(
+      'You can\'t do that',
+      'Please log out to go back',
+    );
+    return true;
+  }
+  else {
+    _navigator.pop();
+    return true;
+  }
 });
 
 class inukshukApp extends Component {
@@ -39,6 +60,10 @@ class inukshukApp extends Component {
       <Navigator
         initialRoute={{id: 'login'}}
         renderScene={this.navigatorRenderScene}
+        configureScene={(route) => ({
+          ...route.sceneConfig || Navigator.SceneConfigs.PushFromRight,
+          gestures: route.gestures
+        })}
       />
     );
   }
@@ -129,6 +154,7 @@ class inukshukApp extends Component {
             note={route.note}
             trip={route.trip}
             callback={route.callback}
+            configureScene={() => configureScene(route)}
           />
         );
       case 'user':

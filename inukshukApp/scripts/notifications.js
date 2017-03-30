@@ -10,16 +10,21 @@ function createNotification(id, date, message) {
     let newDate = new Date(date - (30 * 60000)); // 30 minutes before end
     console.log(newDate);
     PushNotification.localNotificationSchedule({
-        id: id,
+        id: id.toString(),
         message: message, // (required)
+        userInfo: {
+          id: id.toString(),
+        },
         date: newDate,
         autoCancel: false,
     });
 }
 
 //cancels the notification and lets the user know that has happened
+
 function cancelNotification(id) {
     PushNotification.cancelLocalNotifications({id: id});
+
 }
 
 //deletes the old notification, creates a new notification using the new end time

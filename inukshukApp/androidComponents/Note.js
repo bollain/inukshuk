@@ -37,7 +37,7 @@ export default class Notes extends Component {
     .then(this.props.callback(this.state.note))
     .then(_navigator.pop());
   }
-  
+
   remove() {
     storageRemove('note')
     .then(this.props.callback(null))
@@ -50,7 +50,6 @@ export default class Notes extends Component {
     // Display current note if it exists
     if (this.state.note == null) {
       textBox = <TextInput
-        // {...this.props}
         multiline={false}
         multiline={true}
         onChange={(event) => {
@@ -59,18 +58,26 @@ export default class Notes extends Component {
             height: event.nativeEvent.contentSize.height + 22,
           });
         }}
-        style={{height: Math.max(35, this.state.height), backgroundColor: '#e6e6e6', fontSize: 16, paddingLeft: 20, paddingRight: 20 }}
+        style={{
+          height: Math.max(35, this.state.height),
+          backgroundColor: '#e6e6e6',
+          fontSize: 16,
+          paddingLeft: 16,
+          paddingRight: 16,
+          margin: 10,
+          borderRadius: 5,
+        }}
         // onChangeText={(text) => this.setState({note: text})}
         underlineColorAndroid={'transparent'}
         autoFocus={true}
         placeholder={"What else should your contact know?"}
         // onSubmitEditing={() => this.props.set('note', event.nativeEvent.text)}
         autoCorrect={true}
+        autoCapitalize={'sentences'}
       />
     }
     else {
       textBox = <TextInput
-        // {...this.props}
         multiline={false}
         multiline={true}
         onChange={(event) => {
@@ -79,13 +86,22 @@ export default class Notes extends Component {
             height: event.nativeEvent.contentSize.height + 22,
           });
         }}
-        style={{height: Math.max(35, this.state.height), backgroundColor: '#e6e6e6', fontSize: 16, paddingLeft: 20, paddingRight: 20 }}
+        style={{
+          height: Math.max(35, this.state.height),
+          backgroundColor: '#e6e6e6',
+          fontSize: 16,
+          paddingLeft: 16,
+          paddingRight: 16,
+          margin: 10,
+          borderRadius: 5,
+        }}
         // onChangeText={(text) => this.setState({note: text})}
         underlineColorAndroid={'transparent'}
         autoFocus={true}
         // onSubmitEditing={() => this.props.set('note', event.nativeEvent.text)}
         defaultValue={this.state.note}
         autoCorrect={true}
+        autoCapitalize={'sentences'}
       />
     }
 

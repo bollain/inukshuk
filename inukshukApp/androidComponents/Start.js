@@ -261,9 +261,11 @@ export default class Start extends Component {
                 style={{opacity:0.6, marginBottom: 2, width: 50, height:25}}
                 source={require('../img/ic_wb_sunny_black_24dp.png')}
               />
-              <Text style={styles.textCenter}>Tonight the sun sets at</Text>
+              <Text style={styles.textCenter}>
+                On {returnDate}, the sun sets at
+              </Text>
               <Text style={[styles.textCenter, {fontSize:20,fontWeight:'bold'}]}>
-                <Sunset location={this.props.startLocation} />
+                <Sunset location={this.props.startLocation} returnDate={this.state.returnDate}/>
               </Text>
             </View>
             <View style={{marginTop: 10, alignItems: 'center',}}>

@@ -4,15 +4,28 @@
 // var chai = require('chai')
 var AlertService = require('../controllers/AlertService')
 var sinon = require('sinon')
+var StaticMap = require('../utils/staticmap')
 var twilioClient = require('../utils/twilioClient')
 
 describe('Alerts', () => {
-  it('Should send confirmation text', (done) => {
-    var twilioStub = sinon.stub(twilioClient, 'sendSms')
+  it('Should send create static map for text', (done) => {
+    var staticMapStub = sinon.stub(StaticMap, 'generateStaticMapURL')
     var trip = createTrip()
     var user = createUser()
 
     AlertService.confirmEmergencyContactSMS(trip, user)
+    sinon.assert.called(staticMapStub)
+    staticMapStub.restore()
+    done()
+  })
+})
+
+describe('Alerts', () => {
+  it('Should confirm alerts with user', (done) => {
+    var twilioStub = sinon.stub(twilioClient, 'sendSms')
+    var user = createUser()
+
+    AlertService.confirmAlertsWithUser(user)
     sinon.assert.called(twilioStub)
     twilioStub.restore()
     done()

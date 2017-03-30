@@ -36,20 +36,24 @@ module.exports.generateCancelEmail = function (emailAddress) {
   return email
 }
 
-module.exports.generateConfirmContactEmail = function (trip, user) {
+module.exports.generateConfirmContactEmail = function (trip, user, mapURL) {
   var email = {
     from: '"Inukshuk 👻" <inukshuk@inukshuk.me>', // sender address
     to: trip.contactEmail, // list of receivers
     subject: 'You are the chosen one! 👏', // Subject line
     text: 'You have been chosen as an emergency contact for ' +
           user.firstName + ', who is going on a hike. 🏃 ' +
-          'They are planning to return at ' + trip.returnTime + ' We\'ll let you know ' +
-          'when they return', // plain text body
+          'They are planning to return at ' + trip.returnTime + '. ' +
+          'This map shows their planned start and end: ' + mapURL +
+          'They also have sent this note to you: ' + trip.note + '\n' +
+          'We\'ll let you know when they return', // plain text body
     html: '<b>Hello,</b>' +
           '<p>You have been chosen as an emergency contact for ' +
           user.firstName + ', who is going on a hike. 🏃 </p>' +
-          '<p>They are planning to return at ' + trip.returnTime + '. We\'ll let you know ' +
-          'when they return.</p>'
+          '<p>They are planning to return at ' + trip.returnTime + '. ' +
+          'This map shows their planned start and end: ' + mapURL +
+          ' They also have sent this note to you: ' + trip.note + '</p>' +
+          '<p>We\'ll let you know when they return.</p>'
   }
   return email
 }
@@ -91,4 +95,14 @@ module.exports.generateEmergencyText = function (staticURL) {
                 ' them. If you can\'t consider reaching out to search and rescue. ' +
                 'Here is a map of their last known locations: ' + staticURL
   return message
+}
+
+module.exports.generateConfirmContactSMS = function (trip, user, mapURL) {
+  var messageForContact = 'You have been chosen as an emergency contact for ' +
+                          user.firstName + ', who is going on a hike. 🏃 ' +
+                          'They are planning to return at ' + trip.returnTime +
+                          'This map shows their planned start and end: ' + mapURL +
+                          ' They also have sent this note to you: ' + trip.note +
+                          ' We\'ll let you know when they return'
+  return messageForContact
 }

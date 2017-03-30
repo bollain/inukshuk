@@ -20,11 +20,16 @@ var transporter = nodemailer.createTransport({
 })
 
 module.exports.confirmEmergencyContactSMS = function (trip, user) {
-  var messageForContact = 'You have been chosen as an emergency contact for ' +
-                          user.firstName + ', who is going on a hike. 🏃 ' +
-                          'They are planning to return at ' + trip.returnTime + ' We\'ll let you know ' +
-                          'when they return'
-  twilioClient.sendSms(trip.contactPhone, messageForContact)
+  // First generate that map URL
+  var longURL = staticmap.generateStaticMapURL(trip)
+  googleUrl.shorten(longURL, (err, shortMapURL) => {
+    if (err) {
+      console.log(err)
+    }
+    // Send that sucker
+    var messageForContact = Messages.generateConfirmContactSMS(trip, user, shortMapURL)
+    twilioClient.sendSms(trip.contactPhone, messageForContact)
+  })
 }
 
 module.exports.confirmAlertsWithUser = function (user) {
@@ -35,14 +40,19 @@ module.exports.confirmAlertsWithUser = function (user) {
 
 module.exports.confirmEmergencyContactEmail = function (trip, user) {
   // setup email data with unicode symbols
-  var mailOptions = Messages.generateConfirmContactEmail(trip, user)
-
-// send mail with defined transport object
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      return console.log(error)
+  var longURL = staticmap.generateStaticMapURL(trip)
+  googleUrl.shorten(longURL, (err, shortMapURL) => {
+    if (err) {
+      console.log(err)
     }
-    console.log('Message %s sent: %s', info.messageId, info.response)
+    var mailOptions = Messages.generateConfirmContactEmail(trip, user, shortMapURL)
+    // send mail with defined transport object
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        return console.log(error)
+      }
+      console.log('Message %s sent: %s', info.messageId, info.response)
+    })
   })
 }
 

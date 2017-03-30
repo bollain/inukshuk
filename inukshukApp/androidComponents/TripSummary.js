@@ -49,7 +49,7 @@ export default class TripSummary extends Component {
       return: null,
       note: null,
       destIsStart: true,
-      user: JSON.parse(this.props.user),
+      user: this.props.user,
     };
     console.log('constructing summary')
     this.setSummaryNote = this.setSummaryNote.bind(this);

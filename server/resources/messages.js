@@ -42,14 +42,14 @@ module.exports.generateConfirmContactEmail = function (trip, user, mapURL) {
     to: trip.contactEmail, // list of receivers
     subject: 'You are the chosen one! 👏', // Subject line
     text: 'You have been chosen as an emergency contact for ' +
-          user.firstName + ', who is going on a hike. 🏃 ' +
+          user.firstName + ' ' + user.lastName + ', who is going on a hike. 🏃 ' +
           'They are planning to return at ' + trip.returnTime + '. ' +
           'This map shows their planned start and end: ' + mapURL +
           'They also have sent this note to you: ' + trip.note + '\n' +
           'We\'ll let you know when they return', // plain text body
     html: '<b>Hello,</b>' +
           '<p>You have been chosen as an emergency contact for ' +
-          user.firstName + ', who is going on a hike. 🏃 </p>' +
+          user.firstName + ' ' + user.lastName + ', who is going on a hike. 🏃 </p>' +
           '<p>They are planning to return at ' + trip.returnTime + '. ' +
           'This map shows their planned start and end: ' + mapURL +
           ' They also have sent this note to you: ' + trip.note + '</p>' +
@@ -99,7 +99,7 @@ module.exports.generateEmergencyText = function (staticURL) {
 
 module.exports.generateConfirmContactSMS = function (trip, user, mapURL) {
   var messageForContact = 'You have been chosen as an emergency contact for ' +
-                          user.firstName + ', who is going on a hike. 🏃 ' +
+                          user.firstName + ' ' + user.lastName + ', who is going on a hike. 🏃 ' +
                           'They are planning to return at ' + trip.returnTime +
                           'This map shows their planned start and end: ' + mapURL +
                           ' They also have sent this note to you: ' + trip.note +

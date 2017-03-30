@@ -33,7 +33,7 @@
     "preset": "react-native",
     "collectCoverageFrom": [
       "**/*.{js,jsx}",
-      "!**/node_modules/**",
+      "**/node_modules/**",
       "**/androidCompents/**"
       ]
   }

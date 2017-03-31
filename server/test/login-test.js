@@ -34,7 +34,7 @@ describe('/Login', () => {
           .post('/login')
           .send(authRequest)
           .end((err, res) => {
-            if (err) {  }
+            if (err) { }
             res.should.have.status(200)
             res.body.should.be.a('object')
             res.body.should.have.property('firstName').eql('Michael')
@@ -80,7 +80,7 @@ describe('/Login', () => {
         .post('/login')
         .send(authRequest)
         .end((err, res) => {
-          if (err) {  }
+          if (err) { }
           res.should.have.status(400)
 
           done()

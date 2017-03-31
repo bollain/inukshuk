@@ -128,6 +128,8 @@ describe('Trip', () => {
 
   describe('/DELETE Trip', () => {
     it('Should delete a trip', (done) => {
+      var mockCancelAlertSMS = sinon.stub(AlertService, 'sendCancelSMS')
+      var mockCancelEmail = sinon.stub(AlertService, 'sendCancelEmail')
       let existingUser = new User({
         firstName: 'Papa',
         lastName: 'John',
@@ -166,6 +168,11 @@ describe('Trip', () => {
               .delete('/trips/' + trip._id)
               .end((err, res) => {
                 res.should.have.status(200)
+                sinon.assert.called(mockCancelAlertSMS)
+                sinon.assert.called(mockCancelEmail)
+
+                mockCancelEmail.restore()
+                mockCancelAlertSMS.restore()
                 if (err) {}
                 done()
               })
@@ -569,7 +576,7 @@ var createTrip = function () {
         longitude: 0
       }
     ],
-    note: 'string',
+    note: 'thanks ',
     completed: false
   }
   return trip

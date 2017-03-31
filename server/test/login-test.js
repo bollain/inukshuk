@@ -9,6 +9,12 @@ var User = require('../models/User')
 chai.use(chaiHttp)
 
 describe('/Login', () => {
+  beforeEach((done) => { // Before each test we empty the database
+    User.remove({}, (err) => {
+      if (err) {}
+    })
+    done()
+  })
   it('Should Log in an existing user with correct password', (done) => {
     var existingUser = new User({
       firstName: 'Michael',
@@ -28,7 +34,7 @@ describe('/Login', () => {
           .post('/login')
           .send(authRequest)
           .end((err, res) => {
-            if (err) { console.log(err) }
+            if (err) {  }
             res.should.have.status(200)
             res.body.should.be.a('object')
             res.body.should.have.property('firstName').eql('Michael')
@@ -57,7 +63,7 @@ describe('/Login', () => {
           .post('/login')
           .send(authRequest)
           .end((err, res) => {
-            if (err) { console.log(err) }
+            if (err) { }
             res.should.have.status(401)
 
             done()
@@ -74,7 +80,7 @@ describe('/Login', () => {
         .post('/login')
         .send(authRequest)
         .end((err, res) => {
-          if (err) { console.log(err) }
+          if (err) {  }
           res.should.have.status(400)
 
           done()

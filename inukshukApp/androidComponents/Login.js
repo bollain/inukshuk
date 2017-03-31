@@ -9,7 +9,8 @@ import {
   TextInput,
   View,
   TouchableOpacity,
-  Alert
+  Alert,
+  Navigator
 } from 'react-native';
 import { storageSet } from '../scripts/localStorage.js';
 import { login, loginMock } from '../scripts/apiCalls.js';
@@ -28,6 +29,7 @@ export default class Login extends Component {
     navSignUp(){
       this.props.navigator.push({
         id: 'signup',
+        gestures: Navigator.SceneConfigs.PushFromRight.gestures
       });
     }
 

@@ -1,5 +1,16 @@
 import React, { Component, PropTypes } from 'react';
-import { View, Text, TouchableHighlight, ToolbarAndroid, StyleSheet, TouchableWithoutFeedback, DatePickerAndroid, TimePickerAndroid, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  TouchableHighlight,
+  ToolbarAndroid,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  DatePickerAndroid,
+  TimePickerAndroid,
+  TouchableOpacity,
+  Alert
+} from 'react-native';
 import {
   storageGet,
   storageMultiGet,
@@ -7,9 +18,17 @@ import {
   storageMultiRemove,
   storageSet,
 } from '../scripts/localStorage.js';
-import { toMonth, toWeekday, padTime } from '../scripts/datesAndTimes.js'
+import {
+  toMonth,
+  toWeekday,
+  padTime,
+  isInFutureByXMins
+} from '../scripts/datesAndTimes.js'
 
 var nativeImageSource = require('nativeImageSource');
+
+// The minimum number of minutes in the future that a user can select
+var MIN_MINS_IN_FUTURE = 10;
 
 export default class Return extends Component {
   constructor(props) {
@@ -18,13 +37,14 @@ export default class Return extends Component {
       this.state = JSON.parse(this.props.return);
     } else {
       let now = new Date();
+      let defaultTime = new Date(now.getTime() + (60 * 60000));
       this.state = {
-        hour: now.getHours(),
-        minute: now.getMinutes(),
-        year: now.getFullYear(),
-        month: now.getMonth(),
-        day: now.getDate(),
-        dayOfWeek: now.getDay(),
+        hour: defaultTime.getHours(),
+        minute: defaultTime.getMinutes(),
+        year: defaultTime.getFullYear(),
+        month: defaultTime.getMonth(),
+        day: defaultTime.getDate(),
+        dayOfWeek: defaultTime.getDay(),
       }
     }
     this.set = this.set.bind(this);
@@ -46,15 +66,29 @@ export default class Return extends Component {
   async showDatePicker() {
     try {
       var date = new Date(this.state.year, this.state.month, this.state.day);
-      const {action, year, month, day} = await DatePickerAndroid.open({date: date});
+      const {action, year, month, day} = await DatePickerAndroid.open({
+        date: date
+      });
       if (action !== DatePickerAndroid.dismissedAction) {
-        var date = new Date(year, month, day);
-        this.setState({
-          year: year,
-          month: month,
-          day: day,
-          dayOfWeek: date.getDay(),
-        });
+        var date = new Date(
+          year, month, day, this.state.hour, this.state.minute, 0, 0
+        );
+        if (isInFutureByXMins(date, MIN_MINS_IN_FUTURE)) {
+          this.setState({
+            year: year,
+            month: month,
+            day: day,
+            dayOfWeek: date.getDay(),
+          });
+        }
+        else {
+          Alert.alert(
+            'If I could turn back time... ♫ ♪',
+            'Please pick a time at least ' +
+            MIN_MINS_IN_FUTURE +
+            ' minutes in the future',
+          );
+        }
       }
     } catch ({code, message}) {
       console.warn('Error setting date: ', message);
@@ -63,12 +97,28 @@ export default class Return extends Component {
 
   async showTimePicker() {
     try {
-      const {action, minute, hour} = await TimePickerAndroid.open({hour: this.state.hour, minute: this.state.minute});
+      const {action, minute, hour} = await TimePickerAndroid.open({
+        hour: this.state.hour,
+        minute: this.state.minute
+      });
       if (action === TimePickerAndroid.timeSetAction) {
-        this.setState({
-          hour: hour,
-          minute: minute,
-        });
+        var date = new Date(
+          this.state.year, this.state.month, this.state.day, hour, minute, 0, 0
+        );
+        if (isInFutureByXMins(date, MIN_MINS_IN_FUTURE)) {
+          this.setState({
+            hour: hour,
+            minute: minute,
+          });
+        }
+        else {
+          Alert.alert(
+            'If I could turn back time... ♫ ♪',
+            'Please pick a time at least ' +
+            MIN_MINS_IN_FUTURE +
+            ' minutes in the future',
+          );
+        }
       }
     } catch ({code, message}) {
       console.warn('Error setting time: ', message);
@@ -79,7 +129,7 @@ export default class Return extends Component {
     return (
       <View style={styles.container}>
         <ToolbarAndroid style={styles.toolbar}
-                        title={this.props.title}
+                        title={'Return Time'}
                         navIcon={nativeImageSource({
                           android: 'ic_arrow_back_white_24dp',
                           width: 64,
@@ -95,7 +145,10 @@ export default class Return extends Component {
             onPress={this.showDatePicker.bind(this)}>
             <View>
               <Text style={[styles.buttonText, styles.timeText]}>
-                {toWeekday(this.state.dayOfWeek, false)} {toMonth(this.state.month, false)} {this.state.day}, {this.state.year}
+                <Text>{toWeekday(this.state.dayOfWeek, false)} </Text>
+                <Text>{toMonth(this.state.month, false)} </Text>
+                <Text>{this.state.day}, </Text>
+                <Text>{this.state.year}</Text>
               </Text>
             </View>
           </TouchableHighlight>
@@ -117,13 +170,7 @@ export default class Return extends Component {
             style={styles.submit}
             onPress={() => this.set()}
             activeOpacity={.8}>
-            <Text style={styles.buttonText}>Submit</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.remove}
-            onPress={() => this.remove()}
-            activeOpacity={.8}>
-            <Text style={styles.buttonText}>Clear</Text>
+            <Text style={styles.buttonText}>Save</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -151,10 +198,6 @@ const styles = StyleSheet.create({
      backgroundColor: 'green',
      padding: 18,
    },
-   remove: {
-     backgroundColor: 'red',
-     padding: 18,
-   },
    buttonText: {
      fontSize: 16,
      fontWeight: 'bold',
@@ -162,10 +205,13 @@ const styles = StyleSheet.create({
      textAlign: 'center'
    },
    timeButton: {
-     backgroundColor: 'lightgrey',
-     padding: 18,
+     backgroundColor: '#e6e6e6',
+     padding: 16,
      borderTopColor: 'white',
      borderTopWidth: 2,
+     borderRadius: 5,
+     margin: 10,
+     marginBottom: 0,
    },
    timeText: {
      color: 'black',

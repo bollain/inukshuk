@@ -30,16 +30,12 @@ export default class Breadcrumbs extends Component {
     }
   }
 
-  componentWillUnmount() {
-    BackgroundJob.cancel({jobKey: 'breadcrumbs'});
-  }
-
   // Schedule or cancel the breadcrumbs job depending on the toggle
   setBreadcrumbs(value) {
     if (value) {
       Alert.alert(
         'Are you sure?',
-        'This feature runs in the background when your screen is off and uses extra mobile data and ',
+        'This feature runs in the background when your screen is off and uses extra mobile data',
         [
           {text: 'No'},
           { text: 'Yes', onPress: () => {

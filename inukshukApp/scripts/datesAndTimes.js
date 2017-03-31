@@ -49,3 +49,25 @@ export function toTwentyFour(time) {
   if(AMPM == "AM" && hours==12) hours = hours-12;
   return [hours, minutes];
 }
+
+// Return true if given date is in a given number of minutes into the future
+export function isInFutureByXMins(date, mins) {
+  let now = new Date();
+  let xMinutesFromNow = new Date(now.getTime() + (mins * 60000));
+  return date > xMinutesFromNow;
+}
+
+// Return a string saying how much time is left until a given date
+// Given time has passed, retun zeros
+export function getTimeRemaining(endtime) {
+  if (new Date() > endtime) {
+    return "0d 0h 0m 0s";
+  } else {
+    var t = Date.parse(endtime) - Date.parse(new Date());
+    var seconds = Math.floor( (t/1000) % 60 );
+    var minutes = Math.floor( (t/1000/60) % 60 );
+    var hours = Math.floor( (t/(1000*60*60)) % 24 );
+    var days = Math.floor( t/(1000*60*60*24) );
+    return days + "d " + hours + "h " + minutes + "m " + seconds + "s";
+  }
+}

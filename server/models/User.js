@@ -52,11 +52,11 @@ userSchema.methods.removeTrip = function (tripId) {
   this.trips.splice(index, 1)
 }
 
-userSchema.methods.comparePassword = function (candidatePassword, cb) {
+userSchema.methods.comparePassword = function (candidatePassword, callback) {
   bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
-    if (err) { return cb(err) }
+    if (err) { return callback(err) }
 
-    cb(null, isMatch)
+    callback(null, isMatch)
   })
 }
 

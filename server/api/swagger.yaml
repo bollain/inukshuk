@@ -15,7 +15,7 @@ paths:
       - "application/json"
       parameters:
       - in: "body"
-        name: "User info"
+        name: "authRequest"
         description: "Credentials"
         required: true
         schema:

@@ -24,17 +24,17 @@
   "devDependencies": {
     "babel-jest": "18.0.0",
     "babel-preset-react-native": "1.9.1",
+    "fetch-mock": "^5.9.4",
+    "flow-bin": "^0.39.0",
     "jest": "18.1.0",
-    "react-test-renderer": "15.4.2",
-    "flow-bin": "^0.39.0"
+    "react-test-renderer": "15.4.2"
   },
   "jest": {
     "preset": "react-native",
-    "codeCoverage": true,
     "collectCoverageFrom": [
       "**/*.{js,jsx}",
-      "!**/node_modules/**",
+      "**/node_modules/**",
       "**/androidCompents/**"
-    ]
+      ]
   }
 }

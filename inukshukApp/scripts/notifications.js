@@ -5,7 +5,7 @@ var tripEnd = "Reminder to end your trip if you have finished. Your emergency co
 // var createdTrip = "Inukshuk will send you a notification 30 minutes before the entered end time of your trip";
 
 //creates a notification using the trip id and the trip return time
-export function createNotification(id, date, message) {
+function createNotification(id, date, message) {
     console.log(date);
     let newDate = new Date(date - (30 * 60000)); // 30 minutes before end
     console.log(newDate);
@@ -21,23 +21,25 @@ export function createNotification(id, date, message) {
 }
 
 //cancels the notification and lets the user know that has happened
-export function cancelNotification(id) {
-    PushNotification.cancelLocalNotifications({id: id.toString()});
+
+function cancelNotification(id) {
+    PushNotification.cancelLocalNotifications({id: id});
+
 }
 
 //deletes the old notification, creates a new notification using the new end time
-export function modifyNotification(id, date) {
+function modifyNotification(id, date) {
     cancelNotification(id);
     createNotification(id, date, tripEnd);
 }
 
 //creates the notification for trip ending in 30 minutes and an immediate notification sayin it did that
-export function createEndOfTripNotification(id, date) {
+function createEndOfTripNotification(id, date) {
     createNotification(id, date, tripEnd);
 }
 
 //creates basically immediate notifications
-export function immediateNotification(message) {
+function immediateNotification(message) {
     var date = new Date(Date.now() + (5 * 1000));
     PushNotification.localNotificationSchedule({
         message: message,
@@ -45,3 +47,5 @@ export function immediateNotification(message) {
         autoCancel: false,
     });
 }
+
+export {createNotification, createEndOfTripNotification, modifyNotification,immediateNotification,cancelNotification};

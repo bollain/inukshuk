@@ -56,7 +56,7 @@ export default class User extends Component {
       )
     })
     .catch((error) => {
-      Alert.alert(error);
+      Alert.alert('Something went wrong', error);
     });
   }
 

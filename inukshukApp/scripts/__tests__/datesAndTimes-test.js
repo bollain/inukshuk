@@ -7,11 +7,11 @@ import React from 'react'
 var datesAndTimes = require('../datesAndTimes');
 
 test('Convert to Month', () => {
-    expect(datesAndTimes.toMonth(3,false)).toEqual("April");
+    expect(datesAndTimes.toMonth(3,false)).toMatch("April");
 });
 
 test('Convert to Month short', () => {
-    expect(datesAndTimes.toMonth(5,true)).toEqual("Jun");
+    expect(datesAndTimes.toMonth(5,true)).toMatch("Jun");
 });
 
 test('Convert to weekday', () => {
@@ -36,5 +36,14 @@ test('Convert to time - Morning', () => {
 
 test('Convert to time - Afternoon', () => {
     expect(datesAndTimes.toTwentyFour("02:25 PM")).toEqual([14,25]);
+});
+
+test('extra time', () => {
+    expect(datesAndTimes.isInFutureByXMins(new Date(Date.now()+ (10*60000)), 1)).toBeTruthy();
+
+});
+
+test('get remaining time', () => {
+    expect(datesAndTimes.getTimeRemaining(new Date(Date.now()-(10*60000)))).toMatch("0d 0h 0m 0s");
 });
 

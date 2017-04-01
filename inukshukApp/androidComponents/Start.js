@@ -79,9 +79,8 @@ export default class Start extends Component {
               [{ text: 'OK', onPress: () => this.leaveStart()}]
             )
           )
-          .catch((err) => {
-            console.error(err)
-            Alert.alert(err);
+          .catch((error) => {
+            Alert.alert('Something went wrong', error);
           });
         }}
       ]
@@ -105,9 +104,8 @@ export default class Start extends Component {
               [{ text: 'OK', onPress: () => this.leaveStart()}]
             )
           )
-          .catch((err) => {
-            console.error(err)
-            Alert.alert(err);
+          .catch((error) => {
+            Alert.alert('Something went wrong', error);
           });
         }}
       ]
@@ -141,9 +139,8 @@ export default class Start extends Component {
                 );
                 modifyNotification(this.props.trip._id, this.state.newReturnDate);
               })
-              .catch((err) => {
-                console.error(err)
-                Alert.alert(err);
+              .catch((error) => {
+                Alert.alert('Something went wrong', error);
               });
             }},
           ]
@@ -261,9 +258,11 @@ export default class Start extends Component {
                 style={{opacity:0.6, marginBottom: 2, width: 50, height:25}}
                 source={require('../img/ic_wb_sunny_black_24dp.png')}
               />
-              <Text style={styles.textCenter}>Tonight the sun sets at</Text>
+              <Text style={styles.textCenter}>
+                On {returnDate}, the sun sets at
+              </Text>
               <Text style={[styles.textCenter, {fontSize:20,fontWeight:'bold'}]}>
-                <Sunset location={this.props.startLocation} />
+                <Sunset location={this.props.startLocation} returnDate={this.state.returnDate}/>
               </Text>
             </View>
             <View style={{marginTop: 10, alignItems: 'center',}}>
@@ -280,6 +279,7 @@ export default class Start extends Component {
           <View style={styles.buttons}>
             <View style={styles.button}>
               <TouchableOpacity
+                ref = "complete"
                 style={styles.submit}
                 onPress={() => this.completeTrip()}
                 activeOpacity={.8}>
@@ -288,6 +288,7 @@ export default class Start extends Component {
             </View>
             <View style={styles.button}>
               <TouchableOpacity
+                ref = "extend"
                 style={styles.extend}
                 onPress={() => this.extendTrip()}
                 activeOpacity={.8}>
@@ -296,6 +297,7 @@ export default class Start extends Component {
             </View>
             <View style={styles.button}>
               <TouchableOpacity
+                ref = "cancel"
                 style={styles.remove}
                 onPress={() => this.cancelTrip()}
                 activeOpacity={.8}>

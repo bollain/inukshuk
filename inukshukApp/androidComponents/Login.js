@@ -20,7 +20,7 @@ export default class Login extends Component {
     constructor(props) {
       super(props);
       this.state = {
-        username: null,
+        email: null,
         password: null,
       };
     }
@@ -34,8 +34,9 @@ export default class Login extends Component {
     }
 
     login() {
-      loginMock(this.state.username, this.state.password)
+      login(this.state.email, this.state.password)
       .then((responseJson) => {
+        console.log(responseJson);
         storageSet('user', JSON.stringify(responseJson));
         this.props.navigator.push({
           id: 'tripSummary',
@@ -43,7 +44,7 @@ export default class Login extends Component {
         });
       })
       .catch((error) => {
-        Alert.alert(error);
+        Alert.alert('Something went wrong', error);
       });
     }
 
@@ -69,7 +70,7 @@ export default class Login extends Component {
                 underlineColorAndroid='rgba(0,0,0,0)'
                 placeholder='Email'
                 keyboardType={'email-address'}
-                onChangeText={(text) => this.setState({username: text})}
+                onChangeText={(text) => this.setState({email: text})}
               />
             </View>
 

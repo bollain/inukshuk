@@ -8,7 +8,7 @@ import {
 } from './localStorage.js';
 
 var localIp = '192.168.1.90';
-var mockUserId = 257;
+var mockUserId = 260;
 
 /** HANDLE ERRORS
 * Handle any errors while communicating with the server
@@ -31,21 +31,33 @@ function handleErrors(response) {
 * MODIFIES: the database of users on the inukshuk server
 * RETURNS: JSON response or an error message
 **/
-export function login(username, password) {
+export function login(email, password) {
+  console.log(email);
+  console.log(password);
   return new Promise((resolve, reject) => {
     fetch('http://' + localIp + ':8080/login', {
+      method: 'POST',
       headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        userName: username,
+        email: email,
         password: password,
       })
     })
-    .then(handleErrors)
+    .then(response => {
+      if (response.status == 400) {
+        reject('Email not found');
+      }
+      else if (response.status == 401) {
+        reject('Email and password do not match');
+      }
+      return response;
+    })
     .then(response => response.json())
     .then((responseJson) => {
+      console.log(responseJson);
       resolve(responseJson);
     })
     .catch((error) => {
@@ -77,7 +89,7 @@ export function loginMock(username, password) {
 
 /** CREATE USER
 * Create a user on the inukshuk server with the given information
-* REQUIRES: user object with username, firstName, lastName, email and
+* REQUIRES: user object with firstName, lastName, email and
 * phoneNumber
 * MODIFIES: the database of users on the inukshuk server
 * RETURNS: JSON response or error message
@@ -92,7 +104,15 @@ export function createUser(user) {
       },
       body: JSON.stringify(user),
     })
-    .then(handleErrors)
+    .then(response => {
+      if (response.status == 401) {
+        reject('Bad request');
+      }
+      else if (response.status == 422) {
+        reject('Email already registered');
+      }
+      return response;
+    })
     .then(response => response.json())
     .then((responseJson) => {
       resolve(responseJson);
@@ -120,7 +140,15 @@ export function updateUser(user) {
       },
       body: JSON.stringify(user),
     })
-    .then(handleErrors)
+    .then(response => {
+      if (response.status == 400) {
+        reject('Invalid user');
+      }
+      else if (response.status == 404) {
+        reject('User not found');
+      }
+      return response;
+    })
     .then(response => response.json())
     .then((responseJson) => {
       resolve(responseJson);
@@ -147,7 +175,12 @@ export function postTrip(trip) {
       },
       body: JSON.stringify(trip),
     })
-    .then(handleErrors)
+    .then(response => {
+      if (response.status == 400) {
+        reject('Invalid user');
+      }
+      return response;
+    })
     .then(response => response.json())
     .then((responseJson) => {
       resolve(responseJson);
@@ -169,9 +202,18 @@ export function cancelTrip(tripId) {
     fetch('http://' + localIp + ':8080/trips/' + tripId, {
       method: 'DELETE',
     })
-    .then(handleErrors)
-    .then(() => resolve())
-    .catch(function(error) {
+    .then(response => {
+      if (response.status == 200) {
+        resolve();
+      }
+      else if (response.status == 403) {
+        reject('Forbidden');
+      }
+      else if (response.status == 404) {
+        reject('Trip not found');
+      }
+    })
+    .catch((error) => {
       reject('Can not reach server');
     });
   })
@@ -196,9 +238,18 @@ export async function completeTrip(tripId) {
         completed: true
       })
     })
-    .then(handleErrors)
-    .then(() => resolve())
-    .catch(function(error) {
+    .then(response => {
+      if (response.status == 200) {
+        resolve();
+      }
+      else if (response.status == 403) {
+        reject('Invalid ID');
+      }
+      else if (response.status == 404) {
+        reject('Resource not found');
+      }
+    })
+    .catch((error) => {
       reject('Can not reach server');
     })
   })
@@ -223,9 +274,18 @@ export function extendTrip(tripId, newReturnDate) {
         returnTime: newReturnDate,
       })
     })
-    .then(handleErrors)
-    .then(() => resolve())
-    .catch(function(error) {
+    .then(response => {
+      if (response.status == 200) {
+        resolve();
+      }
+      else if (response.status == 403) {
+        reject('Invalid ID');
+      }
+      else if (response.status == 404) {
+        reject('Resource not found');
+      }
+    })
+    .catch((error) => {
       reject('Can not reach server');
     });
   })
@@ -248,7 +308,15 @@ export function throwCrumbs(tripId, breadcrumbs) {
       },
       body: JSON.stringify(breadcrumbs),
     })
-    .then(handleErrors)
+    .then(response => {
+      if (response.status == 400) {
+        reject('Invalid Trip ID');
+      }
+      else if (response.status == 404) {
+        reject('Resource not found');
+      }
+      return response;
+    })
     .then(response => response.json())
     .then((responseJson) => {
       resolve(responseJson);

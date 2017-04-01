@@ -245,7 +245,9 @@ export default class TripSummary extends Component {
           { cancelable: false }
         )
       })
-      .catch((error) => console.error(error));
+      .catch((error) => {
+        Alert.alert('Something went wrong', error);
+      });
     } else {
       Alert.alert(
         'Something\'s missing',

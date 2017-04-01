@@ -46,7 +46,9 @@ export default class SignUp extends Component {
       createUser({firstName: state.firstName,
                   lastName: state.lastName,
                   email: state.email,
-                  phoneNumber: state.phoneNumber})
+                  phoneNumber: state.phoneNumber,
+                  password: state.password,
+                })
       .then((responseJson) => {
         console.log(responseJson);
         storageSet('user', JSON.stringify(responseJson));
@@ -58,15 +60,15 @@ export default class SignUp extends Component {
               text: 'OK',
               onPress: () => this.props.navigator.push({
                 id: 'tripSummary',
-                user: responseJson,
+                user: JSON.stringify(responseJson),
               })
             },
           ],
           { cancelable: false }
         )
       })
-      .catch((err) => {
-        Alert.alert(err);
+      .catch((error) => {
+        Alert.alert('Something went wrong', error);
       });
     } else {
       Alert.alert('Don\'t be shy',

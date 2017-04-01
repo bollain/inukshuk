@@ -79,9 +79,8 @@ export default class Start extends Component {
               [{ text: 'OK', onPress: () => this.leaveStart()}]
             )
           )
-          .catch((err) => {
-            console.error(err)
-            Alert.alert(err);
+          .catch((error) => {
+            Alert.alert('Something went wrong', error);
           });
         }}
       ]
@@ -105,9 +104,8 @@ export default class Start extends Component {
               [{ text: 'OK', onPress: () => this.leaveStart()}]
             )
           )
-          .catch((err) => {
-            console.error(err)
-            Alert.alert(err);
+          .catch((error) => {
+            Alert.alert('Something went wrong', error);
           });
         }}
       ]
@@ -141,9 +139,8 @@ export default class Start extends Component {
                 );
                 modifyNotification(this.props.trip._id, this.state.newReturnDate);
               })
-              .catch((err) => {
-                console.error(err)
-                Alert.alert(err);
+              .catch((error) => {
+                Alert.alert('Something went wrong', error);
               });
             }},
           ]

@@ -41,7 +41,7 @@ exports.authenticateUser = function (args, res, next) {
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
-        user: user.phoneNumber
+        phoneNumber: user.phoneNumber
       }
       res.setHeader('Content-Type', 'application/json')
       res.end(JSON.stringify(result))

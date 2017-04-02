@@ -36,7 +36,8 @@ describe('Trip', () => {
         firstName: 'Papa',
         lastName: 'John',
         phoneNumber: '7785583029',
-        email: 'bollain@gmail.com'
+        email: 'bollain@gmail.com',
+        password: 'miguelito'
       })
       existingUser.save((err, user) => {
         var trip = createTrip()
@@ -84,7 +85,8 @@ describe('Trip', () => {
         firstName: 'Papa',
         lastName: 'John',
         phoneNumber: '7785583029',
-        email: 'bollain@gmail.com'
+        email: 'bollain@gmail.com',
+        password: 'miguelito'
       })
       existingUser.save((err, user) => {
         var trip = createTrip()
@@ -107,7 +109,8 @@ describe('Trip', () => {
         firstName: 'Papa',
         lastName: 'John',
         phoneNumber: '7785583029',
-        email: 'pepito@gmail.com'
+        email: 'pepito@gmail.com',
+        password: 'miguelito'
       })
       existingUser.save((err, user) => {
         var trip = createTrip()
@@ -134,7 +137,8 @@ describe('Trip', () => {
         firstName: 'Papa',
         lastName: 'John',
         phoneNumber: '7785583029',
-        email: 'miguelito@gmail.com'
+        email: 'miguelito@gmail.com',
+        password: 'miguelito'
       })
       existingUser.save((err, user) => {
         var trip = new Trip({
@@ -197,7 +201,8 @@ describe('Trip', () => {
         firstName: 'Linus',
         lastName: 'Torvalds',
         phoneNumber: '7785580000',
-        email: 'linux@gnu.com'
+        email: 'linux@gnu.com',
+        password: 'miguelito'
       })
       someUser.save((err, user) => {
         var trip = new Trip({
@@ -272,7 +277,8 @@ describe('Trip', () => {
         firstName: 'Papa',
         lastName: 'John',
         phoneNumber: '7785583029',
-        email: 'bollain@gmail.com'
+        email: 'bollain@gmail.com',
+        password: 'miguelito'
       })
       existingUser.save((err, user) => {
         // Now save a trip
@@ -338,7 +344,8 @@ describe('Trip', () => {
         firstName: 'Papa',
         lastName: 'John',
         phoneNumber: '7785583076',
-        email: 'charlie@gmail.com'
+        email: 'charlie@gmail.com',
+        password: 'miguelito'
       })
       existingUser.save((err, user) => {
         // Now save a trip
@@ -406,7 +413,8 @@ describe('Trip', () => {
         firstName: 'Papa',
         lastName: 'John',
         phoneNumber: '7785583076',
-        email: 'charlie@gmail.com'
+        email: 'charlie@gmail.com',
+        password: 'miguelito'
       })
       existingUser.save((err, user) => {
           // Now save a trip
@@ -474,7 +482,8 @@ describe('Trip', () => {
         firstName: 'Papa',
         lastName: 'John',
         phoneNumber: '7785583076',
-        email: 'charlie@gmail.com'
+        email: 'charlie@gmail.com',
+        password: 'miguelito'
       })
       existingUser.save((err, user) => {
             // Now save a trip

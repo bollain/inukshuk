@@ -24,7 +24,8 @@ describe('Users', () => {
         firstName: 'Miguelito',
         lastName: 'Lopez',
         phoneNumber: '+17785583029',
-        email: 'bollain@gmail.com'
+        email: 'bollain@gmail.com',
+        password: 'miguelito'
       }
       chai.request(index)
             .post('/users')
@@ -44,7 +45,8 @@ describe('Users', () => {
         firstName: 'Miguelito',
         lastName: 'Lopez',
         phoneNumber: '911',
-        email: 'bollain6@gmail.com'
+        email: 'bollain6@gmail.com',
+        password: 'miguelito'
       }
       chai.request(index)
             .post('/users')
@@ -61,7 +63,8 @@ describe('Users', () => {
         firstName: 'Miguelito',
         lastName: 'Lopez',
         phoneNumber: '911',
-        email: 'bollaingmail.com'
+        email: 'bollaingmail.com',
+        password: 'miguelito'
       }
       chai.request(index)
             .post('/users')
@@ -78,14 +81,16 @@ describe('Users', () => {
         firstName: 'Papa',
         lastName: 'John',
         phoneNumber: '7785583029',
-        email: 'miguel@gmail.com'
+        email: 'miguel@gmail.com',
+        password: 'miguelito'
       })
       existingUser.save((err, user) => {
         let duplicateUser = {
           firstName: 'Mike',
           lastName: 'Lopez',
           phoneNumber: '7785584040',
-          email: 'miguel@gmail.com'
+          email: 'miguel@gmail.com',
+          password: 'miguelito'
         }
         if (err) {}
         chai.request(index)
@@ -107,7 +112,8 @@ describe('Users', () => {
         firstName: 'Papa',
         lastName: 'John',
         phoneNumber: '7785583029',
-        email: 'deezenuts@gmail.com'
+        email: 'deezenuts@gmail.com',
+        password: 'miguelito'
       })
       existingUser.save((err, user) => {
         let update = {
@@ -115,7 +121,8 @@ describe('Users', () => {
           firstName: 'Papa',
           lastName: 'John',
           phoneNumber: '7785564040',
-          email: 'deezenuts@gmail.com'
+          email: 'deezenuts@gmail.com',
+          password: 'miguelito'
         }
         if (err) {}
         chai.request(index)
@@ -134,7 +141,8 @@ describe('Users', () => {
         firstName: 'Papa',
         lastName: 'John',
         phoneNumber: '7785583029',
-        email: 'bollain@gmail.com'
+        email: 'bollain@gmail.com',
+        password: 'miguelito'
       })
       existingUser.save((err, user) => {
         let update = {
@@ -142,7 +150,8 @@ describe('Users', () => {
           firstName: 'Papa',
           lastName: 'John',
           phoneNumber: '7785583029',
-          email: 'papaJ@gmail.com'
+          email: 'papaJ@gmail.com',
+          password: 'miguelito'
         }
         if (err) {}
         chai.request(index)
@@ -168,7 +177,8 @@ describe('Users', () => {
         firstName: 'Papa',
         lastName: 'John',
         phoneNumber: '7785583029',
-        email: 'rekt@gmail.com'
+        email: 'rekt@gmail.com',
+        password: 'miguelito'
       })
       existingUser.save((err, user) => {
         let update = {
@@ -176,7 +186,8 @@ describe('Users', () => {
           firstName: 'Papa',
           lastName: 'John',
           phoneNumber: '7785583029',
-          email: 'papaJgmail.com'
+          email: 'papaJgmail.com',
+          password: 'miguelito'
         }
         if (err) {}
         chai.request(index)
@@ -195,7 +206,8 @@ describe('Users', () => {
         firstName: 'Papa',
         lastName: 'John',
         phoneNumber: '7785583029',
-        email: 'bollain@gmail.com'
+        email: 'bollain@gmail.com',
+        password: 'miguelito'
       })
       existingUser.save((err, user) => {
         let update = {
@@ -223,7 +235,8 @@ describe('Users', () => {
         firstName: 'Papa',
         lastName: 'John',
         phoneNumber: '7785583029',
-        email: 'bollain@gmail.com'
+        email: 'bollain@gmail.com',
+        password: 'miguelito'
       }
       chai.request(index)
             .put('/users')
@@ -240,7 +253,8 @@ describe('Users', () => {
         firstName: 'Papa',
         lastName: 'John',
         phoneNumber: '7785583029',
-        email: 'bollain@gmail.com'
+        email: 'bollain@gmail.com',
+        password: 'miguelito'
       })
       firstUser.save((err, user) => {
         if (err) { console.log(err) }
@@ -250,7 +264,8 @@ describe('Users', () => {
           firstName: 'Miguel',
           lastName: 'Lopez',
           phoneNumber: '7785584040',
-          email: 'miguel@gmail.com'
+          email: 'miguel@gmail.com',
+          password: 'miguelito'
         })
         secondUser.save((err, user) => {
           let update = {
@@ -258,7 +273,8 @@ describe('Users', () => {
             firstName: 'Miguel',
             lastName: 'Lopez',
             phoneNumber: '7785584040',
-            email: 'bollain@gmail.com'
+            email: 'bollain@gmail.com',
+            password: 'miguelito'
           }
           if (err) {}
           chai.request(index)
@@ -281,7 +297,8 @@ describe('Users', () => {
         firstName: 'Papa',
         lastName: 'John',
         phoneNumber: '7785583029',
-        email: 'bollain@gmail.com'
+        email: 'bollain@gmail.com',
+        password: 'miguelito'
       })
       existingUser.save((err, user) => {
         if (err) {}
@@ -317,7 +334,8 @@ describe('Users', () => {
         firstName: 'Papa',
         lastName: 'John',
         phoneNumber: '7785583029',
-        email: 'bollain@gmail.com'
+        email: 'bollain@gmail.com',
+        password: 'miguelito'
       })
       existingUser.save((err, user) => {
         if (err) {}

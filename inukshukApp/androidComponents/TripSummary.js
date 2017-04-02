@@ -49,7 +49,7 @@ export default class TripSummary extends Component {
       return: null,
       note: null,
       destIsStart: true,
-      user: this.props.user,
+      user: JSON.parse(this.props.user),
     };
     console.log('constructing summary')
     this.setSummaryNote = this.setSummaryNote.bind(this);
@@ -245,7 +245,9 @@ export default class TripSummary extends Component {
           { cancelable: false }
         )
       })
-      .catch((error) => console.error(error));
+      .catch((error) => {
+        Alert.alert('Something went wrong', error);
+      });
     } else {
       Alert.alert(
         'Something\'s missing',

@@ -7,7 +7,8 @@ import {
   storageSet,
 } from './localStorage.js';
 
-var localIp = '192.168.1.90';
+var localIp = 'inukshuk.me';
+var localPort = 1985;
 var mockUserId = 260;
 
 /** HANDLE ERRORS
@@ -34,8 +35,9 @@ function handleErrors(response) {
 export function login(email, password) {
   console.log(email);
   console.log(password);
+  console.log('http://' + localIp + ':' + localPort + '/login');
   return new Promise((resolve, reject) => {
-    fetch('http://' + localIp + ':8080/login', {
+    fetch('http://' + localIp + ':' + localPort + '/login', {
       method: 'POST',
       headers: {
           'Accept': 'application/json',
@@ -75,7 +77,7 @@ export function login(email, password) {
 **/
 export function loginMock(username, password) {
   return new Promise((resolve, reject) => {
-    fetch('http://' + localIp + ':8080/users/' + mockUserId)
+    fetch('http://' + localIp + ':' + localPort + '/users/' + mockUserId)
     .then(handleErrors)
     .then(response => response.json())
     .then((responseJson) => {
@@ -96,7 +98,7 @@ export function loginMock(username, password) {
 **/
 export function createUser(user) {
   return new Promise((resolve, reject) => {
-    fetch('http://' + localIp + ':8080/users', {
+    fetch('http://' + localIp + ':' + localPort + '/users', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -132,7 +134,7 @@ export function createUser(user) {
 **/
 export function updateUser(user) {
   return new Promise((resolve, reject) => {
-    fetch('http://' + localIp + ':8080/users', {
+    fetch('http://' + localIp + ':' + localPort + '/users', {
       method: 'PUT',
       headers: {
           'Accept': 'application/json',
@@ -167,7 +169,7 @@ export function updateUser(user) {
  **/
 export function postTrip(trip) {
   return new Promise((resolve, reject) => {
-    fetch('http://' + localIp + ':8080/trips', {
+    fetch('http://' + localIp + ':' + localPort + '/trips', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -199,7 +201,7 @@ export function postTrip(trip) {
 **/
 export function cancelTrip(tripId) {
   return new Promise((resolve, reject) => {
-    fetch('http://' + localIp + ':8080/trips/' + tripId, {
+    fetch('http://' + localIp + ':' + localPort + '/trips/' + tripId, {
       method: 'DELETE',
     })
     .then(response => {
@@ -227,7 +229,7 @@ export function cancelTrip(tripId) {
 **/
 export async function completeTrip(tripId) {
   return new Promise((resolve, reject) => {
-    fetch('http://' + localIp + ':8080/trips/', {
+    fetch('http://' + localIp + ':' + localPort + '/trips/', {
       method: 'PUT',
       headers: {
         'Accept': 'application/json',
@@ -263,7 +265,7 @@ export async function completeTrip(tripId) {
 **/
 export function extendTrip(tripId, newReturnDate) {
   return new Promise((resolve, reject) => {
-    fetch('http://' + localIp + ':8080/trips/', {
+    fetch('http://' + localIp + ':' + localPort + '/trips/', {
       method: 'PUT',
       headers: {
         'Accept': 'application/json',
@@ -300,7 +302,7 @@ export function extendTrip(tripId, newReturnDate) {
 **/
 export function throwCrumbs(tripId, breadcrumbs) {
   return new Promise((resolve, reject) => {
-    fetch('http://' + localIp + ':8080/trips/' + tripId + '/breadcrumbs/', {
+    fetch('http://' + localIp + ':' + localPort + '/trips/' + tripId + '/breadcrumbs/', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

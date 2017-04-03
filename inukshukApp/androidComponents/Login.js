@@ -79,6 +79,7 @@ export default class Login extends Component {
               <TextInput
                 style={styles.inputText}
                 underlineColorAndroid='rgba(0,0,0,0)'
+                secureTextEntry={true}
                 placeholder='Password'
                 onChangeText={(text) => this.setState({password: text})}
               />

@@ -56,10 +56,22 @@ export default class Login extends Component {
         {/* Nice full-screen image */}
         <Image source={require('../img/background.jpg')} style={styles.bannerImage}>
 
-          {/* Inukshuk title */}
-          <Text style={styles.title}>
-            Inukshuk
-          </Text>
+          <View style={styles.titleContainer}>
+
+            {/* Inukshuk logo */}
+            <View style={{elevation: 3}}>
+              <Image
+                style={styles.logo}
+                source={require('../img/InukshukIcon.png')}
+              />
+            </View>
+
+            {/* Inukshuk title */}
+            <Text style={styles.title}>
+              inukshuk
+            </Text>
+
+          </View>
 
           <View style={styles.inputContainer}>
 
@@ -124,15 +136,27 @@ const styles = StyleSheet.create({
     height: null,
     width: null,
   },
+  titleContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 3,
+  },
   title: {
     fontSize: 50,
     fontWeight: 'bold',
     textAlign: 'center',
-    marginTop: 40,
-    marginBottom: 40,
+    marginTop: 5,
+    color: 'white',
+    textShadowOffset: {width: 2, height: 2},
+    textShadowRadius: 1,
+    textShadowColor: '#0e7545'
+  },
+  logo: {
+    height: 100,
+    width: 100,
   },
   inputContainer: {
-    flex: 1,
+    flex: 2,
     flexDirection: 'column',
     justifyContent: 'flex-end',
   },

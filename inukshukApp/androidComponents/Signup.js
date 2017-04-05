@@ -91,8 +91,8 @@ export default class SignUp extends Component {
                         })}
                         onIconClicked={this.props.navigator.pop}
                         titleColor={'#FFFFFF'}/>
-        <View style={styles.textContainer}>
-          <ScrollView>
+        <View style={styles.innerContainer}>
+          <ScrollView style={styles.inputBoxes}>
 
             {/* First name input */}
             <View style={styles.inputBox}>
@@ -144,18 +144,17 @@ export default class SignUp extends Component {
             </View>
 
           </ScrollView>
-        </View>
 
-        {/* Create account button */}
-        <View style={styles.createContainer}>
-          <TouchableOpacity
-            style={styles.create}
-            onPress={()=> this.createUser()}
-            activeOpacity={.8}>
-            <Text style={styles.buttonText}>Create account</Text>
-          </TouchableOpacity>
+          {/* Create account button */}
+          <View style={styles.createContainer}>
+            <TouchableOpacity
+              style={styles.create}
+              onPress={()=> this.createUser()}
+              activeOpacity={.8}>
+              <Text style={styles.buttonText}>Create account</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-
       </View>
     );
   }
@@ -171,9 +170,12 @@ const styles = StyleSheet.create({
     height: 60,
     backgroundColor: '#00aaf1',
   },
-  textContainer: {
-    padding: 10,
+  innerContainer: {
     flex: 1,
+    justifyContent: 'space-between',
+  },
+  inputBoxes: {
+    padding: 10,
   },
   inputBox: {
     backgroundColor: '#e6e6e6',

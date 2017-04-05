@@ -115,7 +115,11 @@ export default class Start extends Component {
   // Confirm, then extend the trip
   extendTrip() {
     this.showTimePicker()
-    .then(() => {
+    .then((action) => {
+      // Do nothing if user didn't set a time
+      if (action === TimePickerAndroid.dismissedAction) {
+        return;
+      }
       // Check if the selected date is in the future
       if (isInFutureByXMins(this.state.newReturnDate, MIN_MINS_IN_FUTURE)) {
         Alert.alert(
@@ -179,6 +183,7 @@ export default class Start extends Component {
           ),
         });
       }
+      return action;
     } catch ({code, message}) {
       console.warn('Error setting time: ', message);
     }
@@ -215,94 +220,96 @@ export default class Start extends Component {
         <ToolbarAndroid style={styles.toolbar}
                         title={this.props.tripName}
                         titleColor={'#FFFFFF'}/>
-        <ScrollView>
-          <View style={styles.textContainer}>
-            <Text style={styles.textLeft}>
-              <Text>You told </Text>
-              <Text style={{fontStyle: 'italic'}}>
-                {this.props.contact.firstName}
-              </Text>
-              <Text> that you would arrive at </Text>
-              <Text
-                style={{fontStyle: 'italic', color: '#00aaf1'}}
-                onPress={() => this.openMap(endGeoUrl)}>
-                <Text>
-                  {endLocation.latitude.toFixed(6)},
-                  {endLocation.longitude.toFixed(6)}
+        <View style={styles.innerContainer}>
+          <ScrollView>
+            <View style={styles.textContainer}>
+              <Text style={styles.textLeft}>
+                <Text>You told </Text>
+                <Text style={{fontStyle: 'italic'}}>
+                  {this.props.contact.firstName}
                 </Text>
-              </Text>
-              <Text> from </Text>
-              <Text
-                style={{fontStyle: 'italic', color: '#00aaf1'}}
-                onPress={() => this.openMap(startGeoUrl)}>
-                <Text>
-                  {this.props.startLocation.latitude.toFixed(6)},
-                  {this.props.startLocation.longitude.toFixed(6)}
+                <Text> that you would arrive at </Text>
+                <Text
+                  style={{fontStyle: 'italic', color: '#00aaf1'}}
+                  onPress={() => this.openMap(endGeoUrl)}>
+                  <Text>
+                    {endLocation.latitude.toFixed(6)},
+                    {endLocation.longitude.toFixed(6)}
+                  </Text>
                 </Text>
+                <Text> from </Text>
+                <Text
+                  style={{fontStyle: 'italic', color: '#00aaf1'}}
+                  onPress={() => this.openMap(startGeoUrl)}>
+                  <Text>
+                    {this.props.startLocation.latitude.toFixed(6)},
+                    {this.props.startLocation.longitude.toFixed(6)}
+                  </Text>
+                </Text>
+                <Text> by </Text>
+                <Text style={{fontStyle: 'italic'}}>{returnTime} on {returnDate}</Text>
               </Text>
-              <Text> by </Text>
-              <Text style={{fontStyle: 'italic'}}>{returnTime} on {returnDate}</Text>
-            </Text>
-            <View style={{marginTop: 10, alignItems: 'center',}}>
-              <Image
-                style={{opacity:0.6, marginBottom: 2, width: 50, height:50}}
-                source={require('../img/ic_timer_black_24dp.png')}
-              />
-              <Text style={styles.textCenter}>Your trip will end in</Text>
-              <Text style={[styles.textCenter, {fontSize:20,fontWeight:'bold'}]}>
-                <Countdown endDate={this.state.returnDate} />
-              </Text>
+              <View style={{marginTop: 10, alignItems: 'center',}}>
+                <Image
+                  style={{opacity:0.6, marginBottom: 2, width: 50, height:50}}
+                  source={require('../img/ic_timer_black_24dp.png')}
+                />
+                <Text style={styles.textCenter}>Your trip will end in</Text>
+                <Text style={[styles.textCenter, {fontSize:20,fontWeight:'bold'}]}>
+                  <Countdown endDate={this.state.returnDate} />
+                </Text>
+              </View>
+              <View style={{marginTop: 10, alignItems: 'center',}}>
+                <Image
+                  style={{opacity:0.6, marginBottom: 2, width: 50, height:25}}
+                  source={require('../img/ic_wb_sunny_black_24dp.png')}
+                />
+                <Text style={styles.textCenter}>
+                  On {returnDate}, the sun sets at
+                </Text>
+                <Text style={[styles.textCenter, {fontSize:20,fontWeight:'bold'}]}>
+                  <Sunset location={this.props.startLocation} returnDate={this.state.returnDate}/>
+                </Text>
+              </View>
+              <View style={{marginTop: 10, alignItems: 'center',}}>
+                <Image
+                  style={{opacity:0.6, marginBottom: 2, width: 50, height:50}}
+                  source={require('../img/ic_location_on_black_24dp.png')}
+                />
+                <Text style={styles.textCenter}>Automatically send your location every 10 minutes</Text>
+                <Breadcrumbs tripId={JSON.parse(this.props.trip)._id}/>
+              </View>
             </View>
-            <View style={{marginTop: 10, alignItems: 'center',}}>
-              <Image
-                style={{opacity:0.6, marginBottom: 2, width: 50, height:25}}
-                source={require('../img/ic_wb_sunny_black_24dp.png')}
-              />
-              <Text style={styles.textCenter}>
-                On {returnDate}, the sun sets at
-              </Text>
-              <Text style={[styles.textCenter, {fontSize:20,fontWeight:'bold'}]}>
-                <Sunset location={this.props.startLocation} returnDate={this.state.returnDate}/>
-              </Text>
-            </View>
-            <View style={{marginTop: 10, alignItems: 'center',}}>
-              <Image
-                style={{opacity:0.6, marginBottom: 2, width: 50, height:50}}
-                source={require('../img/ic_location_on_black_24dp.png')}
-              />
-              <Text style={styles.textCenter}>Automatically send your location every 10 minutes</Text>
-              <Breadcrumbs tripId={JSON.parse(this.props.trip)._id}/>
-            </View>
-          </View>
-        </ScrollView>
-        <View style={styles.buttonContainer}>
-          <View style={styles.buttons}>
-            <View style={styles.button}>
-              <TouchableOpacity
-                ref = "complete"
-                style={styles.submit}
-                onPress={() => this.completeTrip()}
-                activeOpacity={.8}>
-                <Text style={styles.buttonText}>Complete</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.button}>
-              <TouchableOpacity
-                ref = "extend"
-                style={styles.extend}
-                onPress={() => this.extendTrip()}
-                activeOpacity={.8}>
-                <Text style={styles.buttonText}>Extend</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.button}>
-              <TouchableOpacity
-                ref = "cancel"
-                style={styles.remove}
-                onPress={() => this.cancelTrip()}
-                activeOpacity={.8}>
-                <Text style={styles.buttonText}>Cancel</Text>
-              </TouchableOpacity>
+          </ScrollView>
+          <View style={styles.buttonContainer}>
+            <View style={styles.buttons}>
+              <View style={styles.button}>
+                <TouchableOpacity
+                  ref = "complete"
+                  style={styles.submit}
+                  onPress={() => this.completeTrip()}
+                  activeOpacity={.8}>
+                  <Text style={styles.buttonText}>Complete</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.button}>
+                <TouchableOpacity
+                  ref = "extend"
+                  style={styles.extend}
+                  onPress={() => this.extendTrip()}
+                  activeOpacity={.8}>
+                  <Text style={styles.buttonText}>Extend</Text>
+                </TouchableOpacity>
+              </View>
+              <View style={styles.button}>
+                <TouchableOpacity
+                  ref = "cancel"
+                  style={styles.remove}
+                  onPress={() => this.cancelTrip()}
+                  activeOpacity={.8}>
+                  <Text style={styles.buttonText}>Cancel</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         </View>
@@ -322,8 +329,11 @@ const styles = StyleSheet.create({
      height: 60,
      backgroundColor: '#00aaf1',
    },
+   innerContainer: {
+     flex: 1,
+     justifyContent: 'space-between',
+   },
    textContainer: {
-     flex: 4,
      justifyContent: 'flex-start',
      margin: 10,
    },

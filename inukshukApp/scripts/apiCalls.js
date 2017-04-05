@@ -7,8 +7,10 @@ import {
   storageSet,
 } from './localStorage.js';
 
-var localIp = 'inukshuk.me';
-var localPort = 1985;
+// var localIp = 'inukshuk.me';
+// var localPort = 1985;
+var localIp = '192.168.1.90';
+var localPort = 8080;
 var mockUserId = 260;
 
 /** HANDLE ERRORS

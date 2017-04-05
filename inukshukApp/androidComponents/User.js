@@ -12,6 +12,7 @@ import {
   ToolbarAndroid,
   TouchableOpacity,
   Alert,
+  ScrollView,
 } from 'react-native';
 import { updateUser } from '../scripts/apiCalls.js';
 import { storageSet } from '../scripts/localStorage.js';
@@ -83,34 +84,37 @@ export default class User extends Component {
           onIconClicked={this.props.navigator.pop}
           titleColor={'#FFFFFF'}/>
 
-        <View style={styles.textContainer}>
+        <View style={styles.innerContainer}>
 
-          {/* First name */}
-          <Text style={styles.fieldHeader}> First Name </Text>
-          <Text style={styles.field}> {this.state.firstName}</Text>
+          <ScrollView style={styles.inputBoxes}>
 
-          {/* Last name */}
-          <Text style={styles.fieldHeader}> Last Name </Text>
-          <Text style={styles.field}> {this.state.lastName}</Text>
+            {/* First name */}
+            <Text style={styles.fieldHeader}> First Name </Text>
+            <Text style={styles.field}> {this.state.firstName}</Text>
 
-          {/* Email input */}
-          <Text style={styles.fieldHeader}> Email</Text>
-          <View style={styles.inputBox}>
-            <TextInput
-              style={styles.inputText}
-              defaultValue={this.state.email}
-              onChangeText={(text) => this.setState({email: text})}/>
-          </View>
+            {/* Last name */}
+            <Text style={styles.fieldHeader}> Last Name </Text>
+            <Text style={styles.field}> {this.state.lastName}</Text>
 
-          {/* Phone number input */}
-          <Text style={styles.fieldHeader}> Contact Number</Text>
-          <View style={styles.inputBox}>
-            <TextInput
-              style={styles.inputText}
-              defaultValue={this.state.phoneNumber}
-              onChangeText={(text) => this.setState({phoneNumber: text})}/>
-          </View>
+            {/* Email input */}
+            <Text style={styles.fieldHeader}> Email</Text>
+            <View style={styles.inputBox}>
+              <TextInput
+                style={styles.inputText}
+                defaultValue={this.state.email}
+                onChangeText={(text) => this.setState({email: text})}/>
+            </View>
 
+            {/* Phone number input */}
+            <Text style={styles.fieldHeader}> Contact Number</Text>
+            <View style={styles.inputBox}>
+              <TextInput
+                style={styles.inputText}
+                defaultValue={this.state.phoneNumber}
+                onChangeText={(text) => this.setState({phoneNumber: text})}/>
+            </View>
+
+          </ScrollView>
         </View>
 
         {/* Save an log out buttons */}
@@ -157,10 +161,12 @@ const styles = StyleSheet.create({
     height: 60,
     backgroundColor: '#00aaf1',
   },
-  textContainer: {
-    justifyContent: 'flex-start',
-    margin: 10,
+  innerContainer: {
+    justifyContent: 'space-between',
     flex: 1,
+  },
+  inputBoxes: {
+    padding: 10,
   },
   fieldHeader: {
     fontSize: 14,

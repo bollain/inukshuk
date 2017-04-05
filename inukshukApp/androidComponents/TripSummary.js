@@ -347,7 +347,7 @@ export default class TripSummary extends Component {
                                   show: 'always'}]}
                         onActionSelected={this.navUser.bind(this)}/>
 
-        <View style={styles.tripDetailsContainer}>
+        <View style={styles.innerContainer}>
           <ScrollView>
             <View style={styles.inputBox}>
               <TextInput
@@ -440,32 +440,33 @@ export default class TripSummary extends Component {
                 </View>
             </TouchableHighlight>
           </ScrollView>
-        </View>
-        <View style={styles.buttons}>
-          <View style={styles.clearContainer}>
-            <TouchableOpacity
-              style={styles.clear}
-              onPress={() => {
-                Alert.alert(
-                  'Clear trip details',
-                  'Are you sure you want to do this?',
-                  [
-                    {text: 'Cancel'},
-                    {text: 'Clear trip details', onPress: () => this.clearTrip()},
-                  ],
-                )
-              }}
-              activeOpacity={.8}>
-              <Text style={styles.startText}>Clear</Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.startContainer}>
-            <TouchableOpacity
-              style={styles.start}
-              onPress={this.start.bind(this)}
-              activeOpacity={.8}>
-              <Text style={styles.startText}>Submit</Text>
-            </TouchableOpacity>
+
+          <View style={styles.buttons}>
+            <View style={styles.clearContainer}>
+              <TouchableOpacity
+                style={styles.clear}
+                onPress={() => {
+                  Alert.alert(
+                    'Clear trip details',
+                    'Are you sure you want to do this?',
+                    [
+                      {text: 'Cancel'},
+                      {text: 'Clear trip details', onPress: () => this.clearTrip()},
+                    ],
+                  )
+                }}
+                activeOpacity={.8}>
+                <Text style={styles.startText}>Clear</Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.startContainer}>
+              <TouchableOpacity
+                style={styles.start}
+                onPress={this.start.bind(this)}
+                activeOpacity={.8}>
+                <Text style={styles.startText}>Submit</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </View>
@@ -483,10 +484,10 @@ const styles = StyleSheet.create({
      backgroundColor: '#00aaf1',
      height: 60,
    },
-   tripDetailsContainer: {
-     flex: 4,
+   innerContainer: {
+     flex: 1,
      flexDirection: 'column',
-     justifyContent: 'flex-start',
+     justifyContent: 'space-between',
      alignItems: 'stretch',
    },
    tripDetail: {

@@ -7,7 +7,7 @@ describe('StaticMap Util', () => {
   it('should generate corect URL', (done) => {
     var trip = createTrip()
     var staticURL = StaticMap.generateStaticMapURL(trip)
-    var expected = 'http://maps.google.com/maps/api/staticmap?size=512x512&maptype=hybrid&path=color:red|weight:5|45.123,-123.595|46.456,-124.985|46.856,-124.685&&markers=color:blue|label:S|46.866,-124.185&&markers=color:blue|label:F|45.123,-123.595&AIzaSyD2xZoo-Et69gVY2ot-uwhKcqvQ4e_FP6s'
+    var expected = 'http://maps.google.com/maps/api/staticmap?size=512x512&maptype=hybrid&path=color:red|weight:5|46.856,-124.685|46.456,-124.985|45.123,-123.595&&markers=color:blue|label:S|46.866,-124.185&&markers=color:blue|label:F|45.123,-123.595&AIzaSyD2xZoo-Et69gVY2ot-uwhKcqvQ4e_FP6s'
     chai.expect(staticURL).to.equal(expected)
     done()
   })

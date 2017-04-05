@@ -6,11 +6,15 @@ var base = 'http://maps.google.com/maps/api/staticmap?size=512x512&maptype=hybri
 module.exports.generateStaticMapURL = function (trip) {
   // The first one is always lat, the second lon
   var result = base
-  for (var i = 0; i < trip.breadCrumbs.length; i++) {
-    var coordinates = trip.breadCrumbs[i].coordinates
+  var numberOfCrumbs = trip.breadCrumbs.length - 1 // So it is 0 indexed
+  var crumbsLimit = 50
+  while (crumbsLimit >= 0 && numberOfCrumbs >= 0) {
+    var coordinates = trip.breadCrumbs[numberOfCrumbs].coordinates
     var lat = coordinates[0]
     var lon = coordinates[1]
     result = result + '|' + lat + ',' + lon
+    crumbsLimit--
+    numberOfCrumbs--
   }
   // Now add thhe markers
   var startingCoordinates = trip.startingLocation.coordinates

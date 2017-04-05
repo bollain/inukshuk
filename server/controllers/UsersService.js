@@ -89,20 +89,29 @@ exports.updateUser = function (args, res, next) {
   var email = params.email
   // Lets first validate the email / phone...apparently findByIdAndUpdate doesnt
   // run the validators
-  if (!validator.isEmail(email)) {
+  if (email && !validator.isEmail(email)) {
     res.statusCode = 400
     res.statusMessage = 'Bad request'
     res.end('Invalid email')
     return
   }
-  if (!validator.isMobilePhone(phoneNumber, LOCALE)) {
+  if (phoneNumber && !validator.isMobilePhone(phoneNumber, LOCALE)) {
     res.statusCode = 400
     res.statusMessage = 'Bad request'
     res.end('Invalid phone number')
     return
   }
 
-  User.findByIdAndUpdate(userId, {phoneNumber: phoneNumber, email: email}, {new: true},
+  // Only update with parameters received
+  var updatedDetails = {}
+  if (email) {
+    updatedDetails.email = email
+  }
+  if (phoneNumber) {
+    updatedDetails.phoneNumber = phoneNumber
+  }
+
+  User.findByIdAndUpdate(userId, updatedDetails, {new: true},
     function (err, user) {
       if (err) {
         console.log('Email in use')

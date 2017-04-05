@@ -10,13 +10,20 @@ module.exports.generateStaticMapURL = function (trip) {
   var lat
   var lon
   // Only sample up to 50 points
-  var interval = Math.max(Math.ceil(trip.breadCrumbs.length / 50), 1)
-  for (var i = 0; i < trip.breadCrumbs.length; i += interval) {
+  var interval = Math.max(Math.ceil(trip.breadCrumbs.length / 45), 1)
+  var i = 0
+  while (i < trip.breadCrumbs.length) {
     coordinates = trip.breadCrumbs[i].coordinates
     lat = coordinates[0]
     lon = coordinates[1]
     result = result + '|' + lat + ',' + lon
+    if (trip.breadCrumbs.length - i <= 5) {
+      i++
+    } else {
+      i += interval
+    }
   }
+
   // Now add thhe markers
   var startingCoordinates = trip.startingLocation.coordinates
   var endingCoordinates = trip.endingLocation.coordinates

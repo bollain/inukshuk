@@ -26,23 +26,23 @@ export default class SignUp extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userName: null,
-      firstName: null,
-      lastName: null,
-      email: null,
-      phoneNumber: null,
-      password: null
+      userName: '',
+      firstName: '',
+      lastName: '',
+      email: '',
+      phoneNumber: '',
+      password: ''
     }
   }
 
   // Send info for new user to the server
   createUser() {
     let state = this.state;
-    if (state.firstName != null &&
-        state.lastName != null &&
-        state.email != null &&
-        state.phoneNumber != null &&
-        state.password != null) {
+    if (state.firstName.length > 0 &&
+        state.lastName.length > 0 &&
+        state.email.length > 0 &&
+        state.phoneNumber.length > 0 &&
+        state.password.length > 0) {
       createUser({firstName: state.firstName,
                   lastName: state.lastName,
                   email: state.email,

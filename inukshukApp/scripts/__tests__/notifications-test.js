@@ -5,7 +5,6 @@ import 'react-native'
 import React from 'react'
 
 var notifications = require('../notifications');
-var tripEnd = "Reminder to end your trip if you have finished. Your emergency contact will be contacted in 30 minutes unless you end your trip.";
 
 jest.mock('react-native-push-notification', () => ({
     PushNotification: {

@@ -33,8 +33,16 @@
     "preset": "react-native",
     "collectCoverageFrom": [
       "**/*.{js,jsx}",
-      "**/node_modules/**",
-      "**/androidCompents/**"
+      "!**/node_modules/**",
+      "!**/ios/**",
+      "!**/coverage/**",
+      "!**/assets/**",
+      "!**/images/**",
+      "!**/server/**",
+      "!**/ios/**",
+      "!**/androidComponents/**",
+      "!index.android.js",
+      "!index.ios.js"
       ]
   }
 }

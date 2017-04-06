@@ -43,7 +43,10 @@ test('extra time', () => {
 
 });
 
-test('get remaining time', () => {
-    expect(datesAndTimes.getTimeRemaining(new Date(Date.now()-(10*60000)))).toMatch("0d 0h 0m 0s");
+test('get remaining time after end', () => {
+    expect(datesAndTimes.getTimeRemaining(new Date(Date.now()-(100*60000)))).toMatch("0d 0h 0m 0s");
 });
 
+test('get remaining time after', () => {
+    expect(datesAndTimes.getTimeRemaining(new Date(Date.now()+(10*60000)))).toMatch("0d 0h 10m 0s");
+});

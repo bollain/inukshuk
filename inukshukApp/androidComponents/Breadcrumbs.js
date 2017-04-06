@@ -14,7 +14,7 @@ BackgroundJob.register(breadcrumbsJob);
 var breadcrumbsSchedule = {
   jobKey: "breadcrumbs",
   timeout: 10000,
-  period: 1000, // should be 600000 after testing
+  period: 600000, // should be 1000 for testing
 }
 
 // Set up an array of breadcrumbs to be synced with the server

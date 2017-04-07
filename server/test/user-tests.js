@@ -150,7 +150,7 @@ describe('Users', () => {
           firstName: 'Papa',
           lastName: 'John',
           phoneNumber: '7785583029',
-          email: 'papaJ@gmail.com',
+          email: 'papaj@gmail.com',
           password: 'miguelito'
         }
         if (err) {}
@@ -165,7 +165,7 @@ describe('Users', () => {
             .get('/users/' + user._id)
             .end((err, res) => {
               res.should.have.status(200)
-              res.body.should.have.property('email').eql('papaJ@gmail.com')
+              res.body.should.have.property('email').eql('papaj@gmail.com')
               if (err) {}
               done()
             })
@@ -186,7 +186,7 @@ describe('Users', () => {
           firstName: 'Papa',
           lastName: 'John',
           phoneNumber: '7785583029',
-          email: 'papaJgmail.com',
+          email: 'papajgmail.com',
           password: 'miguelito'
         }
         if (err) {}

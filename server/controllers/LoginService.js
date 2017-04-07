@@ -9,7 +9,7 @@ exports.authenticateUser = function (args, res, next) {
    * no response value expected for this operation
    **/
   var credentials = args.authRequest.value
-  User.findOne({email: credentials.email}, (err, user) => {
+  User.findOne({email: credentials.email.toLowerCase()}, (err, user) => {
     if (err) {
       console.log(err)
       res.statusCode = 500

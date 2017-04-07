@@ -19,7 +19,7 @@ exports.createUser = function (args, res, next) {
     password: params.password
   }
 
-  User.findOrCreate({email: params.email}, newUser,
+  User.findOrCreate({email: params.email.toLowerCase()}, newUser,
     function (err, user, created) {
       if (err) {
         if (err.errors.email) {
@@ -105,7 +105,7 @@ exports.updateUser = function (args, res, next) {
   // Only update with parameters received
   var updatedDetails = {}
   if (email) {
-    updatedDetails.email = email
+    updatedDetails.email = email.toLowerCase()
   }
   if (phoneNumber) {
     updatedDetails.phoneNumber = phoneNumber
